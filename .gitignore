@@ -1,0 +1,45 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# docs (notas internas, no se publican)
+docs/
+
+# next.js
+.next/
+out/
+
+# turborepo
+.turbo/
+
+# build output
+dist/
+build/
+
+# env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# vercel
+.vercel/
+
+# supabase
+supabase/.branches/
+supabase/.temp/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# editor / os
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# typescript
+*.tsbuildinfo
