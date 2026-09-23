@@ -28,6 +28,12 @@ build/
 # supabase
 supabase/.branches/
 supabase/.temp/
+.mcp.json
+
+# claude code / agent skills (se reinstalan desde skills-lock.json)
+.agents/
+.claude/settings.local.json
+.claude/skills/
 
 # logs
 *.log
