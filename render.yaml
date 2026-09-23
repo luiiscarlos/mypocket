@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mypocket-api
+    runtime: node
+    plan: free
+    buildCommand: npm install -g pnpm@12.5.1 && pnpm install --frozen-lockfile --filter api... && pnpm --filter api build
+    startCommand: node api/dist/index.js
+    healthCheckPath: /graphql?query=%7Bhealth%7D
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
