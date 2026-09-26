@@ -8,7 +8,7 @@ Formato: `<acción>(<lugar>): <descripción>`
 
 **Lugares** (ruta/sección real del proyecto, no el nombre de un componente interno):
 
-- Landing (sitio público y páginas de acceso: `/`, precios, preguntas, contacto, legal, login, registro, recuperar/nueva contraseña): `landing`
+- Landing (todo lo que vive en `client/src/app/(site)/`: `/`, `/pricing`, `/faq`, `/contact`, `/privacy`, `/terms`, `/login`, `/register`, `/forgot-password`, `/reset-password`): `landing`
 - Dashboard: `dashboard`, `dashboard-transactions`, `dashboard-subscriptions`, `dashboard-receipts`
 - Mobile/PWA: `mobile`, `mobile-transactions`, `mobile-subscriptions`, `mobile-receipts`
 - API: `api`, `api-transactions`, `api-subscriptions`, `api-receipts`, `api-auth`
