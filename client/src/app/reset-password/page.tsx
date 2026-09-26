@@ -11,7 +11,12 @@ export default async function ResetPasswordPage({ searchParams }: { searchParams
   const { error } = await searchParams;
 
   return (
-    <AuthShell kicker="TU CUENTA" title="Nueva contraseña" intro="Elige una contraseña de al menos 8 caracteres.">
+    <AuthShell
+      kicker="TU CUENTA"
+      title="Nueva contraseña"
+      intro="Elige una contraseña de al menos 8 caracteres."
+      tagline="Un paso más y vuelves a tu balance."
+    >
       {error && <Notice kind="error">{error}</Notice>}
       <form action={updatePassword} className="flex flex-col gap-5">
         <label className={labelClass}>

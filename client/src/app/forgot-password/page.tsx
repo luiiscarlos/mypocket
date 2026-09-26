@@ -9,7 +9,12 @@ export default async function ForgotPasswordPage({ searchParams }: { searchParam
   const { message } = await searchParams;
 
   return (
-    <AuthShell kicker="TU CUENTA" title="Recuperar contraseña" intro="Te enviaremos un enlace para crear una nueva.">
+    <AuthShell
+      kicker="TU CUENTA"
+      title="Recuperar contraseña"
+      intro="Te enviaremos un enlace para crear una nueva."
+      tagline="Tu dinero sigue donde lo dejaste."
+    >
       {message && <Notice kind="status">{message}</Notice>}
       <form action={requestPasswordReset} className="flex flex-col gap-5">
         <label className={labelClass}>

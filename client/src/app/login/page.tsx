@@ -16,6 +16,7 @@ export default async function LoginPage({
     <AuthShell
       kicker="TU CUENTA"
       title="Iniciar sesión"
+      tagline="Tu balance te espera."
       intro={<>¿No tienes cuenta? <TextLink href="/registro">Crear cuenta</TextLink></>}
     >
       {error && <Notice kind="error">{error}</Notice>}

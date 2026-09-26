@@ -12,6 +12,7 @@ export default async function SignupPage({ searchParams }: { searchParams: Promi
     <AuthShell
       kicker="EMPIEZA GRATIS"
       title="Crear cuenta"
+      tagline="Empieza con un banco y tu efectivo. Gratis."
       intro={<>¿Ya tienes cuenta? <TextLink href="/login">Iniciar sesión</TextLink></>}
     >
       {error && <Notice kind="error">{error}</Notice>}

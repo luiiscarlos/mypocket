@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo, eyebrow } from "./chrome";
 
-// Sample figures from the design, not real data.
-const SAMPLE = [
-  ["Trade Republic", "15.072,18 €"],
-  ["BBVA", "8.566,24 €"],
-  ["Efectivo", "680,00 €"],
+// Sample figures from the design, not real data. Widths make the cards look stacked behind the total.
+const STACK = [
+  { name: "Efectivo", amount: "680,00 €", dot: "bg-sage-light", card: "w-[77%] h-[52px] px-5 bg-[#367057]" },
+  { name: "BBVA", amount: "8.566,24 €", dot: "bg-sage", card: "w-[85%] h-14 px-[22px] bg-[#2C624B]" },
+  { name: "Trade Republic", amount: "15.072,18 €", dot: "bg-cream", card: "w-[92%] h-[60px] px-6 bg-[#23553F]" },
 ];
 
 export const inputClass =
@@ -20,34 +20,58 @@ export function AuthShell({
   kicker,
   title,
   intro,
+  tagline,
   children,
 }: {
   kicker: string;
   title: string;
   intro: ReactNode;
+  /** Short phrase at the bottom of the green panel; different on each page. */
+  tagline: string;
   children: ReactNode;
 }) {
   return (
     <div className="grid min-h-screen bg-paper text-ink lg:grid-cols-2">
-      <aside className="hidden flex-col bg-brand px-20 pb-20 text-cream lg:flex">
-        <div className="flex h-[88px] shrink-0 items-center border-b border-cream/20">
+      <aside className="hidden flex-col bg-brand px-[72px] pb-16 text-cream lg:flex">
+        <div className="flex h-[88px] shrink-0 items-center justify-between border-b border-cream/20">
           <Logo />
+          <span className="font-mono text-xs tracking-[0.06em] text-[#C3CEC0]">3 CUENTAS · 1 BALANCE</span>
         </div>
-        <div className="mt-auto flex flex-col gap-12">
-          <div className="text-[88px] font-extrabold leading-[0.9] tracking-[-0.055em]">
-            Todo tu dinero, en un único sitio.
-          </div>
-          <div className="flex flex-col font-mono text-[15px]" aria-hidden="true">
-            {SAMPLE.map(([name, amount]) => (
-              <div key={name} className="flex justify-between border-t border-cream/20 py-3">
-                <span>{name}</span>
-                <span>{amount}</span>
+
+        <div className="flex grow items-center justify-center py-10" aria-hidden="true">
+          <div className="flex w-full max-w-[520px] flex-col items-center">
+            {STACK.map((a) => (
+              <div key={a.name} className={`flex items-center justify-between text-[15px] ${a.card}`}>
+                <span className="flex items-center gap-2.5">
+                  <span className={`block size-2 ${a.dot}`} />
+                  {a.name}
+                </span>
+                <span className="font-mono">{a.amount}</span>
               </div>
             ))}
-            <div className="flex items-baseline justify-between border-t-[3px] border-cream pt-3.5">
-              <span className="text-xs tracking-[0.06em]">TOTAL</span>
-              <span className="text-[28px] font-medium tracking-[-0.03em]">24.318,42 €</span>
+            <div className="flex w-full flex-col gap-5 bg-cream p-8 text-ink">
+              <div className="flex items-baseline justify-between">
+                <span className="font-mono text-xs tracking-[0.06em] text-ink-muted">BALANCE TOTAL</span>
+                <span className="font-mono text-[13px] text-brand">+312,40 € este mes</span>
+              </div>
+              <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em] xl:text-[56px]">24.318,42 €</div>
+              <div className="flex h-2.5 gap-[3px]">
+                <div className="grow-[62] bg-brand" />
+                <div className="grow-[35] bg-sage" />
+                <div className="grow-[3] bg-sage-light" />
+              </div>
             </div>
+          </div>
+        </div>
+
+        <div className="flex items-end justify-between gap-8 border-t border-cream/20 pt-7">
+          <div className="max-w-[340px] text-[34px] font-extrabold leading-none tracking-[-0.04em]">{tagline}</div>
+          <div className="flex items-center gap-2 whitespace-nowrap font-mono text-xs text-[#C3CEC0]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="10" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            PSD2 · SOLO LECTURA
           </div>
         </div>
       </aside>
