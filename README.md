@@ -21,7 +21,7 @@ pnpm dev                                   # client :3000, api :4000/graphql
 
 **API (Render):** New → Blueprint → este repo. Usa `render.yaml`; pide `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`.
 
-> Plan gratuito de Render: el servicio se duerme tras 15 min sin tráfico y la primera petición tarda ~30–60 s (cold start).
+> Plan gratuito de Render: el servicio se duerme tras 15 min sin tráfico y la primera petición tarda ~20–25 s (cold start medido: 22 s). En caliente responde en ~0,25 s.
 
 **Client (Vercel):** New Project → este repo → Root Directory `client`. Variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 
