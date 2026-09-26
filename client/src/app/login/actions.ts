@@ -1,5 +1,6 @@
 "use server";
 
+import type { AuthError } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -14,6 +15,26 @@ const back = (path: string, params: Record<string, string>) =>
 function field(formData: FormData, name: string) {
   const value = formData.get(name);
   return typeof value === "string" ? value.trim() : "";
+}
+
+// Specific, non-sensitive messages for known Supabase Auth errors; the raw error goes to the server log.
+function authErrorMessage(error: AuthError, fallback: string) {
+  console.error("supabase auth error:", error.code, error.status, error.message);
+  switch (error.code) {
+    case "weak_password":
+      return "La contraseña es demasiado débil: usa al menos 8 caracteres combinando letras y números";
+    case "same_password":
+      return "La nueva contraseña debe ser distinta de la actual";
+    case "email_address_invalid":
+      return "El email no es válido";
+    case "over_email_send_rate_limit":
+    case "over_request_rate_limit":
+      return "Demasiados intentos. Espera unos minutos y vuelve a probar";
+    case "signup_disabled":
+      return "El registro está desactivado temporalmente";
+    default:
+      return (error.status ?? 0) >= 500 ? "No pudimos enviar el email. Inténtalo de nuevo más tarde" : fallback;
+  }
 }
 
 async function origin() {
@@ -62,7 +83,7 @@ export async function signup(formData: FormData) {
       data: { terms_accepted_at: new Date().toISOString() },
     },
   });
-  if (error) back("/registro", { error: "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo" });
+  if (error) back("/registro", { error: authErrorMessage(error, "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo") });
 
   // With email confirmation on there is no session until the link is clicked; never let an unverified session through.
   if (data.session) await supabase.auth.signOut();
@@ -101,7 +122,7 @@ export async function updatePassword(formData: FormData) {
   if (!data?.claims) back("/login", { error: "El enlace ha caducado, solicita otro" });
 
   const { error } = await supabase.auth.updateUser({ password: password as string });
-  if (error) back("/reset-password", { error: "No se pudo cambiar la contraseña, solicita otro enlace" });
+  if (error) back("/reset-password", { error: authErrorMessage(error, "No se pudo cambiar la contraseña, solicita otro enlace") });
 
   revalidatePath("/", "layout");
   back("/dashboard", { message: "Contraseña actualizada" });
