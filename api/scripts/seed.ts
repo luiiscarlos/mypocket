@@ -8,6 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 const PROD_REF = "aiaozxjwgschdeghicho";
 
 const { values: args } = parseArgs({
+  args: process.argv.slice(2).filter((a) => a !== "--"), // pnpm forwards a literal "--"
   options: {
     email: { type: "string" },
     password: { type: "string" },

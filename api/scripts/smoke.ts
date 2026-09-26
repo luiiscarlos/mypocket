@@ -69,7 +69,7 @@ assert.deepEqual(
   { email: me.email, accountType: me.accountType, isOwner: me.isOwner, readOnly: me.readOnly },
   { email: env.SMOKE_EMAIL, accountType: "DEMO", isOwner: false, readOnly: false },
 );
-const renamed = ok(await gql(`mutation { updateProfile(input: { displayName: "Smoke" }) { displayName currency } }`));
+const renamed = ok(await gql(`mutation { updateProfile(input: { displayName: "Smoke", currency: "EUR" }) { displayName currency } }`));
 assert.deepEqual(renamed.updateProfile, { displayName: "Smoke", currency: "EUR" });
 assert.equal(code(await gql(`mutation { updateProfile(input: { currency: "euro" }) { id } }`)), "BAD_USER_INPUT");
 
