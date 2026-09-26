@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { cookieOptions } from "./server";
 
 const PROTECTED = ["/dashboard", "/mobile"];
-const AUTH_PAGES = ["/login", "/registro", "/forgot-password"];
+const AUTH_PAGES = ["/login", "/register", "/forgot-password"];
 
 const matches = (path: string, prefixes: string[]) =>
   prefixes.some((p) => path === p || path.startsWith(`${p}/`));

@@ -1,42 +1,49 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { AuthShell, Notice, TextLink, inputClass, labelClass, primaryButton } from "@/components/site/auth";
-import { login } from "./actions";
+import { login } from "@/lib/auth-actions";
+import { authNotice } from "@/lib/auth-codes";
 
-export const metadata: Metadata = { title: "Iniciar sesión" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("auth.login");
+  return { title: t("meta") };
+}
 
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string; message?: string; next?: string }>;
 }) {
-  const { error, message, next } = await searchParams;
+  const params = await searchParams;
+  const { error, message } = await authNotice(params);
+  const t = await getTranslations("auth");
 
   return (
     <AuthShell
-      kicker="TU CUENTA"
-      title="Iniciar sesión"
-      tagline="Tu balance te espera."
-      intro={<>¿No tienes cuenta? <TextLink href="/registro">Crear cuenta</TextLink></>}
+      kicker={t("login.kicker")}
+      title={t("login.title")}
+      tagline={t("login.tagline")}
+      intro={<>{t("login.noAccount")} <TextLink href="/register">{t("login.createAccount")}</TextLink></>}
     >
       {error && <Notice kind="error">{error}</Notice>}
       {message && <Notice kind="status">{message}</Notice>}
       <form action={login} className="flex flex-col gap-5">
-        <input type="hidden" name="next" value={next ?? ""} />
+        <input type="hidden" name="next" value={params.next ?? ""} />
         <label className={labelClass}>
-          Email
+          {t("fields.email")}
           <input name="email" type="email" autoComplete="email" required className={inputClass} />
         </label>
         <div className="flex flex-col gap-2">
           <div className="flex justify-between text-sm font-semibold">
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">{t("fields.password")}</label>
             <Link href="/forgot-password" className="font-medium text-ink-muted underline">
-              ¿Olvidaste tu contraseña?
+              {t("login.forgot")}
             </Link>
           </div>
           <input id="password" name="password" type="password" autoComplete="current-password" required className={inputClass} />
         </div>
-        <button className={primaryButton}>Entrar</button>
+        <button className={primaryButton}>{t("login.submit")}</button>
       </form>
     </AuthShell>
   );

@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "label": "Principal",
+    "howItWorks": "Cómo funciona",
+    "tickets": "Tickets",
+    "pricing": "Precios",
+    "faq": "Preguntas",
+    "login": "Iniciar sesión",
+    "signUp": "Empezar gratis"
+  },
+  "footer": {
+    "copyright": "© {year} mypocket",
+    "legal": "Legal",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "contact": "Contacto",
+    "language": "Idioma"
+  },
+  "cta": {
+    "line1": "Todo tu dinero.",
+    "line2": "Un solo sitio.",
+    "button": "Crear cuenta gratis"
+  },
+  "auth": {
+    "backToSite": "← Volver a la web",
+    "panel": {
+      "summary": "3 CUENTAS · 1 BALANCE",
+      "cash": "Efectivo",
+      "total": "BALANCE TOTAL",
+      "thisMonth": "+312,40 € este mes",
+      "readOnly": "PSD2 · SOLO LECTURA"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Contraseña",
+      "newPassword": "Nueva contraseña",
+      "repeatPassword": "Repite la contraseña",
+      "passwordHint": "Mínimo 8 caracteres"
+    },
+    "login": {
+      "meta": "Iniciar sesión",
+      "tagline": "Tu balance te espera.",
+      "kicker": "TU CUENTA",
+      "title": "Iniciar sesión",
+      "noAccount": "¿No tienes cuenta?",
+      "createAccount": "Crear cuenta",
+      "forgot": "¿Olvidaste tu contraseña?",
+      "submit": "Entrar"
+    },
+    "register": {
+      "meta": "Crear cuenta",
+      "tagline": "Empieza con un banco y tu efectivo. Gratis.",
+      "kicker": "EMPIEZA GRATIS",
+      "title": "Crear cuenta",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "login": "Iniciar sesión",
+      "terms": "Acepto los <terms>términos de uso</terms> y la <privacy>política de privacidad</privacy>",
+      "submit": "Crear cuenta"
+    },
+    "forgot": {
+      "meta": "Recuperar contraseña",
+      "tagline": "Tu dinero sigue donde lo dejaste.",
+      "kicker": "TU CUENTA",
+      "title": "Recuperar contraseña",
+      "intro": "Te enviaremos un enlace para crear una nueva.",
+      "submit": "Enviar enlace",
+      "back": "← Volver a iniciar sesión"
+    },
+    "reset": {
+      "meta": "Nueva contraseña",
+      "tagline": "Un paso más y vuelves a tu balance.",
+      "kicker": "TU CUENTA",
+      "title": "Nueva contraseña",
+      "intro": "Elige una contraseña de al menos 8 caracteres.",
+      "submit": "Guardar contraseña"
+    },
+    "errors": {
+      "missing_credentials": "Email y contraseña obligatorios",
+      "invalid_credentials": "Email o contraseña incorrectos, o email sin verificar",
+      "email_not_verified": "Verifica tu email antes de entrar",
+      "invalid_signup": "Email obligatorio y contraseña de al menos 8 caracteres",
+      "terms_required": "Debes aceptar los términos de uso y la política de privacidad",
+      "weak_password": "La contraseña es demasiado débil: usa al menos 8 caracteres combinando letras y números",
+      "same_password": "La nueva contraseña debe ser distinta de la actual",
+      "email_invalid": "El email no es válido",
+      "rate_limited": "Demasiados intentos. Espera unos minutos y vuelve a probar",
+      "signup_disabled": "El registro está desactivado temporalmente",
+      "email_send_failed": "No pudimos enviar el email. Inténtalo de nuevo más tarde",
+      "signup_failed": "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo",
+      "password_too_short": "La contraseña debe tener al menos 8 caracteres",
+      "password_mismatch": "Las contraseñas no coinciden",
+      "link_expired": "El enlace ha caducado, solicita otro",
+      "invalid_link": "El enlace no es válido o ha caducado",
+      "password_update_failed": "No se pudo cambiar la contraseña, solicita otro enlace",
+      "unknown": "Algo ha fallado. Inténtalo de nuevo"
+    },
+    "messages": {
+      "verify_email_sent": "Te hemos enviado un email para verificar la cuenta",
+      "reset_link_sent": "Si el email existe, recibirás un enlace para cambiar la contraseña",
+      "password_updated": "Contraseña actualizada"
+    }
+  }
+}

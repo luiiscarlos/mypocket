@@ -1,7 +1,8 @@
 // Functional skeleton: shows the data the dashboard needs. The visual design comes from Claude Design.
 import { requireUser } from "@/lib/auth";
 import { gql } from "@/lib/api";
-import { logout } from "../login/actions";
+import { logout } from "@/lib/auth-actions";
+import { authNotice } from "@/lib/auth-codes";
 
 type DashboardData = {
   me: { email: string | null; displayName: string | null; readOnly: boolean; isOwner: boolean };
@@ -19,7 +20,7 @@ export default async function DashboardPage({
   searchParams: Promise<{ message?: string }>;
 }) {
   await requireUser();
-  const { message } = await searchParams;
+  const { message } = await authNotice(await searchParams);
   const today = new Date().toISOString().slice(0, 10);
   const { me, monthlySummary: summary } = await gql<DashboardData>(
     `query Dashboard($month: String!) {

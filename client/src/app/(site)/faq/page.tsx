@@ -51,7 +51,7 @@ const groups = GROUPS.map(([title, items], i) => ({ id: `g${i + 1}`, n: String(i
 export default function FaqPage() {
   return (
     <SitePage>
-      <GreenHero current="preguntas" className="pb-16 lg:pb-20">
+      <GreenHero current="faq" className="pb-16 lg:pb-20">
         <div className="grid grid-cols-1 items-end gap-8 pt-16 lg:grid-cols-12 lg:gap-x-6 lg:pt-20">
           <div className="flex flex-col gap-7 lg:col-span-8">
             <div className={eyebrow}>AYUDA</div>
@@ -107,7 +107,7 @@ export default function FaqPage() {
           <h2 className="m-0 text-4xl font-extrabold leading-[0.95] tracking-[-0.045em] lg:text-5xl">¿No encuentras tu respuesta?</h2>
           <p className="m-0 text-[17px] text-ink-muted">Escríbenos y te respondemos por email.</p>
         </div>
-        <Link href="/contacto" className="btn inline-flex h-14 shrink-0 items-center self-start bg-brand px-7 text-base font-semibold text-cream hover:no-underline sm:self-auto">
+        <Link href="/contact" className="btn inline-flex h-14 shrink-0 items-center self-start bg-brand px-7 text-base font-semibold text-cream hover:no-underline sm:self-auto">
           Contactar
         </Link>
       </section>

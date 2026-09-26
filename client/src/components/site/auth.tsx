@@ -1,13 +1,15 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import { Logo, eyebrow } from "./chrome";
 
 // Sample figures from the design, not real data. Widths make the cards look stacked behind the total.
 const STACK = [
-  { name: "Efectivo", amount: "680,00 €", dot: "bg-sage-light", card: "w-[77%] h-[52px] px-5 bg-[#367057]" },
-  { name: "BBVA", amount: "8.566,24 €", dot: "bg-sage", card: "w-[85%] h-14 px-[22px] bg-[#2C624B]" },
-  { name: "Trade Republic", amount: "15.072,18 €", dot: "bg-cream", card: "w-[92%] h-[60px] px-6 bg-[#23553F]" },
+  { name: null, amount: 680, dot: "bg-sage-light", card: "w-[77%] h-[52px] px-5 bg-[#367057]" },
+  { name: "BBVA", amount: 8566.24, dot: "bg-sage", card: "w-[85%] h-14 px-[22px] bg-[#2C624B]" },
+  { name: "Trade Republic", amount: 15072.18, dot: "bg-cream", card: "w-[92%] h-[60px] px-6 bg-[#23553F]" },
 ];
+const SAMPLE_TOTAL = 24318.42;
 
 export const inputClass =
   "h-[52px] w-full border border-ink bg-white px-4 font-sans text-base text-ink outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2";
@@ -30,31 +32,35 @@ export function AuthShell({
   tagline: string;
   children: ReactNode;
 }) {
+  const t = useTranslations("auth");
+  const format = useFormatter();
+  const eur = (n: number) => format.number(n, { style: "currency", currency: "EUR" });
+
   return (
     <div className="grid min-h-screen bg-paper text-ink lg:grid-cols-2">
       <aside className="hidden flex-col bg-brand px-[72px] pb-16 text-cream lg:flex">
         <div className="flex h-[88px] shrink-0 items-center justify-between border-b border-cream/20">
           <Logo />
-          <span className="font-mono text-xs tracking-[0.06em] text-[#C3CEC0]">3 CUENTAS · 1 BALANCE</span>
+          <span className="font-mono text-xs tracking-[0.06em] text-[#C3CEC0]">{t("panel.summary")}</span>
         </div>
 
         <div className="flex grow items-center justify-center py-10" aria-hidden="true">
           <div className="flex w-full max-w-[520px] flex-col items-center">
             {STACK.map((a) => (
-              <div key={a.name} className={`flex items-center justify-between text-[15px] ${a.card}`}>
+              <div key={a.card} className={`flex items-center justify-between text-[15px] ${a.card}`}>
                 <span className="flex items-center gap-2.5">
                   <span className={`block size-2 ${a.dot}`} />
-                  {a.name}
+                  {a.name ?? t("panel.cash")}
                 </span>
-                <span className="font-mono">{a.amount}</span>
+                <span className="font-mono">{eur(a.amount)}</span>
               </div>
             ))}
             <div className="flex w-full flex-col gap-5 bg-cream p-8 text-ink">
               <div className="flex items-baseline justify-between">
-                <span className="font-mono text-xs tracking-[0.06em] text-ink-muted">BALANCE TOTAL</span>
-                <span className="font-mono text-[13px] text-brand">+312,40 € este mes</span>
+                <span className="font-mono text-xs tracking-[0.06em] text-ink-muted">{t("panel.total")}</span>
+                <span className="font-mono text-[13px] text-brand">{t("panel.thisMonth")}</span>
               </div>
-              <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em] xl:text-[56px]">24.318,42 €</div>
+              <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em] xl:text-[56px]">{eur(SAMPLE_TOTAL)}</div>
               <div className="flex h-2.5 gap-[3px]">
                 <div className="grow-[62] bg-brand" />
                 <div className="grow-[35] bg-sage" />
@@ -71,7 +77,7 @@ export function AuthShell({
               <rect x="5" y="11" width="14" height="10" />
               <path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>
-            PSD2 · SOLO LECTURA
+            {t("panel.readOnly")}
           </div>
         </div>
       </aside>
@@ -82,7 +88,7 @@ export function AuthShell({
             <Logo />
           </span>
           <Link href="/" className="text-ink-muted hover:underline">
-            ← Volver a la web
+            {t("backToSite")}
           </Link>
         </div>
         <div className="flex grow items-center justify-center py-10">

@@ -21,6 +21,6 @@ export async function GET(request: NextRequest) {
         : { error: new Error("missing token") };
 
   const target = new URL(error ? "/login" : type === "recovery" ? "/reset-password" : next, request.url);
-  if (error) target.searchParams.set("error", "El enlace no es válido o ha caducado");
+  if (error) target.searchParams.set("error", "invalid_link");
   return NextResponse.redirect(target);
 }

@@ -6,34 +6,36 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { safeNext } from "@/lib/auth";
+import type { AuthErrorCode, AuthMessageCode } from "@/lib/auth-codes";
 
 const MIN_PASSWORD = 8;
 
-const back = (path: string, params: Record<string, string>) =>
-  redirect(`${path}?${new URLSearchParams(params)}`);
+// Pages receive codes, never text: they translate the code, so the URL can't inject arbitrary copy.
+const back = (path: string, params: { error?: AuthErrorCode; message?: AuthMessageCode; next?: string }) =>
+  redirect(`${path}?${new URLSearchParams(params as Record<string, string>)}`);
 
 function field(formData: FormData, name: string) {
   const value = formData.get(name);
   return typeof value === "string" ? value.trim() : "";
 }
 
-// Specific, non-sensitive messages for known Supabase Auth errors; the raw error goes to the server log.
-function authErrorMessage(error: AuthError, fallback: string) {
+// Known Supabase Auth errors → our codes; the raw error goes to the server log.
+function authErrorCode(error: AuthError, fallback: AuthErrorCode): AuthErrorCode {
   console.error("supabase auth error:", error.code, error.status, error.message);
   switch (error.code) {
     case "weak_password":
-      return "La contraseña es demasiado débil: usa al menos 8 caracteres combinando letras y números";
+      return "weak_password";
     case "same_password":
-      return "La nueva contraseña debe ser distinta de la actual";
+      return "same_password";
     case "email_address_invalid":
-      return "El email no es válido";
+      return "email_invalid";
     case "over_email_send_rate_limit":
     case "over_request_rate_limit":
-      return "Demasiados intentos. Espera unos minutos y vuelve a probar";
+      return "rate_limited";
     case "signup_disabled":
-      return "El registro está desactivado temporalmente";
+      return "signup_disabled";
     default:
-      return (error.status ?? 0) >= 500 ? "No pudimos enviar el email. Inténtalo de nuevo más tarde" : fallback;
+      return (error.status ?? 0) >= 500 ? "email_send_failed" : fallback;
   }
 }
 
@@ -45,18 +47,16 @@ export async function login(formData: FormData) {
   const email = field(formData, "email");
   const password = formData.get("password");
   const next = safeNext(formData.get("next"));
-  if (!email || typeof password !== "string" || !password) {
-    back("/login", { error: "Email y contraseña obligatorios", next });
-  }
+  if (!email || typeof password !== "string" || !password) back("/login", { error: "missing_credentials", next });
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password: password as string });
-  if (error) back("/login", { error: "Email o contraseña incorrectos, o email sin verificar", next });
+  if (error) back("/login", { error: "invalid_credentials", next });
 
   // Defense in depth: even if "Confirm email" were turned off in Supabase, unverified users don't get in.
   if (!data.user?.email_confirmed_at) {
     await supabase.auth.signOut();
-    back("/login", { error: "Verifica tu email antes de entrar", next });
+    back("/login", { error: "email_not_verified", next });
   }
 
   revalidatePath("/", "layout");
@@ -66,12 +66,8 @@ export async function login(formData: FormData) {
 export async function signup(formData: FormData) {
   const email = field(formData, "email");
   const password = formData.get("password");
-  if (!email || typeof password !== "string" || password.length < MIN_PASSWORD) {
-    back("/registro", { error: `Email obligatorio y contraseña de al menos ${MIN_PASSWORD} caracteres` });
-  }
-  if (formData.get("terms") !== "on") {
-    back("/registro", { error: "Debes aceptar los términos de uso y la política de privacidad" });
-  }
+  if (!email || typeof password !== "string" || password.length < MIN_PASSWORD) back("/register", { error: "invalid_signup" });
+  if (formData.get("terms") !== "on") back("/register", { error: "terms_required" });
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
@@ -83,11 +79,11 @@ export async function signup(formData: FormData) {
       data: { terms_accepted_at: new Date().toISOString() },
     },
   });
-  if (error) back("/registro", { error: authErrorMessage(error, "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo") });
+  if (error) back("/register", { error: authErrorCode(error, "signup_failed") });
 
   // With email confirmation on there is no session until the link is clicked; never let an unverified session through.
   if (data.session) await supabase.auth.signOut();
-  back("/login", { message: "Te hemos enviado un email para verificar la cuenta" });
+  back("/login", { message: "verify_email_sent" });
 }
 
 export async function logout() {
@@ -106,24 +102,22 @@ export async function requestPasswordReset(formData: FormData) {
     });
   }
   // Same answer whether or not the account exists (no user enumeration).
-  back("/forgot-password", { message: "Si el email existe, recibirás un enlace para cambiar la contraseña" });
+  back("/forgot-password", { message: "reset_link_sent" });
 }
 
 export async function updatePassword(formData: FormData) {
   const password = formData.get("password");
   const confirm = formData.get("confirm");
-  if (typeof password !== "string" || password.length < MIN_PASSWORD) {
-    back("/reset-password", { error: `La contraseña debe tener al menos ${MIN_PASSWORD} caracteres` });
-  }
-  if (password !== confirm) back("/reset-password", { error: "Las contraseñas no coinciden" });
+  if (typeof password !== "string" || password.length < MIN_PASSWORD) back("/reset-password", { error: "password_too_short" });
+  if (password !== confirm) back("/reset-password", { error: "password_mismatch" });
 
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
-  if (!data?.claims) back("/login", { error: "El enlace ha caducado, solicita otro" });
+  if (!data?.claims) back("/login", { error: "link_expired" });
 
   const { error } = await supabase.auth.updateUser({ password: password as string });
-  if (error) back("/reset-password", { error: authErrorMessage(error, "No se pudo cambiar la contraseña, solicita otro enlace") });
+  if (error) back("/reset-password", { error: authErrorCode(error, "password_update_failed") });
 
   revalidatePath("/", "layout");
-  back("/dashboard", { message: "Contraseña actualizada" });
+  back("/dashboard", { message: "password_updated" });
 }

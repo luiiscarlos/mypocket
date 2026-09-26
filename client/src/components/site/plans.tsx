@@ -29,7 +29,7 @@ export function PlanCards() {
           ))}
         </ul>
         <Link
-          href="/registro"
+          href="/register"
           className="btn mt-auto flex h-[52px] items-center justify-center border border-ink text-[15px] font-semibold hover:no-underline"
         >
           Empezar gratis
@@ -51,7 +51,7 @@ export function PlanCards() {
           ))}
         </ul>
         <Link
-          href="/registro"
+          href="/register"
           className="btn mt-auto flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline"
         >
           Probar Pro

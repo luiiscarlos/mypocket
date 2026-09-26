@@ -1,14 +1,17 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { locales } from "@/i18n/config";
+import { setLocale } from "@/i18n/actions";
 
-type Page = "precios" | "preguntas" | undefined;
+type Page = "pricing" | "faq" | undefined;
 
-const NAV: { href: string; label: string; page?: Page; wide?: boolean }[] = [
-  { href: "/#balance", label: "Cómo funciona", wide: true },
-  { href: "/#tickets", label: "Tickets", wide: true },
-  { href: "/precios", label: "Precios", page: "precios" },
-  { href: "/preguntas-frecuentes", label: "Preguntas", page: "preguntas", wide: true },
-];
+const NAV = [
+  { href: "/#how-it-works", key: "howItWorks", wide: true },
+  { href: "/#tickets", key: "tickets", wide: true },
+  { href: "/pricing", key: "pricing", page: "pricing" },
+  { href: "/faq", key: "faq", page: "faq", wide: true },
+] as const;
 
 export const eyebrow = "font-mono text-[13px] tracking-[0.06em]";
 
@@ -21,28 +24,26 @@ export function Logo() {
 }
 
 function SiteHeader({ current }: { current: Page }) {
+  const t = useTranslations("nav");
   return (
     <header className="flex h-[88px] items-center justify-between border-b border-cream/20">
       <Logo />
-      <nav aria-label="Principal" className="flex items-center gap-5 text-[15px] lg:gap-9">
+      <nav aria-label={t("label")} className="flex items-center gap-5 text-[15px] lg:gap-9">
         {NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            aria-current={item.page && item.page === current ? "page" : undefined}
-            className={`${item.wide ? "hidden lg:inline" : "hidden sm:inline"} hover:underline aria-[current=page]:underline aria-[current=page]:underline-offset-[6px]`}
+            aria-current={"page" in item && item.page === current ? "page" : undefined}
+            className={`${"wide" in item ? "hidden lg:inline" : "hidden sm:inline"} hover:underline aria-[current=page]:underline aria-[current=page]:underline-offset-[6px]`}
           >
-            {item.label}
+            {t(item.key)}
           </Link>
         ))}
         <Link href="/login" className="hover:underline">
-          Iniciar sesión
+          {t("login")}
         </Link>
-        <Link
-          href="/registro"
-          className="btn inline-flex h-11 items-center bg-cream px-5 font-semibold text-brand hover:no-underline"
-        >
-          Empezar gratis
+        <Link href="/register" className="btn inline-flex h-11 items-center bg-cream px-5 font-semibold text-brand hover:no-underline">
+          {t("signUp")}
         </Link>
       </nav>
     </header>
@@ -59,20 +60,46 @@ export function GreenHero({ current, children, className = "" }: { current?: Pag
   );
 }
 
+// ponytail: plain ES · EN switch in the footer until the design places a language selector.
+function LocaleSwitcher() {
+  const t = useTranslations("footer");
+  const current = useLocale();
+  return (
+    <form action={setLocale} aria-label={t("language")} className="flex gap-3 font-mono text-xs">
+      {locales.map((locale) => (
+        <button
+          key={locale}
+          name="locale"
+          value={locale}
+          aria-pressed={locale === current}
+          className="cursor-pointer border-0 bg-transparent p-0 uppercase text-mist hover:underline aria-pressed:text-cream aria-pressed:underline"
+        >
+          {locale}
+        </button>
+      ))}
+    </form>
+  );
+}
+
 export function SiteFooter() {
+  const t = useTranslations("footer");
   return (
     <footer className="flex min-h-24 shrink-0 flex-col justify-center gap-3 border-t border-cream/20 bg-brand band py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
-      <div>© {new Date().getFullYear()} mypocket</div>
-      <nav aria-label="Legal" className="flex gap-8">
-        <Link href="/privacidad" className="hover:underline">Privacidad</Link>
-        <Link href="/terminos" className="hover:underline">Términos</Link>
-        <Link href="/contacto" className="hover:underline">Contacto</Link>
-      </nav>
+      <div>{t("copyright", { year: new Date().getFullYear() })}</div>
+      <div className="flex flex-wrap items-center gap-8">
+        <nav aria-label={t("legal")} className="flex gap-8">
+          <Link href="/privacy" className="hover:underline">{t("privacy")}</Link>
+          <Link href="/terms" className="hover:underline">{t("terms")}</Link>
+          <Link href="/contact" className="hover:underline">{t("contact")}</Link>
+        </nav>
+        <LocaleSwitcher />
+      </div>
     </footer>
   );
 }
 
 export function CtaBand({ centered = false }: { centered?: boolean }) {
+  const t = useTranslations("cta");
   return (
     <section
       className={`flex grow gap-10 bg-brand band py-20 text-cream lg:py-28 ${
@@ -84,15 +111,15 @@ export function CtaBand({ centered = false }: { centered?: boolean }) {
           centered ? "text-6xl sm:text-8xl lg:text-[128px] lg:leading-[0.88]" : "text-6xl sm:text-7xl lg:text-[96px]"
         }`}
       >
-        Todo tu dinero.
+        {t("line1")}
         <br />
-        Un solo sitio.
+        {t("line2")}
       </h2>
       <Link
-        href="/registro"
+        href="/register"
         className="btn inline-flex h-[60px] shrink-0 items-center self-start bg-cream px-8 text-[17px] font-semibold text-brand hover:no-underline lg:self-auto"
       >
-        Crear cuenta gratis
+        {t("button")}
       </Link>
     </section>
   );

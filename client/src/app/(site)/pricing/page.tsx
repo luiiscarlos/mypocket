@@ -41,7 +41,7 @@ function Check({ light = false }: { light?: boolean }) {
 export default function PricingPage() {
   return (
     <SitePage>
-      <GreenHero current="precios" className="pb-16 lg:pb-20">
+      <GreenHero current="pricing" className="pb-16 lg:pb-20">
         <div className="grid grid-cols-1 items-end gap-8 pt-16 lg:grid-cols-12 lg:gap-x-6 lg:pt-20">
           <div className="flex flex-col gap-7 lg:col-span-8">
             <div className={eyebrow}>PRECIOS</div>
@@ -73,7 +73,7 @@ export default function PricingPage() {
                   0 €<span className="text-sm tracking-normal text-ink-muted"> /mes</span>
                 </div>
                 <div className="text-[15px] text-ink-muted">Para empezar a ordenar tu dinero.</div>
-                <Link href="/registro" className="btn flex h-[52px] items-center justify-center border border-ink text-[15px] font-semibold hover:no-underline">
+                <Link href="/register" className="btn flex h-[52px] items-center justify-center border border-ink text-[15px] font-semibold hover:no-underline">
                   Empezar gratis
                 </Link>
               </div>
@@ -86,7 +86,7 @@ export default function PricingPage() {
                   {PRO_PRICE} €<span className="text-sm tracking-normal text-mist"> /mes</span>
                 </div>
                 <div className="text-[15px] text-mist">Todas tus cuentas, en un solo número.</div>
-                <Link href="/registro" className="btn flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline">
+                <Link href="/register" className="btn flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline">
                   Probar Pro
                 </Link>
               </div>
@@ -130,7 +130,7 @@ export default function PricingPage() {
             </div>
           ))}
         </div>
-        <Link href="/preguntas-frecuentes" className="inline-flex items-center gap-2.5 self-start border-b-2 border-ink pb-1 text-[17px] font-semibold hover:no-underline">
+        <Link href="/faq" className="inline-flex items-center gap-2.5 self-start border-b-2 border-ink pb-1 text-[17px] font-semibold hover:no-underline">
           Ver todas las preguntas frecuentes
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6" />

@@ -56,7 +56,7 @@ export function ContactForm() {
         <input id="privacy" type="checkbox" name="privacy" required className="size-5 shrink-0 accent-brand" />
         <label htmlFor="privacy">
           He leído la{" "}
-          <Link href="/privacidad" className="text-ink underline">política de privacidad</Link>
+          <Link href="/privacy" className="text-ink underline">política de privacidad</Link>
         </label>
       </div>
       <button

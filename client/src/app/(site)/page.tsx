@@ -64,10 +64,10 @@ export default function LandingPage() {
               Conecta tus bancos, añade tu efectivo y mira cuánto tienes de verdad. Un balance total, sin perder de vista de dónde viene cada euro.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-1">
-              <Link href="/registro" className="btn inline-flex h-14 items-center gap-2.5 bg-cream px-7 text-base font-semibold text-brand hover:no-underline">
+              <Link href="/register" className="btn inline-flex h-14 items-center gap-2.5 bg-cream px-7 text-base font-semibold text-brand hover:no-underline">
                 Crear cuenta {arrow}
               </Link>
-              <Link href="#balance" className="btn inline-flex h-14 items-center border border-cream/50 px-7 text-base font-medium hover:no-underline">
+              <Link href="#how-it-works" className="btn inline-flex h-14 items-center border border-cream/50 px-7 text-base font-medium hover:no-underline">
                 Ver cómo funciona
               </Link>
             </div>
@@ -102,7 +102,7 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-            <Link href="/registro" className="btn flex h-12 items-center justify-center gap-2 border border-dashed border-dash text-sm font-medium text-ink-muted hover:no-underline">
+            <Link href="/register" className="btn flex h-12 items-center justify-center gap-2 border border-dashed border-dash text-sm font-medium text-ink-muted hover:no-underline">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                 <path d="M12 5v14M5 12h14" />
               </svg>
@@ -112,7 +112,7 @@ export default function LandingPage() {
         </div>
       </GreenHero>
 
-      <section id="balance" className="flex scroll-mt-4 flex-col gap-16 band py-20 lg:py-28">
+      <section id="how-it-works" className="flex scroll-mt-4 flex-col gap-16 band py-20 lg:py-28">
         <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
           <h2 className={`${h2} lg:col-span-7`}>Juntas, pero no revueltas.</h2>
           <p className="m-0 text-[17px] leading-[1.55] text-ink-muted lg:col-span-5 lg:col-start-8">
@@ -130,7 +130,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="funciones" className="flex scroll-mt-4 flex-col gap-12 band pb-20 lg:pb-28">
+      <section id="features" className="flex scroll-mt-4 flex-col gap-12 band pb-20 lg:pb-28">
         <div className="flex flex-col justify-between gap-6 border-b-[3px] border-ink pb-6 lg:flex-row lg:items-end lg:gap-20">
           <h2 className={`${h2} max-w-[760px]`}>Entiende tu dinero. Adelántate a él.</h2>
           <div className="font-mono text-[13px] text-ink-muted">04 HERRAMIENTAS</div>
@@ -202,7 +202,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="precios" className="flex flex-col gap-12 band py-20 lg:py-28">
+      <section id="pricing" className="flex flex-col gap-12 band py-20 lg:py-28">
         <div className="flex flex-col justify-between gap-4 border-b-[3px] border-ink pb-6 lg:flex-row lg:items-end">
           <h2 className={h2}>Precios claros</h2>
           <div className="font-mono text-[13px] text-ink-muted">EMPIEZA GRATIS · CAMBIA CUANDO QUIERAS</div>

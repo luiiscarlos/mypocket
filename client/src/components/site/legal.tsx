@@ -56,8 +56,8 @@ export function LegalDocument({ doc }: { doc: keyof typeof DOCS }) {
             </a>
           ))}
           <div className="flex gap-4 pt-6 text-sm font-semibold">
-            <Link href="/privacidad" className="underline">Privacidad</Link>
-            <Link href="/terminos" className="underline">Términos</Link>
+            <Link href="/privacy" className="underline">Privacidad</Link>
+            <Link href="/terms" className="underline">Términos</Link>
           </div>
         </nav>
         <article className="flex flex-col gap-14 lg:col-span-7 lg:col-start-5">

@@ -1,30 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { AuthShell, Notice, inputClass, labelClass, primaryButton } from "@/components/site/auth";
-import { requestPasswordReset } from "../login/actions";
+import { requestPasswordReset } from "@/lib/auth-actions";
+import { authNotice } from "@/lib/auth-codes";
 
-export const metadata: Metadata = { title: "Recuperar contraseña" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("auth.forgot");
+  return { title: t("meta") };
+}
 
 export default async function ForgotPasswordPage({ searchParams }: { searchParams: Promise<{ message?: string }> }) {
-  const { message } = await searchParams;
+  const { message } = await authNotice(await searchParams);
+  const t = await getTranslations("auth");
 
   return (
-    <AuthShell
-      kicker="TU CUENTA"
-      title="Recuperar contraseña"
-      intro="Te enviaremos un enlace para crear una nueva."
-      tagline="Tu dinero sigue donde lo dejaste."
-    >
+    <AuthShell kicker={t("forgot.kicker")} title={t("forgot.title")} intro={t("forgot.intro")} tagline={t("forgot.tagline")}>
       {message && <Notice kind="status">{message}</Notice>}
       <form action={requestPasswordReset} className="flex flex-col gap-5">
         <label className={labelClass}>
-          Email
+          {t("fields.email")}
           <input name="email" type="email" autoComplete="email" required className={inputClass} />
         </label>
-        <button className={primaryButton}>Enviar enlace</button>
+        <button className={primaryButton}>{t("forgot.submit")}</button>
       </form>
       <Link href="/login" className="text-[15px] font-semibold underline">
-        ← Volver a iniciar sesión
+        {t("forgot.back")}
       </Link>
     </AuthShell>
   );
