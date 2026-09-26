@@ -46,16 +46,23 @@ export async function signup(formData: FormData) {
   const email = field(formData, "email");
   const password = formData.get("password");
   if (!email || typeof password !== "string" || password.length < MIN_PASSWORD) {
-    back("/login", { error: `Email obligatorio y contraseña de al menos ${MIN_PASSWORD} caracteres` });
+    back("/registro", { error: `Email obligatorio y contraseña de al menos ${MIN_PASSWORD} caracteres` });
+  }
+  if (formData.get("terms") !== "on") {
+    back("/registro", { error: "Debes aceptar los términos de uso y la política de privacidad" });
   }
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password: password as string,
-    options: { emailRedirectTo: `${await origin()}/auth/confirm?next=/dashboard` },
+    options: {
+      emailRedirectTo: `${await origin()}/auth/confirm?next=/dashboard`,
+      // GDPR proof of consent (informational only, never used for authorization).
+      data: { terms_accepted_at: new Date().toISOString() },
+    },
   });
-  if (error) back("/login", { error: "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo" });
+  if (error) back("/registro", { error: "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo" });
 
   // With email confirmation on there is no session until the link is clicked; never let an unverified session through.
   if (data.session) await supabase.auth.signOut();

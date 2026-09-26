@@ -1,6 +1,9 @@
-// Functional skeleton: the visual design comes from Claude Design. Keep the form field names and actions.
+import type { Metadata } from "next";
 import Link from "next/link";
-import { login, signup } from "./actions";
+import { AuthShell, Notice, TextLink, inputClass, labelClass, primaryButton } from "@/components/site/auth";
+import { login } from "./actions";
+
+export const metadata: Metadata = { title: "Iniciar sesión" };
 
 export default async function LoginPage({
   searchParams,
@@ -10,24 +13,30 @@ export default async function LoginPage({
   const { error, message, next } = await searchParams;
 
   return (
-    <main>
-      <h1>MyPocket</h1>
-      {error && <p role="alert">{error}</p>}
-      {message && <p role="status">{message}</p>}
-      <form>
+    <AuthShell
+      kicker="TU CUENTA"
+      title="Iniciar sesión"
+      intro={<>¿No tienes cuenta? <TextLink href="/registro">Crear cuenta</TextLink></>}
+    >
+      {error && <Notice kind="error">{error}</Notice>}
+      {message && <Notice kind="status">{message}</Notice>}
+      <form action={login} className="flex flex-col gap-5">
         <input type="hidden" name="next" value={next ?? ""} />
-        <label>
+        <label className={labelClass}>
           Email
-          <input name="email" type="email" autoComplete="email" required />
+          <input name="email" type="email" autoComplete="email" required className={inputClass} />
         </label>
-        <label>
-          Contraseña
-          <input name="password" type="password" autoComplete="current-password" minLength={8} required />
-        </label>
-        <button formAction={login}>Entrar</button>
-        <button formAction={signup}>Crear cuenta</button>
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between text-sm font-semibold">
+            <label htmlFor="password">Contraseña</label>
+            <Link href="/forgot-password" className="font-medium text-ink-muted underline">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
+          <input id="password" name="password" type="password" autoComplete="current-password" required className={inputClass} />
+        </div>
+        <button className={primaryButton}>Entrar</button>
       </form>
-      <Link href="/forgot-password">¿Has olvidado la contraseña?</Link>
-    </main>
+    </AuthShell>
   );
 }
