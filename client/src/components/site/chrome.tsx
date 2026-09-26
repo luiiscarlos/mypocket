@@ -1,12 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type Page = "precios" | undefined;
+type Page = "precios" | "preguntas" | undefined;
 
-const NAV = [
-  { href: "/#balance", label: "Cómo funciona" },
-  { href: "/#funciones", label: "Funciones" },
-  { href: "/#tickets", label: "Tickets" },
+const NAV: { href: string; label: string; page?: Page; wide?: boolean }[] = [
+  { href: "/#balance", label: "Cómo funciona", wide: true },
+  { href: "/#tickets", label: "Tickets", wide: true },
+  { href: "/precios", label: "Precios", page: "precios" },
+  { href: "/preguntas-frecuentes", label: "Preguntas", page: "preguntas", wide: true },
 ];
 
 export const eyebrow = "font-mono text-[13px] tracking-[0.06em]";
@@ -25,17 +26,15 @@ function SiteHeader({ current }: { current: Page }) {
       <Logo />
       <nav aria-label="Principal" className="flex items-center gap-5 text-[15px] lg:gap-9">
         {NAV.map((item) => (
-          <Link key={item.href} href={item.href} className="hidden hover:underline lg:inline">
+          <Link
+            key={item.href}
+            href={item.href}
+            aria-current={item.page && item.page === current ? "page" : undefined}
+            className={`${item.wide ? "hidden lg:inline" : "hidden sm:inline"} hover:underline aria-[current=page]:underline aria-[current=page]:underline-offset-[6px]`}
+          >
             {item.label}
           </Link>
         ))}
-        <Link
-          href="/precios"
-          aria-current={current === "precios" ? "page" : undefined}
-          className="hidden hover:underline aria-[current=page]:underline aria-[current=page]:underline-offset-[6px] sm:inline"
-        >
-          Precios
-        </Link>
         <Link href="/login" className="hover:underline">
           Iniciar sesión
         </Link>

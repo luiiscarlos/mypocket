@@ -1,43 +1,54 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CtaBand, GreenHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
-import { PlanCards } from "@/components/site/plans";
+import { PRO_PRICE } from "@/components/site/plans";
 
 export const metadata: Metadata = { title: "Precios" };
 
-const ROWS = [
-  ["Bancos conectados", "1", "Ilimitados"],
-  ["Balance conjunto e individual", "Sí", "Sí"],
-  ["Balance de efectivo y movimientos manuales", "Sí", "Sí"],
-  ["Resumen del mes", "Sí", "Sí"],
-  ["Analíticas y predicciones", "—", "Sí"],
-  ["Gestión de suscripciones", "—", "Sí"],
-  ["Lector de tickets con OCR", "—", "Sí"],
+type Cell = true | string;
+type Row = { group: string } | { label: string; free: Cell; pro: Cell };
+
+const ROWS: Row[] = [
+  { group: "CUENTAS Y BALANCE" },
+  { label: "Bancos conectados", free: "1", pro: "Ilimitados" },
+  { label: "Balance conjunto e individual", free: true, pro: true },
+  { label: "Balance de efectivo y movimientos manuales", free: true, pro: true },
+  { group: "ANÁLISIS" },
+  { label: "Resumen del mes", free: true, pro: true },
+  { label: "Analíticas", free: "—", pro: true },
+  { label: "Predicciones", free: "—", pro: true },
+  { group: "AUTOMATIZACIÓN" },
+  { label: "Gestión de suscripciones", free: "—", pro: true },
+  { label: "Lector de tickets con OCR", free: "—", pro: true },
 ];
 
-const FAQS = [
-  {
-    q: "¿Es seguro conectar mi banco?",
-    a: "La conexión se hace vía PSD2 con acceso de solo lectura: mypocket puede ver tus saldos y movimientos, pero nunca mover tu dinero.",
-  },
-  { q: "¿Qué bancos puedo conectar?", a: "[LISTA DE BANCOS COMPATIBLES]" },
-  {
-    q: "¿Puedo usar mypocket sin conectar ningún banco?",
-    a: "Sí. Puedes llevar tu balance de efectivo y registrar ingresos y salidas manuales.",
-  },
-  { q: "¿Puedo cancelar Pro cuando quiera?", a: "[POLÍTICA DE CANCELACIÓN]" },
+const TRUST = [
+  ["Solo lectura", "Conectamos tus bancos vía PSD2. Podemos leer saldos y movimientos, nunca mover tu dinero."],
+  ["Sin banco, también", "Puedes empezar solo con tu efectivo y movimientos manuales, y conectar un banco después."],
+  ["Cambia de plan", "Pasa de Gratis a Pro, o al revés, cuando quieras. [CONDICIONES DE CAMBIO]"],
 ];
 
-const h2 = "m-0 text-5xl font-extrabold leading-[0.95] tracking-[-0.045em] lg:text-[56px]";
+const grid = "grid grid-cols-[6fr_3fr_3fr]";
+
+function Check({ light = false }: { light?: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={light ? "#F3EFE4" : "#10140F"} strokeWidth="2.4" strokeLinecap="square" role="img" aria-label="Incluido">
+      <path d="M5 12l5 5 9-10" />
+    </svg>
+  );
+}
 
 export default function PricingPage() {
   return (
     <SitePage>
-      <GreenHero current="precios" className="pb-20 lg:pb-24">
-        <div className="grid grid-cols-1 items-end gap-8 pt-16 lg:grid-cols-12 lg:gap-x-6 lg:pt-24">
-          <div className="flex flex-col gap-7 lg:col-span-7">
+      <GreenHero current="precios" className="pb-16 lg:pb-20">
+        <div className="grid grid-cols-1 items-end gap-8 pt-16 lg:grid-cols-12 lg:gap-x-6 lg:pt-20">
+          <div className="flex flex-col gap-7 lg:col-span-8">
             <div className={eyebrow}>PRECIOS</div>
             <h1 className="m-0 text-6xl font-extrabold leading-[0.9] tracking-[-0.055em] sm:text-8xl lg:text-[112px]">
-              Empieza gratis. Crece cuando quieras.
+              Dos planes.
+              <br />
+              Sin letra pequeña.
             </h1>
           </div>
           <p className="m-0 text-[19px] leading-normal text-mist lg:col-span-4 lg:col-start-9">
@@ -47,47 +58,84 @@ export default function PricingPage() {
       </GreenHero>
 
       <section className="px-5 py-20 lg:px-20 lg:py-28">
-        <PlanCards />
-      </section>
-
-      <section className="flex flex-col gap-10 px-5 pb-20 lg:px-20 lg:pb-28">
-        <div className="flex items-end justify-between border-b-[3px] border-ink pb-6">
-          <h2 className={h2}>Comparativa</h2>
-          <div className="font-mono text-[13px] text-ink-muted">GRATIS · PRO</div>
-        </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[520px] border-collapse text-[17px]">
-            <thead>
-              <tr>
-                <th scope="col" className="w-1/2 pb-4 text-left font-mono text-xs font-medium tracking-[0.06em] text-ink-muted">FUNCIÓN</th>
-                <th scope="col" className="w-1/4 pb-4 text-left text-xl font-semibold">Gratis</th>
-                <th scope="col" className="w-1/4 pb-4 text-left text-xl font-semibold text-brand">Pro</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ROWS.map(([label, free, pro]) => (
-                <tr key={label}>
-                  <th scope="row" className="border-t border-rule py-[18px] text-left font-normal">{label}</th>
-                  <td className="border-t border-rule py-[18px] font-mono text-[15px]">{free}</td>
-                  <td className="border-t border-rule py-[18px] font-mono text-[15px]">{pro}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="min-w-[720px]" role="table" aria-label="Comparativa de planes">
+            <div className={grid} role="row">
+              <div role="columnheader" className="flex flex-col justify-end gap-3 border-b-[3px] border-ink pb-10 pr-8">
+                <div className={`${eyebrow} text-ink-muted`}>COMPARA LOS PLANES</div>
+                <div className="max-w-[420px] text-[17px] leading-normal text-ink-muted">
+                  Los dos incluyen el balance conjunto y tu efectivo. Pro desbloquea todas las cuentas y el análisis.
+                </div>
+              </div>
+              <div role="columnheader" className="flex flex-col gap-5 border-b-[3px] border-ink p-8 lg:py-10">
+                <div className="text-[30px] font-extrabold tracking-[-0.03em]">Gratis</div>
+                <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em]">
+                  0 €<span className="text-sm tracking-normal text-ink-muted"> /mes</span>
+                </div>
+                <div className="text-[15px] text-ink-muted">Para empezar a ordenar tu dinero.</div>
+                <Link href="/registro" className="flex h-[52px] items-center justify-center border border-ink text-[15px] font-semibold hover:no-underline">
+                  Empezar gratis
+                </Link>
+              </div>
+              <div role="columnheader" className="flex flex-col gap-5 border-b-[3px] border-ink bg-brand p-8 text-cream lg:py-10">
+                <div className="flex items-center justify-between">
+                  <div className="text-[30px] font-extrabold tracking-[-0.03em]">Pro</div>
+                  <div className="border border-cream/60 px-2 py-[5px] font-mono text-[11px] tracking-[0.06em]">RECOMENDADO</div>
+                </div>
+                <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em]">
+                  {PRO_PRICE} €<span className="text-sm tracking-normal text-mist"> /mes</span>
+                </div>
+                <div className="text-[15px] text-mist">Todas tus cuentas, en un solo número.</div>
+                <Link href="/registro" className="flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline">
+                  Probar Pro
+                </Link>
+              </div>
+            </div>
+
+            {ROWS.map((row) =>
+              "group" in row ? (
+                <div key={row.group} className={grid} role="row">
+                  <div role="rowheader" className="pb-3.5 pt-9 font-mono text-xs tracking-[0.06em] text-brand">{row.group}</div>
+                  <div role="cell" />
+                  <div role="cell" className="bg-brand" />
+                </div>
+              ) : (
+                <div key={row.label} className={`${grid} text-[17px]`} role="row">
+                  <div role="rowheader" className="border-t border-rule py-[18px] pr-8">{row.label}</div>
+                  <div role="cell" className="flex items-center border-t border-rule px-8 py-[18px] font-mono text-[15px]">
+                    {row.free === true ? <Check /> : <span className={row.free === "—" ? "text-dash" : ""}>{row.free}</span>}
+                  </div>
+                  <div role="cell" className="flex items-center border-t border-cream/25 bg-brand px-8 py-[18px] font-mono text-[15px] text-cream">
+                    {row.pro === true ? <Check light /> : <span>{row.pro}</span>}
+                  </div>
+                </div>
+              ),
+            )}
+
+            <div className={grid} aria-hidden="true">
+              <div className="border-t-[3px] border-ink" />
+              <div className="border-t-[3px] border-ink" />
+              <div className="h-8 border-t-[3px] border-ink bg-brand" />
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-10 bg-band px-5 py-20 lg:grid-cols-12 lg:gap-x-6 lg:px-20 lg:py-28">
-        <h2 className={`${h2} lg:col-span-4`}>Preguntas frecuentes</h2>
-        <div className="flex flex-col lg:col-span-7 lg:col-start-6">
-          {FAQS.map((f, i) => (
-            <details key={f.q} open={i === 0} className="border-t border-ink py-6">
-              <summary className="cursor-pointer text-[21px] font-semibold tracking-[-0.01em]">{f.q}</summary>
-              <p className="mb-0 mt-3.5 text-base leading-relaxed text-ink-muted">{f.a}</p>
-            </details>
+      <section className="flex flex-col gap-12 bg-band px-5 py-20 lg:px-20 lg:py-24">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {TRUST.map(([title, text]) => (
+            <div key={title} className="flex flex-col gap-3.5 border-t-[3px] border-ink pt-6">
+              <h3 className="m-0 text-2xl font-extrabold tracking-[-0.03em]">{title}</h3>
+              <p className="m-0 text-base leading-[1.55] text-ink-muted">{text}</p>
+            </div>
           ))}
-          <div className="border-t border-ink" />
         </div>
+        <Link href="/preguntas-frecuentes" className="inline-flex items-center gap-2.5 self-start border-b-2 border-ink pb-1 text-[17px] font-semibold hover:no-underline">
+          Ver todas las preguntas frecuentes
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </Link>
       </section>
 
       <CtaBand />
