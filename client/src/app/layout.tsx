@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Schibsted_Grotesk } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
+import { getTheme } from "@/lib/preferences";
 import "./globals.css";
 
 // Self-hosted by next/font at build time, so CSP can stay font-src 'self'.
@@ -24,9 +25,10 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const locale = await getLocale();
+  const [locale, theme] = await Promise.all([getLocale(), getTheme()]);
   return (
-    <html lang={locale} className={`${schibsted.variable} ${plexMono.variable} h-full antialiased`}>
+    // Set on the server so there is no flash; "system" leaves it out and CSS follows prefers-color-scheme.
+    <html lang={locale} data-theme={theme === "system" ? undefined : theme} className={`${schibsted.variable} ${plexMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         {/* Makes locale and messages available to client components (useTranslations). */}
         <NextIntlClientProvider>{children}</NextIntlClientProvider>

@@ -32,7 +32,7 @@ const grid = "grid grid-cols-[6fr_3fr_3fr]";
 
 function Check({ light = false }: { light?: boolean }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={light ? "#F3EFE4" : "#10140F"} strokeWidth="2.4" strokeLinecap="square" role="img" aria-label="Incluido">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" className={light ? "text-cream" : "text-ink"} strokeWidth="2.4" strokeLinecap="square" role="img" aria-label="Incluido">
       <path d="M5 12l5 5 9-10" />
     </svg>
   );
@@ -95,7 +95,7 @@ export default function PricingPage() {
             {ROWS.map((row) =>
               "group" in row ? (
                 <div key={row.group} className={grid} role="row">
-                  <div role="rowheader" className="pb-3.5 pt-9 font-mono text-xs tracking-[0.06em] text-brand">{row.group}</div>
+                  <div role="rowheader" className="pb-3.5 pt-9 font-mono text-xs tracking-[0.06em] text-leaf">{row.group}</div>
                   <div role="cell" />
                   <div role="cell" className="bg-brand" />
                 </div>

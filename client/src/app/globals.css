@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* Horizontal padding for full-width bands after the hero: content max 1120px (160px margins at 1440). */
 @utility band {
@@ -12,24 +12,90 @@
   }
 }
 
-/* mypocket brand (design: Claude Design artifact EdCx4zKL6SVzMiKUK9Kmrq) */
+/* mypocket brand (design: Claude Design artifact EdCx4zKL6SVzMiKUK9Kmrq).
+   Constant colors: green bands and cream buttons look the same in both themes.
+   Themed colors: defined as --mp-* below and switched by [data-theme] / prefers-color-scheme. */
 @theme {
   --color-brand: #1B4D3A;
   --color-cream: #F3EFE4;
-  --color-paper: #FBFAF6;
-  --color-ink: #10140F;
-  --color-ink-muted: #4B5249;
-  --color-ink-legal: #33382F;
-  --color-rule: #CFCCC1;
-  --color-band: #EFEDE5;
   --color-mist: #D6DDD0;
   --color-sage: #7FA08D;
   --color-sage-light: #C9D5CC;
-  --color-dash: #8E948A;
-  --color-danger: #A3321F;
-  --color-danger-bg: #FBEDEA;
-  --color-danger-ink: #7A2414;
-  --color-ok-bg: #E8EFEA;
+  /* Text on cream surfaces (always dark). */
+  --color-night: #10140F;
+  --color-night-muted: #4B5249;
+}
+
+@theme inline {
+  --color-paper: var(--mp-paper);
+  --color-ink: var(--mp-ink);
+  --color-ink-muted: var(--mp-ink-muted);
+  --color-ink-legal: var(--mp-ink-legal);
+  --color-rule: var(--mp-rule);
+  --color-band: var(--mp-band);
+  --color-dash: var(--mp-dash);
+  /* Green used as text/lines on the page background. */
+  --color-leaf: var(--mp-leaf);
+  --color-field: var(--mp-field);
+  --color-danger: var(--mp-danger);
+  --color-danger-bg: var(--mp-danger-bg);
+  --color-danger-ink: var(--mp-danger-ink);
+  --color-ok-bg: var(--mp-ok-bg);
+}
+
+:root {
+  color-scheme: light;
+  --mp-paper: #FBFAF6;
+  --mp-ink: #10140F;
+  --mp-ink-muted: #4B5249;
+  --mp-ink-legal: #33382F;
+  --mp-rule: #CFCCC1;
+  --mp-band: #EFEDE5;
+  --mp-dash: #8E948A;
+  --mp-leaf: #1B4D3A;
+  --mp-field: #FFFFFF;
+  --mp-danger: #A3321F;
+  --mp-danger-bg: #FBEDEA;
+  --mp-danger-ink: #7A2414;
+  --mp-ok-bg: #E8EFEA;
+}
+
+/* Dark palette: explicit choice ... */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --mp-paper: #10140F;
+  --mp-ink: #EEEAE0;
+  --mp-ink-muted: #A7B0A4;
+  --mp-ink-legal: #D2D8CD;
+  --mp-rule: #2F362D;
+  --mp-band: #181D17;
+  --mp-dash: #6E756B;
+  --mp-leaf: #86C9A3;
+  --mp-field: #171C16;
+  --mp-danger: #E0694F;
+  --mp-danger-bg: #2A1410;
+  --mp-danger-ink: #F4BDB1;
+  --mp-ok-bg: #16261D;
+}
+
+/* ... or "system" (no data-theme) with a dark OS setting. Keep in sync with the block above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --mp-paper: #10140F;
+    --mp-ink: #EEEAE0;
+    --mp-ink-muted: #A7B0A4;
+    --mp-ink-legal: #D2D8CD;
+    --mp-rule: #2F362D;
+    --mp-band: #181D17;
+    --mp-dash: #6E756B;
+    --mp-leaf: #86C9A3;
+    --mp-field: #171C16;
+    --mp-danger: #E0694F;
+    --mp-danger-bg: #2A1410;
+    --mp-danger-ink: #F4BDB1;
+    --mp-ok-bg: #16261D;
+  }
 }
 
 @theme inline {
@@ -77,8 +143,8 @@
 }
 
 :root {
-  --background: #FBFAF6;
-  --foreground: #10140F;
+  --background: var(--mp-paper);
+  --foreground: var(--mp-ink);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);

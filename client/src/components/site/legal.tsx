@@ -51,7 +51,7 @@ export function LegalDocument({ doc }: { doc: keyof typeof DOCS }) {
         <nav aria-label="Índice" className="flex flex-col border-t-[3px] border-ink lg:sticky lg:top-6 lg:col-span-3">
           {items.map((s) => (
             <a key={s.id} href={`#${s.id}`} className="flex gap-3.5 border-b border-rule py-3.5 text-[15px] hover:underline">
-              <span className="pt-0.5 font-mono text-xs text-brand">{s.n}</span>
+              <span className="pt-0.5 font-mono text-xs text-leaf">{s.n}</span>
               {s.title}
             </a>
           ))}
@@ -64,7 +64,7 @@ export function LegalDocument({ doc }: { doc: keyof typeof DOCS }) {
           {items.map((s) => (
             <section key={s.id} id={s.id} className="flex scroll-mt-6 flex-col gap-4">
               <h2 className="m-0 flex items-baseline gap-5 text-[30px] font-extrabold tracking-[-0.03em]">
-                <span className="font-mono text-sm font-medium text-brand">{s.n}</span>
+                <span className="font-mono text-sm font-medium text-leaf">{s.n}</span>
                 {s.title}
               </h2>
               <p className="m-0 text-[17px] leading-[1.7] text-ink-legal">[TEXTO LEGAL]</p>

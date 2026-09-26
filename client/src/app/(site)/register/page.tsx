@@ -41,7 +41,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
           <span id="pw-hint" className="text-[13px] font-normal text-ink-muted">{t("fields.passwordHint")}</span>
         </label>
         <div className="flex items-start gap-3 text-sm leading-normal text-ink-muted">
-          <input id="terms" type="checkbox" name="terms" required className="size-5 shrink-0 accent-brand" />
+          <input id="terms" type="checkbox" name="terms" required className="size-5 shrink-0 accent-leaf" />
           <label htmlFor="terms">
             {t.rich("register.terms", {
               terms: (chunks) => <Link href="/terms" className="text-ink underline">{chunks}</Link>,

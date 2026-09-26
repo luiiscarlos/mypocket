@@ -12,7 +12,7 @@ const STACK = [
 const SAMPLE_TOTAL = 24318.42;
 
 export const inputClass =
-  "h-[52px] w-full border border-ink bg-white px-4 font-sans text-base text-ink outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2";
+  "h-[52px] w-full border border-ink bg-field px-4 font-sans text-base text-ink outline-none focus-visible:ring-2 focus-visible:ring-leaf focus-visible:ring-offset-2";
 export const labelClass = "flex flex-col gap-2 text-sm font-semibold";
 export const primaryButton =
   "h-14 w-full cursor-pointer border-0 bg-brand px-8 font-sans text-base font-semibold text-cream hover:bg-brand/90";
@@ -55,9 +55,9 @@ export function AuthShell({
                 <span className="font-mono">{eur(a.amount)}</span>
               </div>
             ))}
-            <div className="flex w-full flex-col gap-5 bg-cream p-8 text-ink">
+            <div className="flex w-full flex-col gap-5 bg-cream p-8 text-night">
               <div className="flex items-baseline justify-between">
-                <span className="font-mono text-xs tracking-[0.06em] text-ink-muted">{t("panel.total")}</span>
+                <span className="font-mono text-xs tracking-[0.06em] text-night-muted">{t("panel.total")}</span>
                 <span className="font-mono text-[13px] text-brand">{t("panel.thisMonth")}</span>
               </div>
               <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em] xl:text-[56px]">{eur(SAMPLE_TOTAL)}</div>
@@ -112,7 +112,7 @@ export function Notice({ kind, children }: { kind: "error" | "status"; children:
       {children}
     </div>
   ) : (
-    <div role="status" className="border border-brand bg-ok-bg px-4 py-3.5 text-[15px] text-ink">
+    <div role="status" className="border border-leaf bg-ok-bg px-4 py-3.5 text-[15px] text-ink">
       {children}
     </div>
   );

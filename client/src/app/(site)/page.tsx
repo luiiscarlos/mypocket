@@ -4,7 +4,7 @@ import { PlanCards } from "@/components/site/plans";
 
 // Sample figures from the design, not real data.
 const ACCOUNTS = [
-  { color: "bg-brand", name: "Trade Republic", meta: "Cuenta e inversión", amount: "15.072,18 €", share: "62 %" },
+  { color: "bg-leaf", name: "Trade Republic", meta: "Cuenta e inversión", amount: "15.072,18 €", share: "62 %" },
   { color: "bg-sage", name: "BBVA", meta: "Cuenta corriente", amount: "8.566,24 €", share: "35 %" },
   { color: "bg-sage-light", name: "Efectivo", meta: "Manual", amount: "680,00 €", share: "3 %" },
 ];
@@ -78,12 +78,12 @@ export default function LandingPage() {
               <div className="flex flex-col gap-2">
                 <div className="font-mono text-xs tracking-[0.06em] text-ink-muted">BALANCE TOTAL</div>
                 <div className="font-mono text-4xl font-medium leading-none tracking-[-0.04em] sm:text-[44px]">24.318,42 €</div>
-                <div className="font-mono text-[13px] text-brand">+312,40 € este mes</div>
+                <div className="font-mono text-[13px] text-leaf">+312,40 € este mes</div>
               </div>
               <div className="border border-ink px-2.5 py-1.5 font-mono text-xs">3 CUENTAS</div>
             </div>
             <div className="flex h-3 gap-[3px]" aria-hidden="true">
-              <div className="grow-[62] bg-brand" />
+              <div className="grow-[62] bg-leaf" />
               <div className="grow-[35] bg-sage" />
               <div className="grow-[3] bg-sage-light" />
             </div>
@@ -122,7 +122,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {STEPS.map(([n, title, text]) => (
             <div key={n} className="flex flex-col gap-4 border-t-[3px] border-ink pt-6">
-              <div className="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-brand">{n}</div>
+              <div className="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-leaf">{n}</div>
               <h3 className="m-0 text-2xl font-semibold tracking-[-0.02em]">{title}</h3>
               <p className="m-0 text-base leading-[1.55] text-ink-muted">{text}</p>
             </div>
@@ -139,7 +139,7 @@ export default function LandingPage() {
           {FEATURES.map((f, i) => (
             <article
               key={f.title}
-              className={`flex flex-col gap-5 px-7 py-8 text-brand ${i < FEATURES.length - 1 ? "border-b border-ink lg:border-b-0 lg:border-r" : ""} ${i % 2 === 0 ? "sm:border-r" : ""}`}
+              className={`flex flex-col gap-5 px-7 py-8 text-leaf ${i < FEATURES.length - 1 ? "border-b border-ink lg:border-b-0 lg:border-r" : ""} ${i % 2 === 0 ? "sm:border-r" : ""}`}
             >
               {f.icon}
               <h3 className="m-0 text-[22px] font-semibold tracking-[-0.02em] text-ink">{f.title}</h3>
@@ -158,10 +158,10 @@ export default function LandingPage() {
           </p>
           <ul className="m-0 flex list-none flex-col p-0 text-base">
             <li className="flex items-center gap-3.5 border-t border-ink py-3.5">
-              <span className="font-mono text-xs text-brand">A.</span>Si la encuentra, lo vincula a esa transacción
+              <span className="font-mono text-xs text-leaf">A.</span>Si la encuentra, lo vincula a esa transacción
             </li>
             <li className="flex items-center gap-3.5 border-y border-ink py-3.5">
-              <span className="font-mono text-xs text-brand">B.</span>Si pagaste en efectivo, crea la salida de cash por ti
+              <span className="font-mono text-xs text-leaf">B.</span>Si pagaste en efectivo, crea la salida de cash por ti
             </li>
           </ul>
         </div>

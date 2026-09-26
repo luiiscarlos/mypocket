@@ -1,8 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { locales } from "@/i18n/config";
-import { setLocale } from "@/i18n/actions";
+import { setLocale, setTheme } from "@/i18n/actions";
+import { getTheme } from "@/lib/preferences";
+import { themes } from "@/lib/theme";
 
 type Page = "pricing" | "faq" | undefined;
 
@@ -81,8 +84,28 @@ function LocaleSwitcher() {
   );
 }
 
-export function SiteFooter() {
-  const t = useTranslations("footer");
+/** Light / dark / system. The active one comes from the server so it can be marked without client JS. */
+export function ThemeSwitcher({ current, className = "" }: { current: string; className?: string }) {
+  const t = useTranslations("theme");
+  return (
+    <form action={setTheme} aria-label={t("label")} className={`flex gap-3 font-mono text-xs ${className}`}>
+      {themes.map((theme) => (
+        <button
+          key={theme}
+          name="theme"
+          value={theme}
+          aria-pressed={theme === current}
+          className="cursor-pointer border-0 bg-transparent p-0 uppercase text-inherit opacity-70 hover:underline aria-pressed:underline aria-pressed:opacity-100"
+        >
+          {t(theme)}
+        </button>
+      ))}
+    </form>
+  );
+}
+
+export async function SiteFooter() {
+  const [t, theme] = await Promise.all([getTranslations("footer"), getTheme()]);
   return (
     <footer className="flex min-h-24 shrink-0 flex-col justify-center gap-3 border-t border-cream/20 bg-brand band py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
       <div>{t("copyright", { year: new Date().getFullYear() })}</div>
@@ -92,6 +115,7 @@ export function SiteFooter() {
           <Link href="/terms" className="hover:underline">{t("terms")}</Link>
           <Link href="/contact" className="hover:underline">{t("contact")}</Link>
         </nav>
+        <ThemeSwitcher current={theme} />
         <LocaleSwitcher />
       </div>
     </footer>

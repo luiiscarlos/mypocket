@@ -99,5 +99,11 @@
       "reset_link_sent": "Si el email existe, recibirás un enlace para cambiar la contraseña",
       "password_updated": "Contraseña actualizada"
     }
+  },
+  "theme": {
+    "label": "Apariencia",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
   }
 }

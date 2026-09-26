@@ -53,7 +53,7 @@ export function ContactForm() {
       {/* Honeypot for bots: hidden from people and assistive tech. */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] size-px opacity-0" />
       <div className="flex items-center gap-3 text-[15px] text-ink-muted">
-        <input id="privacy" type="checkbox" name="privacy" required className="size-5 shrink-0 accent-brand" />
+        <input id="privacy" type="checkbox" name="privacy" required className="size-5 shrink-0 accent-leaf" />
         <label htmlFor="privacy">
           He leído la{" "}
           <Link href="/privacy" className="text-ink underline">política de privacidad</Link>

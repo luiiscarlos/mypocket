@@ -4,6 +4,7 @@ import type { AuthError } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { rememberPreferences } from "@/lib/preferences";
 import { createClient } from "@/lib/supabase/server";
 import { safeNext } from "@/lib/auth";
 import type { AuthErrorCode, AuthMessageCode } from "@/lib/auth-codes";
@@ -58,6 +59,10 @@ export async function login(formData: FormData) {
     await supabase.auth.signOut();
     back("/login", { error: "email_not_verified", next });
   }
+
+  // The profile's theme and language win over whatever this browser had (RLS: own row only).
+  const { data: prefs } = await supabase.from("profiles").select("theme, locale").eq("id", data.user!.id).single();
+  if (prefs) await rememberPreferences(prefs);
 
   revalidatePath("/", "layout");
   redirect(next);
