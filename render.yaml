@@ -5,11 +5,21 @@ services:
     plan: free
     buildCommand: npm install -g pnpm@12.5.1 && pnpm install --frozen-lockfile --filter api... && pnpm --filter api build
     startCommand: node api/dist/index.js
-    healthCheckPath: /graphql?query=%7Bhealth%7D
+    healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - key: NODE_ENV
+        value: production
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: INTERNAL_API_SECRET
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: OWNER_USER_ID
+        sync: false
+      - key: CORS_ORIGINS
         sync: false
