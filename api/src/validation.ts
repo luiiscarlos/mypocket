@@ -43,6 +43,13 @@ export const schemas = {
     })
     .partial()
     .refine(atLeastOneField, "no hay campos que actualizar"),
+  contactMessage: z.object({
+    name: z.string().trim().min(1).max(100),
+    email: z.email().max(254),
+    topic: z.enum(["support", "bank", "billing", "other"]),
+    message: z.string().trim().min(1).max(5000),
+    acceptPrivacy: z.literal(true, "debes aceptar la política de privacidad"),
+  }),
   updateProfile: z
     .object({ displayName: z.string().trim().min(1).max(50).nullable(), currency })
     .partial()

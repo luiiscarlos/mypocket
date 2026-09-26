@@ -72,7 +72,8 @@ const yoga = createYoga<{}, Context>({
     }
 
     // x-client-ip is trusted only because the request carried the BFF secret.
-    const key = user ? `user:${user.userId}` : `ip:${request.headers.get("x-client-ip") ?? "unknown"}`;
+    const clientIp = request.headers.get("x-client-ip") ?? "unknown";
+    const key = user ? `user:${user.userId}` : `ip:${clientIp}`;
     const retryAfter = rateLimit(key);
     if (retryAfter !== null) {
       throw httpError("Demasiadas peticiones, prueba en un momento", "RATE_LIMITED", 429, {
@@ -80,7 +81,7 @@ const yoga = createYoga<{}, Context>({
       });
     }
 
-    return { user, admin, ownerUserId };
+    return { user, admin, ownerUserId, clientIp };
   },
 });
 

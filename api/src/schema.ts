@@ -2,6 +2,7 @@ import { createSchema } from "graphql-yoga";
 import { GraphQLError } from "graphql";
 import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 import { parse, schemas } from "./validation.js";
+import { rateLimit } from "./rate-limit.js";
 
 type Profile = {
   id: string;
@@ -25,6 +26,8 @@ export type Context = {
   /** Secret-key client, only for account deletion. Null when SUPABASE_SECRET_KEY is not set. */
   admin: SupabaseClient | null;
   ownerUserId: string | null;
+  /** Client IP forwarded by the BFF (trusted only after the internal-secret check). */
+  clientIp: string;
 };
 
 const typeDefs = /* GraphQL */ `
@@ -37,6 +40,22 @@ const typeDefs = /* GraphQL */ `
     MANUAL
     OCR
     BANK
+  }
+
+  enum ContactTopic {
+    SUPPORT
+    BANK
+    BILLING
+    OTHER
+  }
+
+  input ContactMessageInput {
+    name: String!
+    email: String!
+    topic: ContactTopic!
+    message: String!
+    "Must be true: the sender accepted the privacy policy."
+    acceptPrivacy: Boolean!
   }
 
   enum AccountType {
@@ -175,6 +194,9 @@ const typeDefs = /* GraphQL */ `
     deleteCategory(id: ID!): ID!
 
     updateProfile(input: UpdateProfileInput!): Me!
+    "Public contact form. Rate limited per IP."
+    sendContactMessage(input: ContactMessageInput!): Boolean!
+
     "Deletes the account and all its data permanently (GDPR). Signs out every session."
     deleteMyAccount: Boolean!
   }
@@ -319,6 +341,7 @@ export const schema = createSchema<Context>({
     TransactionType: { INCOME: "income", EXPENSE: "expense" },
     TransactionSource: { MANUAL: "manual", OCR: "ocr", BANK: "bank" },
     AccountType: { REAL: "real", DEMO: "demo" },
+    ContactTopic: { SUPPORT: "support", BANK: "bank", BILLING: "billing", OTHER: "other" },
 
     Query: {
       health: () => "ok",
@@ -516,6 +539,21 @@ export const schema = createSchema<Context>({
         if (error) fail(error);
         user.profile = undefined;
         return toMe(ctx, user);
+      },
+
+      sendContactMessage: async (_, args: { input: unknown }, ctx) => {
+        const input = parse(schemas.contactMessage, args.input);
+        const retryAfter = rateLimit(`contact:${ctx.clientIp}`, 5, 60 * 60_000);
+        if (retryAfter !== null) {
+          throw new GraphQLError("Has enviado demasiados mensajes, prueba más tarde", {
+            extensions: { code: "RATE_LIMITED", http: { status: 429, headers: { "Retry-After": String(retryAfter) } } },
+          });
+        }
+        if (!ctx.admin) throw new Error("SUPABASE_SECRET_KEY is not configured");
+        const { acceptPrivacy: _consent, ...row } = input;
+        const { error } = await ctx.admin.from("contact_messages").insert(row);
+        if (error) fail(error);
+        return true;
       },
 
       deleteMyAccount: async (_, __, ctx) => {
