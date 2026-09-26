@@ -18,7 +18,7 @@ export default function ContactPage() {
         </div>
       </GreenHero>
 
-      <section className="grid grow grid-cols-1 items-start gap-12 px-5 py-20 lg:grid-cols-12 lg:gap-x-6 lg:px-20 lg:py-24">
+      <section className="grid grow grid-cols-1 items-start gap-12 band py-20 lg:grid-cols-12 lg:gap-x-6 lg:py-24">
         <div className="flex flex-col gap-8 lg:col-span-4">
           <p className="m-0 text-[19px] leading-[1.55] text-ink-muted">
             Dudas, problemas con un banco o ideas para mejorar mypocket. Escríbenos y te respondemos por email.

@@ -47,7 +47,7 @@ export function LegalDocument({ doc }: { doc: keyof typeof DOCS }) {
         </div>
       </GreenHero>
 
-      <section className="grid grow grid-cols-1 items-start gap-12 px-5 py-20 lg:grid-cols-12 lg:gap-x-6 lg:px-20 lg:py-24">
+      <section className="grid grow grid-cols-1 items-start gap-12 band py-20 lg:grid-cols-12 lg:gap-x-6 lg:py-24">
         <nav aria-label="Índice" className="flex flex-col border-t-[3px] border-ink lg:sticky lg:top-6 lg:col-span-3">
           {items.map((s) => (
             <a key={s.id} href={`#${s.id}`} className="flex gap-3.5 border-b border-rule py-3.5 text-[15px] hover:underline">

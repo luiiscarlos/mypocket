@@ -57,7 +57,7 @@ export default function PricingPage() {
         </div>
       </GreenHero>
 
-      <section className="px-5 py-20 lg:px-20 lg:py-28">
+      <section className="band py-20 lg:py-28">
         <div className="overflow-x-auto">
           <div className="min-w-[720px]" role="table" aria-label="Comparativa de planes">
             <div className={grid} role="row">
@@ -73,7 +73,7 @@ export default function PricingPage() {
                   0 €<span className="text-sm tracking-normal text-ink-muted"> /mes</span>
                 </div>
                 <div className="text-[15px] text-ink-muted">Para empezar a ordenar tu dinero.</div>
-                <Link href="/registro" className="flex h-[52px] items-center justify-center border border-ink text-[15px] font-semibold hover:no-underline">
+                <Link href="/registro" className="btn flex h-[52px] items-center justify-center border border-ink text-[15px] font-semibold hover:no-underline">
                   Empezar gratis
                 </Link>
               </div>
@@ -86,7 +86,7 @@ export default function PricingPage() {
                   {PRO_PRICE} €<span className="text-sm tracking-normal text-mist"> /mes</span>
                 </div>
                 <div className="text-[15px] text-mist">Todas tus cuentas, en un solo número.</div>
-                <Link href="/registro" className="flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline">
+                <Link href="/registro" className="btn flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline">
                   Probar Pro
                 </Link>
               </div>
@@ -121,7 +121,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="flex flex-col gap-12 bg-band px-5 py-20 lg:px-20 lg:py-24">
+      <section className="flex flex-col gap-12 bg-band band py-20 lg:py-24">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {TRUST.map(([title, text]) => (
             <div key={title} className="flex flex-col gap-3.5 border-t-[3px] border-ink pt-6">

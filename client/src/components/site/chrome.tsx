@@ -40,7 +40,7 @@ function SiteHeader({ current }: { current: Page }) {
         </Link>
         <Link
           href="/registro"
-          className="inline-flex h-11 items-center bg-cream px-5 font-semibold text-brand hover:no-underline"
+          className="btn inline-flex h-11 items-center bg-cream px-5 font-semibold text-brand hover:no-underline"
         >
           Empezar gratis
         </Link>
@@ -61,7 +61,7 @@ export function GreenHero({ current, children, className = "" }: { current?: Pag
 
 export function SiteFooter() {
   return (
-    <footer className="flex min-h-24 shrink-0 flex-col justify-center gap-3 border-t border-cream/20 bg-brand px-5 py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between lg:px-20">
+    <footer className="flex min-h-24 shrink-0 flex-col justify-center gap-3 border-t border-cream/20 bg-brand band py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
       <div>© {new Date().getFullYear()} mypocket</div>
       <nav aria-label="Legal" className="flex gap-8">
         <Link href="/privacidad" className="hover:underline">Privacidad</Link>
@@ -75,7 +75,7 @@ export function SiteFooter() {
 export function CtaBand({ centered = false }: { centered?: boolean }) {
   return (
     <section
-      className={`flex grow gap-10 bg-brand px-5 py-20 text-cream lg:px-20 lg:py-28 ${
+      className={`flex grow gap-10 bg-brand band py-20 text-cream lg:py-28 ${
         centered ? "flex-col items-center justify-center text-center" : "flex-col lg:flex-row lg:items-center lg:justify-between"
       }`}
     >
@@ -90,7 +90,7 @@ export function CtaBand({ centered = false }: { centered?: boolean }) {
       </h2>
       <Link
         href="/registro"
-        className="inline-flex h-[60px] shrink-0 items-center self-start bg-cream px-8 text-[17px] font-semibold text-brand hover:no-underline lg:self-auto"
+        className="btn inline-flex h-[60px] shrink-0 items-center self-start bg-cream px-8 text-[17px] font-semibold text-brand hover:no-underline lg:self-auto"
       >
         Crear cuenta gratis
       </Link>

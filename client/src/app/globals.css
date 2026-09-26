@@ -4,6 +4,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Horizontal padding for full-width bands after the hero: content max 1120px (160px margins at 1440). */
+@utility band {
+  padding-inline: 1.25rem;
+  @media (width >= 64rem) {
+    padding-inline: max(5rem, calc((100% - 70rem) / 2));
+  }
+}
+
 /* mypocket brand (design: Claude Design artifact EdCx4zKL6SVzMiKUK9Kmrq) */
 @theme {
   --color-brand: #1B4D3A;
@@ -146,5 +154,37 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Minimal feedback on every button: lift on hover, press on click. */
+@layer base {
+  button,
+  .btn {
+    transition:
+      transform 150ms ease,
+      background-color 150ms ease,
+      color 150ms ease,
+      opacity 150ms ease;
+  }
+  button:not(:disabled):hover,
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  button:not(:disabled):active,
+  .btn:active {
+    transform: translateY(0) scale(0.98);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button,
+    .btn {
+      transition: none;
+    }
+    button:not(:disabled):hover,
+    .btn:hover,
+    button:not(:disabled):active,
+    .btn:active {
+      transform: none;
+    }
   }
 }

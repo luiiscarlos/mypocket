@@ -65,7 +65,7 @@ export default function FaqPage() {
         </div>
       </GreenHero>
 
-      <section className="grid grow grid-cols-1 items-start gap-12 px-5 py-20 lg:grid-cols-12 lg:gap-x-6 lg:px-20 lg:py-24">
+      <section className="grid grow grid-cols-1 items-start gap-12 band py-20 lg:grid-cols-12 lg:gap-x-6 lg:py-24">
         <nav aria-label="Categorías" className="flex flex-col border-t-[3px] border-ink lg:sticky lg:top-6 lg:col-span-3">
           {groups.map((g) => (
             <a key={g.id} href={`#${g.id}`} className="flex justify-between border-b border-rule py-3.5 text-base hover:underline">
@@ -102,12 +102,12 @@ export default function FaqPage() {
         </div>
       </section>
 
-      <section className="flex flex-col justify-between gap-8 bg-band px-5 py-16 sm:flex-row sm:items-center lg:p-20">
+      <section className="flex flex-col justify-between gap-8 bg-band band py-16 sm:flex-row sm:items-center lg:py-40">
         <div className="flex flex-col gap-3">
           <h2 className="m-0 text-4xl font-extrabold leading-[0.95] tracking-[-0.045em] lg:text-5xl">¿No encuentras tu respuesta?</h2>
           <p className="m-0 text-[17px] text-ink-muted">Escríbenos y te respondemos por email.</p>
         </div>
-        <Link href="/contacto" className="inline-flex h-14 shrink-0 items-center self-start bg-brand px-7 text-base font-semibold text-cream hover:no-underline sm:self-auto">
+        <Link href="/contacto" className="btn inline-flex h-14 shrink-0 items-center self-start bg-brand px-7 text-base font-semibold text-cream hover:no-underline sm:self-auto">
           Contactar
         </Link>
       </section>
