@@ -1,41 +1,33 @@
-import { Button } from "@/components/ui/button";
+// Functional skeleton: the visual design comes from Claude Design. Keep the form field names and actions.
+import Link from "next/link";
 import { login, signup } from "./actions";
-
-const inputClass = "w-full rounded-md border px-3 py-2 text-sm";
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; message?: string }>;
+  searchParams: Promise<{ error?: string; message?: string; next?: string }>;
 }) {
-  const { error, message } = await searchParams;
+  const { error, message, next } = await searchParams;
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-4 px-4">
-      <h1 className="text-2xl font-semibold">MyPocket</h1>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {message && <p className="text-sm text-green-700">{message}</p>}
-      <form className="flex flex-col gap-3">
-        <label className="flex flex-col gap-1 text-sm">
+    <main>
+      <h1>MyPocket</h1>
+      {error && <p role="alert">{error}</p>}
+      {message && <p role="status">{message}</p>}
+      <form>
+        <input type="hidden" name="next" value={next ?? ""} />
+        <label>
           Email
-          <input name="email" type="email" autoComplete="email" required className={inputClass} />
+          <input name="email" type="email" autoComplete="email" required />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label>
           Contraseña
-          <input
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            minLength={6}
-            required
-            className={inputClass}
-          />
+          <input name="password" type="password" autoComplete="current-password" minLength={8} required />
         </label>
-        <Button formAction={login}>Entrar</Button>
-        <Button formAction={signup} variant="outline">
-          Crear cuenta
-        </Button>
+        <button formAction={login}>Entrar</button>
+        <button formAction={signup}>Crear cuenta</button>
       </form>
+      <Link href="/forgot-password">¿Has olvidado la contraseña?</Link>
     </main>
   );
 }
