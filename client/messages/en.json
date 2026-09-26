@@ -105,5 +105,309 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "meta": {
+    "title": "mypocket — All your money, in one place",
+    "description": "Connect your banks, add your cash and see how much you really have. One total balance, without losing track of where each euro comes from.",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use"
+  },
+  "home": {
+    "eyebrow": "ALL YOUR ACCOUNTS — ONE BALANCE",
+    "title": "All your money, in one place.",
+    "lead": "Connect your banks, add your cash and see how much you really have. One total balance, without losing track of where each euro comes from.",
+    "createAccount": "Create account",
+    "seeHow": "See how it works",
+    "sample": {
+      "label": "Sample balance",
+      "total": "TOTAL BALANCE",
+      "thisMonth": "+€312.40 this month",
+      "accounts": "3 ACCOUNTS",
+      "tradeRepublic": "Account & investing",
+      "bbva": "Current account",
+      "cash": "Cash",
+      "manual": "Manual",
+      "connectAnother": "Connect another bank"
+    },
+    "how": {
+      "title": "Together, not mixed up.",
+      "lead": "Add up all your accounts in one combined balance and open any of them whenever you want to know where money comes from.",
+      "connect": {
+        "title": "Connect your banks",
+        "text": "As many as you use, via PSD2. Read-only access: mypocket can never move your money."
+      },
+      "cash": {
+        "title": "Add your cash",
+        "text": "Keep a cash balance and log manual income and expenses. What doesn't go through the bank counts too."
+      },
+      "total": {
+        "title": "See the total",
+        "text": "One number with all your money, broken down by account so you never lose the detail."
+      }
+    },
+    "features": {
+      "title": "Understand your money. Get ahead of it.",
+      "count": "04 TOOLS",
+      "analytics": {
+        "title": "Analytics",
+        "text": "Spending by category, by account or all together. Filter however you like and compare periods."
+      },
+      "summary": {
+        "title": "Monthly summary",
+        "text": "Every month, what came in, what went out and where it went, without digging for it."
+      },
+      "predictions": {
+        "title": "Predictions",
+        "text": "An estimate of how you'll end the month based on your income, expenses and recurring payments."
+      },
+      "subscriptions": {
+        "title": "Subscriptions",
+        "text": "All your recurring payments in one list, with what they cost per month and when they renew."
+      }
+    },
+    "tickets": {
+      "eyebrow": "RECEIPT SCANNER · OCR",
+      "title": "Take a photo. We'll match it.",
+      "lead": "OCR reads the store, date and amount from the receipt and finds the matching transaction in your banks.",
+      "a": "If it finds it, it links the receipt to that transaction",
+      "b": "If you paid cash, it creates the cash expense for you",
+      "items": {
+        "milk": "Milk",
+        "bread": "Bread",
+        "fruit": "Fruit",
+        "pasta": "Pasta",
+        "coffee": "Coffee"
+      },
+      "match": "MATCH FOUND",
+      "link": "Link receipt",
+      "paidCash": "Paid in cash?",
+      "createCash": "Create cash expense",
+      "date": "22 Sep"
+    },
+    "pricing": {
+      "title": "Clear pricing",
+      "tagline": "START FREE · SWITCH ANYTIME"
+    }
+  },
+  "plans": {
+    "free": "Free",
+    "pro": "Pro",
+    "perMonth": "/mo",
+    "startFree": "Start for free",
+    "tryPro": "Try Pro",
+    "price": "[PRICE]",
+    "freeFeatures": {
+      "bank": "1 connected bank",
+      "cash": "Cash balance and manual transactions",
+      "summary": "Monthly summary"
+    },
+    "proFeatures": {
+      "banks": "Unlimited banks in one combined balance",
+      "analytics": "Analytics and predictions",
+      "subscriptions": "Subscription management",
+      "ocr": "Receipt scanner with OCR"
+    }
+  },
+  "pricing": {
+    "eyebrow": "PRICING",
+    "title1": "Two plans.",
+    "title2": "No fine print.",
+    "lead": "One bank and your cash, free. Go Pro to add all your accounts to one combined balance.",
+    "tableLabel": "Plan comparison",
+    "compare": "COMPARE PLANS",
+    "compareText": "Both include the combined balance and your cash. Pro unlocks every account and the analysis.",
+    "freeTagline": "To start getting your money in order.",
+    "proTagline": "All your accounts, in one number.",
+    "recommended": "RECOMMENDED",
+    "included": "Included",
+    "unlimited": "Unlimited",
+    "groups": {
+      "accounts": "ACCOUNTS & BALANCE",
+      "analysis": "ANALYSIS",
+      "automation": "AUTOMATION"
+    },
+    "rows": {
+      "banks": "Connected banks",
+      "balance": "Combined and individual balance",
+      "cash": "Cash balance and manual transactions",
+      "summary": "Monthly summary",
+      "analytics": "Analytics",
+      "predictions": "Predictions",
+      "subscriptions": "Subscription management",
+      "ocr": "Receipt scanner with OCR"
+    },
+    "trust": {
+      "readOnly": {
+        "title": "Read-only",
+        "text": "We connect your banks via PSD2. We can read balances and transactions, never move your money."
+      },
+      "noBank": {
+        "title": "No bank? Fine too",
+        "text": "You can start with just your cash and manual transactions, and connect a bank later."
+      },
+      "switch": {
+        "title": "Switch plans",
+        "text": "Go from Free to Pro, or back, whenever you want. [SWITCHING TERMS]"
+      }
+    },
+    "allFaq": "See all frequently asked questions"
+  },
+  "faq": {
+    "eyebrow": "HELP",
+    "title": "Frequently asked questions",
+    "lead": "What people usually ask about banks, cash, receipts and plans.",
+    "categories": "Categories",
+    "notFound": "Can't find your answer?",
+    "writeUs": "Write to us and we'll reply by email.",
+    "contact": "Contact us",
+    "groups": {
+      "banks": {
+        "title": "Banks and security",
+        "items": {
+          "safe": {
+            "q": "Is it safe to connect my bank?",
+            "a": "The connection uses PSD2 with read-only access: mypocket can see your balances and transactions, but never move your money."
+          },
+          "which": {
+            "q": "Which banks can I connect?",
+            "a": "[LIST OF SUPPORTED BANKS]"
+          },
+          "several": {
+            "q": "Can I connect several banks at once?",
+            "a": "Yes. The combined balance adds up all your accounts and each keeps its own balance. The Free plan includes 1 bank; Pro, unlimited."
+          },
+          "disconnect": {
+            "q": "How do I disconnect a bank?",
+            "a": "[STEPS TO DISCONNECT A BANK]"
+          }
+        }
+      },
+      "cash": {
+        "title": "Cash and transactions",
+        "items": {
+          "track": {
+            "q": "How do I track my cash?",
+            "a": "With a cash balance where you log manual income and expenses. It's added to your total balance like any other account."
+          },
+          "noBank": {
+            "q": "Can I use mypocket without connecting a bank?",
+            "a": "Yes. You can keep your cash balance, log manual income and expenses, and connect a bank whenever you want."
+          }
+        }
+      },
+      "tickets": {
+        "title": "Receipts",
+        "items": {
+          "how": {
+            "q": "How does the receipt scanner work?",
+            "a": "You take a photo of the receipt, OCR reads the store, date and amount, and finds the matching transaction in your banks to link it."
+          },
+          "cash": {
+            "q": "What if I paid cash?",
+            "a": "If no bank transaction matches, you can create a cash expense from the receipt."
+          }
+        }
+      },
+      "plans": {
+        "title": "Plans and payments",
+        "items": {
+          "free": {
+            "q": "What does the Free plan include?",
+            "a": "1 connected bank, a cash balance with manual transactions and a monthly summary."
+          },
+          "cancel": {
+            "q": "Can I cancel Pro anytime?",
+            "a": "[CANCELLATION POLICY]"
+          },
+          "payment": {
+            "q": "Which payment methods do you accept?",
+            "a": "[PAYMENT METHODS]"
+          }
+        }
+      },
+      "account": {
+        "title": "Account and privacy",
+        "items": {
+          "who": {
+            "q": "Who can see my data?",
+            "a": "[WHO ACCESSES THE DATA]"
+          },
+          "delete": {
+            "q": "How do I delete my account?",
+            "a": "[STEPS TO DELETE THE ACCOUNT]"
+          }
+        }
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "CONTACT",
+    "title": "Let's talk.",
+    "lead": "Questions, problems with a bank or ideas to improve mypocket. Write to us and we'll reply by email.",
+    "email": "EMAIL",
+    "emailValue": "[CONTACT EMAIL]",
+    "responseTime": "RESPONSE TIME",
+    "responseTimeValue": "[RESPONSE TIME]",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "topic": "Topic",
+      "message": "Message",
+      "topics": {
+        "SUPPORT": "Support",
+        "BANK": "Bank connection",
+        "BILLING": "Billing",
+        "OTHER": "Other"
+      },
+      "privacyPrefix": "I have read the",
+      "privacyLink": "privacy policy",
+      "send": "Send message",
+      "sending": "Sending…",
+      "sent": "Message sent. We'll reply by email.",
+      "errors": {
+        "privacy": "You must accept the privacy policy",
+        "fields": "Check the fields: name, a valid email and message are required",
+        "rateLimited": "You've sent too many messages. Try again later.",
+        "generic": "The message couldn't be sent, try again later"
+      }
+    }
+  },
+  "legal": {
+    "eyebrow": "LEGAL",
+    "lastUpdated": "LAST UPDATED · {date}",
+    "date": "[DATE]",
+    "index": "Contents",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "pending": "[LEGAL TEXT]",
+    "docs": {
+      "privacy": {
+        "title": "Privacy policy",
+        "sections": {
+          "controller": "Data controller",
+          "data": "Data we process",
+          "bank": "Bank data (PSD2)",
+          "purpose": "Purpose and legal basis",
+          "retention": "Retention",
+          "rights": "Your rights",
+          "contact": "Contact"
+        }
+      },
+      "terms": {
+        "title": "Terms of use",
+        "sections": {
+          "object": "Purpose",
+          "account": "User account",
+          "plans": "Plans and payments",
+          "bank": "Bank connection",
+          "liability": "Liability",
+          "termination": "Cancellation and closure",
+          "law": "Governing law"
+        }
+      }
+    }
   }
 }

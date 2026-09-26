@@ -11,12 +11,6 @@ const STACK = [
 ];
 const SAMPLE_TOTAL = 24318.42;
 
-export const inputClass =
-  "h-[52px] w-full border border-ink bg-field px-4 font-sans text-base text-ink outline-none focus-visible:ring-2 focus-visible:ring-leaf focus-visible:ring-offset-2";
-export const labelClass = "flex flex-col gap-2 text-sm font-semibold";
-export const primaryButton =
-  "h-14 w-full cursor-pointer border-0 bg-brand px-8 font-sans text-base font-semibold text-cream hover:bg-brand/90";
-
 /** Split layout shared by login, signup and password pages. */
 export function AuthShell({
   kicker,
@@ -103,25 +97,5 @@ export function AuthShell({
         </div>
       </main>
     </div>
-  );
-}
-
-export function Notice({ kind, children }: { kind: "error" | "status"; children: ReactNode }) {
-  return kind === "error" ? (
-    <div role="alert" className="border border-danger bg-danger-bg px-4 py-3.5 text-[15px] text-danger-ink">
-      {children}
-    </div>
-  ) : (
-    <div role="status" className="border border-leaf bg-ok-bg px-4 py-3.5 text-[15px] text-ink">
-      {children}
-    </div>
-  );
-}
-
-export function TextLink({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <Link href={href} className="font-semibold text-ink underline">
-      {children}
-    </Link>
   );
 }

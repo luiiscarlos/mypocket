@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { AuthShell, Notice, inputClass, labelClass, primaryButton } from "@/components/site/auth";
+import { AuthShell } from "@/components/site/auth";
+import { Notice, inputClass, labelClass, primaryButton } from "@/components/forms";
 import { requireUser } from "@/lib/auth";
 import { updatePassword } from "@/lib/auth-actions";
 import { authNotice } from "@/lib/auth-codes";

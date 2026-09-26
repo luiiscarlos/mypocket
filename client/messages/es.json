@@ -105,5 +105,309 @@
     "light": "Claro",
     "dark": "Oscuro",
     "system": "Sistema"
+  },
+  "meta": {
+    "title": "mypocket — Todo tu dinero, en un único sitio",
+    "description": "Conecta tus bancos, añade tu efectivo y mira cuánto tienes de verdad. Un balance total, sin perder de vista de dónde viene cada euro.",
+    "pricing": "Precios",
+    "faq": "Preguntas frecuentes",
+    "contact": "Contacto",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de uso"
+  },
+  "home": {
+    "eyebrow": "TODAS TUS CUENTAS — UN SOLO BALANCE",
+    "title": "Todo tu dinero, en un único sitio.",
+    "lead": "Conecta tus bancos, añade tu efectivo y mira cuánto tienes de verdad. Un balance total, sin perder de vista de dónde viene cada euro.",
+    "createAccount": "Crear cuenta",
+    "seeHow": "Ver cómo funciona",
+    "sample": {
+      "label": "Ejemplo de balance",
+      "total": "BALANCE TOTAL",
+      "thisMonth": "+312,40 € este mes",
+      "accounts": "3 CUENTAS",
+      "tradeRepublic": "Cuenta e inversión",
+      "bbva": "Cuenta corriente",
+      "cash": "Efectivo",
+      "manual": "Manual",
+      "connectAnother": "Conectar otro banco"
+    },
+    "how": {
+      "title": "Juntas, pero no revueltas.",
+      "lead": "Suma todas tus cuentas en un balance conjunto y entra en cada una cuando quieras saber de dónde sale qué.",
+      "connect": {
+        "title": "Conecta tus bancos",
+        "text": "Tantos como uses, vía PSD2. Acceso de solo lectura: mypocket nunca puede mover tu dinero."
+      },
+      "cash": {
+        "title": "Añade tu efectivo",
+        "text": "Lleva un balance de cash y registra ingresos y salidas manuales. Lo que no pasa por el banco también cuenta."
+      },
+      "total": {
+        "title": "Mira el total",
+        "text": "Un número con todo tu dinero, desglosado por cuenta para que nunca pierdas el detalle."
+      }
+    },
+    "features": {
+      "title": "Entiende tu dinero. Adelántate a él.",
+      "count": "04 HERRAMIENTAS",
+      "analytics": {
+        "title": "Analíticas",
+        "text": "Gasto por categoría, por cuenta o de todo junto. Filtra como quieras y compara periodos."
+      },
+      "summary": {
+        "title": "Resumen del mes",
+        "text": "Cada mes, lo que entró, lo que salió y en qué se fue, sin tener que buscarlo."
+      },
+      "predictions": {
+        "title": "Predicciones",
+        "text": "Una estimación de cómo acabarás el mes según tus ingresos, gastos y pagos recurrentes."
+      },
+      "subscriptions": {
+        "title": "Suscripciones",
+        "text": "Todos tus pagos recurrentes en una lista, con lo que te cuestan al mes y cuándo se renuevan."
+      }
+    },
+    "tickets": {
+      "eyebrow": "LECTOR DE TICKETS · OCR",
+      "title": "Haz una foto. Nosotros lo cuadramos.",
+      "lead": "El OCR lee el comercio, la fecha y el importe del ticket y busca la transacción que le corresponde en tus bancos.",
+      "a": "Si la encuentra, lo vincula a esa transacción",
+      "b": "Si pagaste en efectivo, crea la salida de cash por ti",
+      "items": {
+        "milk": "Leche",
+        "bread": "Pan",
+        "fruit": "Fruta",
+        "pasta": "Pasta",
+        "coffee": "Café"
+      },
+      "match": "COINCIDENCIA ENCONTRADA",
+      "link": "Vincular ticket",
+      "paidCash": "¿Pagaste en efectivo?",
+      "createCash": "Crear salida de efectivo",
+      "date": "22 sep"
+    },
+    "pricing": {
+      "title": "Precios claros",
+      "tagline": "EMPIEZA GRATIS · CAMBIA CUANDO QUIERAS"
+    }
+  },
+  "plans": {
+    "free": "Gratis",
+    "pro": "Pro",
+    "perMonth": "/mes",
+    "startFree": "Empezar gratis",
+    "tryPro": "Probar Pro",
+    "price": "[PRECIO]",
+    "freeFeatures": {
+      "bank": "1 banco conectado",
+      "cash": "Balance de efectivo y movimientos manuales",
+      "summary": "Resumen del mes"
+    },
+    "proFeatures": {
+      "banks": "Bancos ilimitados en un balance conjunto",
+      "analytics": "Analíticas y predicciones",
+      "subscriptions": "Gestión de suscripciones",
+      "ocr": "Lector de tickets con OCR"
+    }
+  },
+  "pricing": {
+    "eyebrow": "PRECIOS",
+    "title1": "Dos planes.",
+    "title2": "Sin letra pequeña.",
+    "lead": "Un banco y tu efectivo, gratis. Pasa a Pro para sumar todas tus cuentas en un balance conjunto.",
+    "tableLabel": "Comparativa de planes",
+    "compare": "COMPARA LOS PLANES",
+    "compareText": "Los dos incluyen el balance conjunto y tu efectivo. Pro desbloquea todas las cuentas y el análisis.",
+    "freeTagline": "Para empezar a ordenar tu dinero.",
+    "proTagline": "Todas tus cuentas, en un solo número.",
+    "recommended": "RECOMENDADO",
+    "included": "Incluido",
+    "unlimited": "Ilimitados",
+    "groups": {
+      "accounts": "CUENTAS Y BALANCE",
+      "analysis": "ANÁLISIS",
+      "automation": "AUTOMATIZACIÓN"
+    },
+    "rows": {
+      "banks": "Bancos conectados",
+      "balance": "Balance conjunto e individual",
+      "cash": "Balance de efectivo y movimientos manuales",
+      "summary": "Resumen del mes",
+      "analytics": "Analíticas",
+      "predictions": "Predicciones",
+      "subscriptions": "Gestión de suscripciones",
+      "ocr": "Lector de tickets con OCR"
+    },
+    "trust": {
+      "readOnly": {
+        "title": "Solo lectura",
+        "text": "Conectamos tus bancos vía PSD2. Podemos leer saldos y movimientos, nunca mover tu dinero."
+      },
+      "noBank": {
+        "title": "Sin banco, también",
+        "text": "Puedes empezar solo con tu efectivo y movimientos manuales, y conectar un banco después."
+      },
+      "switch": {
+        "title": "Cambia de plan",
+        "text": "Pasa de Gratis a Pro, o al revés, cuando quieras. [CONDICIONES DE CAMBIO]"
+      }
+    },
+    "allFaq": "Ver todas las preguntas frecuentes"
+  },
+  "faq": {
+    "eyebrow": "AYUDA",
+    "title": "Preguntas frecuentes",
+    "lead": "Lo que suele preguntarse sobre bancos, efectivo, tickets y planes.",
+    "categories": "Categorías",
+    "notFound": "¿No encuentras tu respuesta?",
+    "writeUs": "Escríbenos y te respondemos por email.",
+    "contact": "Contactar",
+    "groups": {
+      "banks": {
+        "title": "Bancos y seguridad",
+        "items": {
+          "safe": {
+            "q": "¿Es seguro conectar mi banco?",
+            "a": "La conexión se hace vía PSD2 con acceso de solo lectura: mypocket puede ver tus saldos y movimientos, pero nunca mover tu dinero."
+          },
+          "which": {
+            "q": "¿Qué bancos puedo conectar?",
+            "a": "[LISTA DE BANCOS COMPATIBLES]"
+          },
+          "several": {
+            "q": "¿Puedo conectar varios bancos a la vez?",
+            "a": "Sí. El balance conjunto suma todas tus cuentas y cada una mantiene su balance individual. El plan Gratis incluye 1 banco; Pro, ilimitados."
+          },
+          "disconnect": {
+            "q": "¿Cómo desconecto un banco?",
+            "a": "[PASOS PARA DESCONECTAR UN BANCO]"
+          }
+        }
+      },
+      "cash": {
+        "title": "Efectivo y movimientos",
+        "items": {
+          "track": {
+            "q": "¿Cómo llevo mi efectivo?",
+            "a": "Con un balance de cash en el que registras ingresos y salidas manuales. Se suma a tu balance total como una cuenta más."
+          },
+          "noBank": {
+            "q": "¿Puedo usar mypocket sin conectar ningún banco?",
+            "a": "Sí. Puedes llevar tu balance de efectivo y registrar ingresos y salidas manuales, y conectar un banco cuando quieras."
+          }
+        }
+      },
+      "tickets": {
+        "title": "Tickets",
+        "items": {
+          "how": {
+            "q": "¿Cómo funciona el lector de tickets?",
+            "a": "Haces una foto del ticket, el OCR lee el comercio, la fecha y el importe, y busca la transacción que le corresponde en tus bancos para vincularlo."
+          },
+          "cash": {
+            "q": "¿Y si pagué en efectivo?",
+            "a": "Si no hay una transacción bancaria que coincida, puedes crear con el ticket una salida de efectivo."
+          }
+        }
+      },
+      "plans": {
+        "title": "Planes y pagos",
+        "items": {
+          "free": {
+            "q": "¿Qué incluye el plan Gratis?",
+            "a": "1 banco conectado, balance de efectivo con movimientos manuales y resumen del mes."
+          },
+          "cancel": {
+            "q": "¿Puedo cancelar Pro cuando quiera?",
+            "a": "[POLÍTICA DE CANCELACIÓN]"
+          },
+          "payment": {
+            "q": "¿Qué métodos de pago aceptáis?",
+            "a": "[MÉTODOS DE PAGO]"
+          }
+        }
+      },
+      "account": {
+        "title": "Cuenta y privacidad",
+        "items": {
+          "who": {
+            "q": "¿Quién puede ver mis datos?",
+            "a": "[QUIÉN ACCEDE A LOS DATOS]"
+          },
+          "delete": {
+            "q": "¿Cómo borro mi cuenta?",
+            "a": "[PASOS PARA BORRAR LA CUENTA]"
+          }
+        }
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "CONTACTO",
+    "title": "Hablemos.",
+    "lead": "Dudas, problemas con un banco o ideas para mejorar mypocket. Escríbenos y te respondemos por email.",
+    "email": "EMAIL",
+    "emailValue": "[EMAIL DE CONTACTO]",
+    "responseTime": "TIEMPO DE RESPUESTA",
+    "responseTimeValue": "[PLAZO DE RESPUESTA]",
+    "form": {
+      "name": "Nombre",
+      "email": "Email",
+      "topic": "Motivo",
+      "message": "Mensaje",
+      "topics": {
+        "SUPPORT": "Soporte",
+        "BANK": "Conexión con un banco",
+        "BILLING": "Facturación",
+        "OTHER": "Otro"
+      },
+      "privacyPrefix": "He leído la",
+      "privacyLink": "política de privacidad",
+      "send": "Enviar mensaje",
+      "sending": "Enviando…",
+      "sent": "Mensaje enviado. Te responderemos por email.",
+      "errors": {
+        "privacy": "Debes aceptar la política de privacidad",
+        "fields": "Revisa los campos: nombre, email válido y mensaje son obligatorios",
+        "rateLimited": "Has enviado demasiados mensajes. Inténtalo más tarde.",
+        "generic": "No se pudo enviar el mensaje, inténtalo más tarde"
+      }
+    }
+  },
+  "legal": {
+    "eyebrow": "LEGAL",
+    "lastUpdated": "ÚLTIMA ACTUALIZACIÓN · {date}",
+    "date": "[FECHA]",
+    "index": "Índice",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "pending": "[TEXTO LEGAL]",
+    "docs": {
+      "privacy": {
+        "title": "Política de privacidad",
+        "sections": {
+          "controller": "Responsable del tratamiento",
+          "data": "Datos que tratamos",
+          "bank": "Datos bancarios (PSD2)",
+          "purpose": "Finalidad y base legal",
+          "retention": "Conservación",
+          "rights": "Tus derechos",
+          "contact": "Contacto"
+        }
+      },
+      "terms": {
+        "title": "Términos de uso",
+        "sections": {
+          "object": "Objeto",
+          "account": "Cuenta de usuario",
+          "plans": "Planes y pagos",
+          "bank": "Conexión bancaria",
+          "liability": "Responsabilidad",
+          "termination": "Baja y cancelación",
+          "law": "Ley aplicable"
+        }
+      }
+    }
   }
 }

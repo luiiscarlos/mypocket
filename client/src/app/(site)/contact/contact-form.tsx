@@ -2,45 +2,46 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { Notice, inputClass, labelClass } from "@/components/site/auth";
+import { useTranslations } from "next-intl";
+import { Notice, inputClass, labelClass } from "@/components/forms";
 import { sendContact, type ContactState } from "./actions";
 
 export function ContactForm() {
   const [state, action, pending] = useActionState<ContactState, FormData>(sendContact, { status: "idle" });
+  const t = useTranslations("contact.form");
   const v = state.values ?? {};
 
   if (state.status === "sent") {
     return (
       <div className="lg:col-span-7 lg:col-start-6">
-        <Notice kind="status">Mensaje enviado. Te responderemos por email.</Notice>
+        <Notice kind="status">{t("sent")}</Notice>
       </div>
     );
   }
 
   return (
     <form action={action} className="flex flex-col gap-6 lg:col-span-7 lg:col-start-6">
-      {state.status === "error" && <Notice kind="error">{state.message}</Notice>}
+      {state.status === "error" && <Notice kind="error">{state.error && t(`errors.${state.error}`)}</Notice>}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <label className={labelClass}>
-          Nombre
+          {t("name")}
           <input type="text" name="name" autoComplete="name" required maxLength={100} defaultValue={v.name} className={inputClass} />
         </label>
         <label className={labelClass}>
-          Email
+          {t("email")}
           <input type="email" name="email" autoComplete="email" required maxLength={254} defaultValue={v.email} className={inputClass} />
         </label>
       </div>
       <label className={labelClass}>
-        Motivo
+        {t("topic")}
         <select name="topic" defaultValue={v.topic ?? "SUPPORT"} className={`${inputClass} px-3`}>
-          <option value="SUPPORT">Soporte</option>
-          <option value="BANK">Conexión con un banco</option>
-          <option value="BILLING">Facturación</option>
-          <option value="OTHER">Otro</option>
+          {(["SUPPORT", "BANK", "BILLING", "OTHER"] as const).map((topic) => (
+            <option key={topic} value={topic}>{t(`topics.${topic}`)}</option>
+          ))}
         </select>
       </label>
       <label className={labelClass}>
-        Mensaje
+        {t("message")}
         <textarea
           name="message"
           rows={7}
@@ -55,15 +56,15 @@ export function ContactForm() {
       <div className="flex items-center gap-3 text-[15px] text-ink-muted">
         <input id="privacy" type="checkbox" name="privacy" required className="size-5 shrink-0 accent-leaf" />
         <label htmlFor="privacy">
-          He leído la{" "}
-          <Link href="/privacy" className="text-ink underline">política de privacidad</Link>
+          {t("privacyPrefix")}{" "}
+          <Link href="/privacy" className="text-ink underline">{t("privacyLink")}</Link>
         </label>
       </div>
       <button
         disabled={pending}
         className="h-14 cursor-pointer self-start border-0 bg-brand px-8 font-sans text-base font-semibold text-cream hover:bg-brand/90 disabled:opacity-60"
       >
-        {pending ? "Enviando…" : "Enviar mensaje"}
+        {pending ? t("sending") : t("send")}
       </button>
     </form>
   );

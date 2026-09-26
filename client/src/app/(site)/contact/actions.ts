@@ -2,9 +2,12 @@
 
 import { ApiError, gql } from "@/lib/api";
 
+export type ContactError = "privacy" | "fields" | "rateLimited" | "generic";
+
 export type ContactState = {
   status: "idle" | "sent" | "error";
-  message?: string;
+  /** Translated in the form (contact.form.errors), never raw API text. */
+  error?: ContactError;
   values?: Record<string, string>;
 };
 
@@ -16,9 +19,7 @@ export async function sendContact(_prev: ContactState, formData: FormData): Prom
 
   // Honeypot: humans never see this field; pretend success so bots don't retry.
   if (get("website")) return { status: "sent" };
-  if (formData.get("privacy") !== "on") {
-    return { status: "error", message: "Debes aceptar la política de privacidad", values };
-  }
+  if (formData.get("privacy") !== "on") return { status: "error", error: "privacy", values };
 
   try {
     await gql(`mutation($i: ContactMessageInput!) { sendContactMessage(input: $i) }`, {
@@ -32,10 +33,8 @@ export async function sendContact(_prev: ContactState, formData: FormData): Prom
     });
     return { status: "sent" };
   } catch (e) {
-    if (e instanceof ApiError) {
-      const detail = e.code === "BAD_USER_INPUT" ? "Revisa los campos: nombre, email válido y mensaje son obligatorios" : e.message;
-      return { status: "error", message: detail, values };
-    }
-    return { status: "error", message: "No se pudo enviar el mensaje, inténtalo más tarde", values };
+    const code = e instanceof ApiError ? e.code : undefined;
+    const error: ContactError = code === "BAD_USER_INPUT" ? "fields" : code === "RATE_LIMITED" ? "rateLimited" : "generic";
+    return { status: "error", error, values };
   }
 }

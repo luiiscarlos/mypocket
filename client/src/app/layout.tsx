@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Schibsted_Grotesk } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { getTheme } from "@/lib/preferences";
 import "./globals.css";
 
@@ -18,11 +18,10 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  title: { default: "mypocket — Todo tu dinero, en un único sitio", template: "%s · mypocket" },
-  description:
-    "Conecta tus bancos, añade tu efectivo y mira cuánto tienes de verdad. Un balance total, sin perder de vista de dónde viene cada euro.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("meta");
+  return { title: { default: t("title"), template: "%s · mypocket" }, description: t("description") };
+}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const [locale, theme] = await Promise.all([getLocale(), getTheme()]);
