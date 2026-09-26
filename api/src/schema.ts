@@ -1,34 +1,17 @@
 import { createSchema } from "graphql-yoga";
 import { GraphQLError } from "graphql";
-import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 import { parse, schemas } from "./validation.js";
 import { rateLimit } from "./rate-limit.js";
+import {
+  JSONScalar, assertOwned, toMe, clientError, fail, profileOf, requireAdmin, requireUser, requireWritable, round2, toColumns,
+  type AuthedUser, type Context, type ResolverMap,
+} from "./core.js";
+import { finance } from "./modules/finance.js";
+import { investments } from "./modules/investments.js";
+import { simulations } from "./modules/simulations.js";
+import { updates } from "./modules/updates.js";
 
-type Profile = {
-  id: string;
-  display_name: string | null;
-  currency: string;
-  account_type: "real" | "demo";
-  read_only: boolean;
-};
-
-export type AuthedUser = {
-  userId: string;
-  email: string | null;
-  token: string;
-  /** Supabase client that runs as the user, so Postgres RLS applies to every query. */
-  db: SupabaseClient;
-  profile?: Promise<Profile>;
-};
-
-export type Context = {
-  user: AuthedUser | null;
-  /** Secret-key client, only for account deletion. Null when SUPABASE_SECRET_KEY is not set. */
-  admin: SupabaseClient | null;
-  ownerUserId: string | null;
-  /** Client IP forwarded by the BFF (trusted only after the internal-secret check). */
-  clientIp: string;
-};
+export type { Context } from "./core.js";
 
 const typeDefs = /* GraphQL */ `
   enum TransactionType {
@@ -58,9 +41,27 @@ const typeDefs = /* GraphQL */ `
     acceptPrivacy: Boolean!
   }
 
+  scalar JSON
+
   enum AccountType {
     REAL
     DEMO
+  }
+
+  enum Plan {
+    FREE
+    PRO
+  }
+
+  enum Theme {
+    LIGHT
+    DARK
+    SYSTEM
+  }
+
+  enum Locale {
+    ES
+    EN
   }
 
   type Me {
@@ -73,6 +74,21 @@ const typeDefs = /* GraphQL */ `
     isOwner: Boolean!
     "Public demo account: can read, cannot change anything."
     readOnly: Boolean!
+    fullName: String
+    phone: String
+    addressLine: String
+    postalCode: String
+    city: String
+    "ISO 3166-1 alpha-2"
+    country: String
+    "YYYY-MM-DD"
+    birthDate: String
+    plan: Plan!
+    theme: Theme!
+    locale: Locale!
+    notificationsEnabled: Boolean!
+    "False until the first-run onboarding is finished; the app must send the user there."
+    onboardingCompleted: Boolean!
   }
 
   type Category {
@@ -88,6 +104,7 @@ const typeDefs = /* GraphQL */ `
     amount: Float!
     currency: String!
     category: Category
+    accountId: ID
     "YYYY-MM-DD"
     occurredOn: String!
     note: String
@@ -136,6 +153,7 @@ const typeDefs = /* GraphQL */ `
     "ISO 4217, default EUR"
     currency: String
     categoryId: ID
+    accountId: ID
     "YYYY-MM-DD, default today"
     occurredOn: String
     note: String
@@ -147,6 +165,7 @@ const typeDefs = /* GraphQL */ `
     amount: Float
     currency: String
     categoryId: ID
+    accountId: ID
     occurredOn: String
     note: String
   }
@@ -164,9 +183,20 @@ const typeDefs = /* GraphQL */ `
     color: String
   }
 
+  "Only the fields sent are changed; send null to clear an optional one."
   input UpdateProfileInput {
     displayName: String
     currency: String
+    fullName: String
+    phone: String
+    addressLine: String
+    postalCode: String
+    city: String
+    country: String
+    birthDate: String
+    theme: Theme
+    locale: Locale
+    notificationsEnabled: Boolean
   }
 
   type Query {
@@ -213,6 +243,7 @@ type TransactionRow = {
   note: string | null;
   source: string;
   created_at: string;
+  account_id: number | null;
   category: CategoryRow | null;
 };
 
@@ -225,9 +256,8 @@ type SummaryRow = {
   tx_count: number;
 };
 
-const PROFILE_COLUMNS = "id, display_name, currency, account_type, read_only";
 const CATEGORY_COLUMNS = "id, name, icon, color";
-const TRANSACTION_COLUMNS = `id, type, amount, currency, occurred_on, note, source, created_at, category:categories(${CATEGORY_COLUMNS})`;
+const TRANSACTION_COLUMNS = `id, type, amount, currency, occurred_on, note, source, created_at, account_id, category:categories(${CATEGORY_COLUMNS})`;
 
 const toTransaction = (t: TransactionRow) => ({
   id: t.id,
@@ -238,9 +268,12 @@ const toTransaction = (t: TransactionRow) => ({
   note: t.note,
   source: t.source,
   createdAt: t.created_at,
+  accountId: t.account_id,
   category: t.category,
 });
 
+// camelCase input keys → snake_case columns. GraphQL only includes keys the client sent,
+// so explicit nulls survive and absent keys are skipped.
 // camelCase input keys → snake_case columns. GraphQL only includes keys the client sent,
 // so explicit nulls survive and absent keys are skipped.
 const COLUMNS: Record<string, string> = {
@@ -248,99 +281,35 @@ const COLUMNS: Record<string, string> = {
   amount: "amount",
   currency: "currency",
   categoryId: "category_id",
+  accountId: "account_id",
   occurredOn: "occurred_on",
   note: "note",
   name: "name",
   icon: "icon",
   color: "color",
   displayName: "display_name",
+  fullName: "full_name",
+  phone: "phone",
+  addressLine: "address_line",
+  postalCode: "postal_code",
+  city: "city",
+  country: "country",
+  birthDate: "birth_date",
+  theme: "theme",
+  locale: "locale",
+  notificationsEnabled: "notifications_enabled",
 };
-const toRow = (input: Record<string, unknown>) =>
-  Object.fromEntries(Object.entries(input).map(([key, value]) => [COLUMNS[key], value]));
+const toRow = (input: Record<string, unknown>) => toColumns(input, COLUMNS);
 
-const round2 = (n: number) => Math.round(n * 100) / 100;
 
-const clientError = (message: string, code: string) => new GraphQLError(message, { extensions: { code } });
 
-// Never return Postgres messages to the client: they leak table and constraint names.
-function fail(error: PostgrestError): never {
-  switch (error.code) {
-    case "PGRST116":
-      throw clientError("No encontrado", "NOT_FOUND");
-    case "42501":
-      throw clientError("No tienes permiso para esta operación", "FORBIDDEN");
-    case "23505":
-      throw clientError("Ya existe un elemento con esos datos", "CONFLICT");
-    case "23502":
-    case "23503":
-    case "23514":
-    case "22P02":
-    case "22007":
-    case "22008":
-      console.warn("rejected by database constraint:", error.code, error.message);
-      throw clientError("Datos no válidos", "BAD_USER_INPUT");
-    default:
-      throw new Error(`${error.code}: ${error.message}`); // masked by Yoga, logged server-side
-  }
-}
-
-function requireUser(ctx: Context): AuthedUser {
-  if (!ctx.user) throw clientError("Inicia sesión para continuar", "UNAUTHENTICATED");
-  return ctx.user;
-}
-
-function profileOf(user: AuthedUser): Promise<Profile> {
-  user.profile ??= (async () => {
-    const { data, error } = await user.db
-      .from("profiles")
-      .select(PROFILE_COLUMNS)
-      .eq("id", user.userId)
-      .single<Profile>();
-    if (error) fail(error);
-    return data;
-  })();
-  return user.profile;
-}
-
-async function requireWritable(ctx: Context): Promise<AuthedUser> {
-  const user = requireUser(ctx);
-  if ((await profileOf(user)).read_only) {
-    throw clientError("La cuenta demo es de solo lectura", "FORBIDDEN");
-  }
-  return user;
-}
-
-async function assertOwnCategory(user: AuthedUser, categoryId: number | null | undefined) {
-  if (categoryId == null) return;
-  const { data, error } = await user.db
-    .from("categories")
-    .select("id")
-    .eq("id", categoryId)
-    .eq("user_id", user.userId)
-    .maybeSingle();
-  if (error) fail(error);
-  if (!data) throw clientError("Categoría no encontrada", "BAD_USER_INPUT");
-}
-
-async function toMe(ctx: Context, user: AuthedUser) {
-  const p = await profileOf(user);
-  return {
-    id: p.id,
-    email: user.email,
-    displayName: p.display_name,
-    currency: p.currency,
-    accountType: p.account_type,
-    isOwner: p.account_type === "real" && ctx.ownerUserId === p.id,
-    readOnly: p.read_only,
-  };
-}
-
-export const schema = createSchema<Context>({
-  typeDefs,
-  resolvers: {
+const base: ResolverMap = {
+    JSON: JSONScalar,
     TransactionType: { INCOME: "income", EXPENSE: "expense" },
     TransactionSource: { MANUAL: "manual", OCR: "ocr", BANK: "bank" },
     AccountType: { REAL: "real", DEMO: "demo" },
+    Plan: { FREE: "free", PRO: "pro" },
+    Theme: { LIGHT: "light", DARK: "dark", SYSTEM: "system" },
     ContactTopic: { SUPPORT: "support", BANK: "bank", BILLING: "billing", OTHER: "other" },
 
     Query: {
@@ -451,7 +420,8 @@ export const schema = createSchema<Context>({
       createTransaction: async (_, args: { input: unknown }, ctx) => {
         const user = await requireWritable(ctx);
         const input = parse(schemas.createTransaction, args.input);
-        await assertOwnCategory(user, input.categoryId);
+        await assertOwned(user, "categories", input.categoryId);
+        await assertOwned(user, "accounts", input.accountId);
         const { data, error } = await user.db
           .from("transactions")
           .insert({ ...toRow(input), user_id: user.userId })
@@ -465,7 +435,8 @@ export const schema = createSchema<Context>({
         const user = await requireWritable(ctx);
         const id = parse(schemas.id, args.id);
         const input = parse(schemas.updateTransaction, args.input);
-        await assertOwnCategory(user, input.categoryId);
+        await assertOwned(user, "categories", input.categoryId);
+        await assertOwned(user, "accounts", input.accountId);
         const { data, error } = await user.db
           .from("transactions")
           .update(toRow(input))
@@ -567,5 +538,9 @@ export const schema = createSchema<Context>({
         return true; // profile, categories and transactions go with it (on delete cascade)
       },
     },
-  },
+};
+
+export const schema = createSchema<Context>({
+  typeDefs: [typeDefs, finance.typeDefs, investments.typeDefs, simulations.typeDefs, updates.typeDefs],
+  resolvers: [base, finance.resolvers, investments.resolvers, simulations.resolvers, updates.resolvers] as never,
 });

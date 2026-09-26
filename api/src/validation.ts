@@ -9,6 +9,9 @@ const note = z.string().trim().max(500).nullable();
 const type = z.enum(["income", "expense"]);
 
 const atLeastOneField = (o: object) => Object.keys(o).length > 0;
+const optText = (max: number) => z.string().trim().min(1).max(max).nullable();
+
+export const primitives = { id, amount, currency, date, note, type, atLeastOneField, optText };
 
 export const schemas = {
   id,
@@ -23,11 +26,12 @@ export const schemas = {
     amount,
     currency: currency.optional(),
     categoryId: id.nullish(),
+    accountId: id.nullish(),
     occurredOn: date.optional(),
     note: note.optional(),
   }),
   updateTransaction: z
-    .object({ type, amount, currency, categoryId: id.nullable(), occurredOn: date, note })
+    .object({ type, amount, currency, categoryId: id.nullable(), accountId: id.nullable(), occurredOn: date, note })
     .partial()
     .refine(atLeastOneField, "no hay campos que actualizar"),
   createCategory: z.object({
@@ -51,7 +55,20 @@ export const schemas = {
     acceptPrivacy: z.literal(true, "debes aceptar la política de privacidad"),
   }),
   updateProfile: z
-    .object({ displayName: z.string().trim().min(1).max(50).nullable(), currency })
+    .object({
+      displayName: z.string().trim().min(1).max(50).nullable(),
+      currency,
+      fullName: optText(100),
+      phone: z.string().trim().regex(/^\+?[0-9 ()-]{6,20}$/, "teléfono no válido").nullable(),
+      addressLine: optText(200),
+      postalCode: optText(20),
+      city: optText(100),
+      country: z.string().regex(/^[A-Z]{2}$/, "código de país ISO de 2 letras").nullable(),
+      birthDate: date.nullable(),
+      theme: z.enum(["light", "dark", "system"]),
+      locale: z.enum(["es", "en"]),
+      notificationsEnabled: z.boolean(),
+    })
     .partial()
     .refine(atLeastOneField, "no hay campos que actualizar"),
 };

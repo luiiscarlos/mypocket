@@ -7,7 +7,9 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "lint": "eslint src",
+    "test": "node --import tsx --test src/*.test.ts",
     "smoke": "tsx --env-file=.env.dev scripts/smoke.ts",
+    "smoke:app": "tsx --env-file=.env.dev scripts/smoke-app.ts",
     "seed": "tsx --env-file=.env.dev scripts/seed.ts",
     "seed:prod": "tsx --env-file=.env.prod scripts/seed.ts"
   },
