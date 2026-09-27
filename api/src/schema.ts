@@ -9,6 +9,7 @@ import {
 import { finance } from "./modules/finance.js";
 import { investments } from "./modules/investments.js";
 import { simulations } from "./modules/simulations.js";
+import { support } from "./modules/support.js";
 import { updates } from "./modules/updates.js";
 
 export type { Context } from "./core.js";
@@ -89,6 +90,8 @@ const typeDefs = /* GraphQL */ `
     theme: Theme!
     locale: Locale!
     notificationsEnabled: Boolean!
+    "Can read and answer every support ticket."
+    isAdmin: Boolean!
     "False until the first-run onboarding is finished; the app must send the user there."
     onboardingCompleted: Boolean!
   }
@@ -556,6 +559,6 @@ const base: ResolverMap = {
 };
 
 export const schema = createSchema<Context>({
-  typeDefs: [typeDefs, finance.typeDefs, investments.typeDefs, simulations.typeDefs, updates.typeDefs],
-  resolvers: [base, finance.resolvers, investments.resolvers, simulations.resolvers, updates.resolvers] as never,
+  typeDefs: [typeDefs, finance.typeDefs, investments.typeDefs, simulations.typeDefs, updates.typeDefs, support.typeDefs],
+  resolvers: [base, finance.resolvers, investments.resolvers, simulations.resolvers, updates.resolvers, support.resolvers] as never,
 });

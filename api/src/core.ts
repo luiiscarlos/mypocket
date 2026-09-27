@@ -19,6 +19,7 @@ export type Profile = {
   locale: "es" | "en";
   notifications_enabled: boolean;
   onboarding_completed_at: string | null;
+  is_admin: boolean;
 };
 
 export type AuthedUser = {
@@ -40,7 +41,7 @@ export type Context = {
 };
 
 export const PROFILE_COLUMNS =
-  "id, display_name, currency, account_type, read_only, full_name, phone, address_line, postal_code, city, country, birth_date, plan, theme, locale, notifications_enabled, onboarding_completed_at";
+  "id, display_name, currency, account_type, read_only, full_name, phone, address_line, postal_code, city, country, birth_date, plan, theme, locale, notifications_enabled, onboarding_completed_at, is_admin";
 
 export const clientError = (message: string, code: string) => new GraphQLError(message, { extensions: { code } });
 
@@ -150,5 +151,6 @@ export async function toMe(ctx: Context, user: AuthedUser) {
     locale: p.locale,
     notificationsEnabled: p.notifications_enabled,
     onboardingCompleted: p.onboarding_completed_at !== null,
+    isAdmin: p.is_admin,
   };
 }

@@ -278,7 +278,8 @@ const schemas = {
   updateExpense: z
     .object({ ...expenseFields, status: z.enum(["suggested", "active", "paused", "cancelled"]) })
     .partial()
-    .refine(p.atLeastOneField, "no hay campos que actualizar"),
+    .refine(p.atLeastOneField, "no hay campos que actualizar")
+    .refine(consistent, { message: "el tipo no corresponde a gasto/ingreso o la fecha fin es anterior al inicio", path: ["kind"] }),
   days: z.number().int().min(1).max(366),
 };
 
