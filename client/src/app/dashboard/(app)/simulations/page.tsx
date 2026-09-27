@@ -68,7 +68,7 @@ export default async function SimulationsPage({ searchParams }: PageProps<"/dash
 
   return (
     <>
-      <PageHeader kicker={t("kicker")} title={t("title")} />
+      <PageHeader title={t("title")} />
       <PageNotice {...notice} />
 
       <nav aria-label={t("calculators")} className="flex flex-wrap gap-2">
@@ -124,7 +124,8 @@ export default async function SimulationsPage({ searchParams }: PageProps<"/dash
                   <span>{t("yearN", { n: result.series.at(-1)?.period ?? 0 })}</span>
                 </figcaption>
               </figure>
-              <form action={saveSimulation} className="flex flex-col gap-3 sm:flex-row sm:items-end">
+              <p className="m-0 text-[13px] text-ink-muted">{t("disclaimer")}</p>
+              {!me.readOnly && <form action={saveSimulation} className="flex flex-col gap-3 sm:flex-row sm:items-end">
                 <input type="hidden" name="back" value={back} />
                 <input type="hidden" name="kind" value={kind} />
                 <input type="hidden" name="params" value={JSON.stringify(params)} />
@@ -132,14 +133,14 @@ export default async function SimulationsPage({ searchParams }: PageProps<"/dash
                   {t("saveName")}
                   <input name="name" required maxLength={80} placeholder={t(`kinds.${kind}`)} className={inputClass} />
                 </label>
-                <button disabled={me.readOnly} className={`${smallButton} h-[52px]`}>{t("save")}</button>
-              </form>
+                <button className={`${smallButton} h-[52px]`}>{t("save")}</button>
+              </form>}
             </>
           )}
         </Section>
       </div>
 
-      <Section title={t("saved")}>
+      <Section title={t("saved")} aside={<span className="font-mono text-[13px] text-ink-muted">{saved.length}</span>}>
         {saved.length === 0 ? (
           <Empty>{t("noSaved")}</Empty>
         ) : (
@@ -154,11 +155,13 @@ export default async function SimulationsPage({ searchParams }: PageProps<"/dash
                   value={first && metric(first.key, first.value)}
                   sub={first && t(`metrics.${first.key}` as "metrics.monthlyPayment")}
                 >
-                  <form action={deleteSimulation}>
-                    <input type="hidden" name="back" value={back} />
-                    <input type="hidden" name="id" value={s.id} />
-                    <button disabled={me.readOnly} className={dangerLink}>{t("delete")}</button>
-                  </form>
+                  {!me.readOnly && (
+                    <form action={deleteSimulation}>
+                      <input type="hidden" name="back" value={back} />
+                      <input type="hidden" name="id" value={s.id} />
+                      <button className={dangerLink}>{t("delete")}</button>
+                    </form>
+                  )}
                 </Row>
               );
             })}

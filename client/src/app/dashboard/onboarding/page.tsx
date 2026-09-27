@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { completeOnboarding, setPlan, updateProfile } from "@/app/dashboard/actions";
 import {
   ACCOUNT_FIELDS, AccountForm, AccountList, EXPENSE_FIELDS, ExpenseForm, ExpenseList, INVESTMENT_FIELDS, InvestmentList,
-  InvestmentSearch, searchInstruments, type Account, type Expense, type Investment,
+  InvestmentSearch, searchInstruments, type Account, type Category, type Expense, type Investment,
 } from "@/components/app/finance";
 import { PageNotice, Section, smallButton } from "@/components/app/ui";
 import { inputClass, labelClass, primaryButton } from "@/components/forms";
@@ -37,11 +37,12 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
   const [t, notice, data, search] = await Promise.all([
     getTranslations("app.onboarding"),
     appNotice(sp as { error?: string; message?: string }),
-    gql<{ me: Me; accounts: Account[]; investments: Investment[]; recurringExpenses: Expense[] }>(`{
+    gql<{ me: Me; accounts: Account[]; investments: Investment[]; recurringExpenses: Expense[]; categories: Category[] }>(`{
       me { fullName phone addressLine postalCode city country birthDate currency plan readOnly onboardingCompleted }
       accounts { ${ACCOUNT_FIELDS} }
       investments { ${INVESTMENT_FIELDS} }
       recurringExpenses { ${EXPENSE_FIELDS} }
+      categories { id name }
     }`),
     step === 3 ? searchInstruments(q) : Promise.resolve({}),
   ]);
@@ -175,8 +176,8 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
 
         {key === "expenses" && (
           <Section title={t("steps.expenses.yours")}>
-            <ExpenseList expenses={data.recurringExpenses} back={back} readOnly={me.readOnly} />
-            <ExpenseForm back={back} accounts={data.accounts} readOnly={me.readOnly} />
+            <ExpenseList expenses={data.recurringExpenses} back={back} readOnly={me.readOnly} categories={data.categories} />
+            <ExpenseForm back={back} accounts={data.accounts} categories={data.categories} readOnly={me.readOnly} />
           </Section>
         )}
 

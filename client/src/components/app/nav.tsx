@@ -3,36 +3,83 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import {
+  ArrowLeftRight, Calculator, ChartColumn, House, Landmark, Menu, Plus, Settings, Sparkles, type LucideIcon,
+} from "lucide-react";
 
-export const NAV = [
-  { href: "/dashboard", key: "home" },
-  { href: "/dashboard/net-worth", key: "netWorth" },
-  { href: "/dashboard/transactions", key: "transactions" },
-  { href: "/dashboard/analytics", key: "analytics" },
-  { href: "/dashboard/simulations", key: "simulations" },
-  { href: "/dashboard/updates", key: "updates" },
-  { href: "/dashboard/settings", key: "settings" },
-] as const;
+type Entry = { href: string; key: "home" | "netWorth" | "transactions" | "analytics" | "simulations" | "updates" | "settings" | "add" | "more"; Icon: LucideIcon };
 
-/** Sidebar on desktop, horizontal scroller on mobile. Client only for the active state. */
-export function NavLinks() {
+const SIDE: Entry[] = [
+  { href: "/dashboard", key: "home", Icon: House },
+  { href: "/dashboard/net-worth", key: "netWorth", Icon: Landmark },
+  { href: "/dashboard/transactions", key: "transactions", Icon: ArrowLeftRight },
+  { href: "/dashboard/analytics", key: "analytics", Icon: ChartColumn },
+  { href: "/dashboard/simulations", key: "simulations", Icon: Calculator },
+  { href: "/dashboard/updates", key: "updates", Icon: Sparkles },
+  { href: "/dashboard/settings", key: "settings", Icon: Settings },
+];
+
+// Mobile bottom bar: 5 entries, the middle one is "Add".
+const BOTTOM: Entry[] = [
+  { href: "/dashboard", key: "home", Icon: House },
+  { href: "/dashboard/net-worth", key: "netWorth", Icon: Landmark },
+  { href: "/dashboard/transactions", key: "add", Icon: Plus },
+  { href: "/dashboard/analytics", key: "analytics", Icon: ChartColumn },
+  { href: "/dashboard/settings", key: "more", Icon: Menu },
+];
+
+const isActive = (pathname: string, href: string) => (href === "/dashboard" ? pathname === href : pathname.startsWith(href));
+const icon = { size: 20, strokeWidth: 1.9, "aria-hidden": true } as const;
+
+/** Sidebar entries. Collapsed: icons only, the label stays as tooltip and accessible name. */
+export function SideNav({ collapsed }: { collapsed: boolean }) {
   const t = useTranslations("app.nav");
   const pathname = usePathname();
   return (
-    <nav aria-label={t("label")} className="-mx-5 flex gap-1 overflow-x-auto px-5 lg:mx-0 lg:flex-col lg:px-0">
-      {NAV.map(({ href, key }) => {
-        const active = href === "/dashboard" ? pathname === href : pathname.startsWith(href);
-        return (
-          <Link
-            key={href}
-            href={href}
-            aria-current={active ? "page" : undefined}
-            className="shrink-0 border-b-2 border-transparent px-2 py-2.5 text-[15px] text-mist hover:text-cream hover:no-underline aria-[current=page]:border-cream aria-[current=page]:text-cream lg:border-b-0 lg:border-l-2 lg:px-4"
-          >
-            {t(key)}
-          </Link>
-        );
-      })}
+    <nav aria-label={t("label")}>
+      <ul className="m-0 flex list-none flex-col gap-1 p-0">
+        {SIDE.map(({ href, key, Icon }) => (
+          <li key={href}>
+            <Link
+              href={href}
+              title={collapsed ? t(key) : undefined}
+              aria-label={collapsed ? t(key) : undefined}
+              aria-current={isActive(pathname, href) ? "page" : undefined}
+              className={`flex h-11 items-center gap-3 text-[15px] text-ink-muted hover:bg-band hover:text-ink hover:no-underline aria-[current=page]:bg-band aria-[current=page]:font-semibold aria-[current=page]:text-ink ${
+                collapsed ? "justify-center" : "px-3"
+              }`}
+            >
+              <Icon {...icon} />
+              {!collapsed && t(key)}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+export function BottomNav() {
+  const t = useTranslations("app.nav");
+  const pathname = usePathname();
+  return (
+    <nav aria-label={t("label")} className="fixed inset-x-0 bottom-0 z-10 border-t border-rule bg-paper lg:hidden">
+      <ul className="m-0 grid h-[72px] list-none grid-cols-5 p-0">
+        {BOTTOM.map(({ href, key, Icon }) => (
+          <li key={key} className="flex">
+            <Link
+              href={href}
+              aria-current={isActive(pathname, href) && key !== "add" ? "page" : undefined}
+              className={`flex grow flex-col items-center justify-center gap-1 text-[11px] hover:no-underline ${
+                key === "add" ? "bg-leaf text-on-leaf" : "text-ink-muted aria-[current=page]:font-semibold aria-[current=page]:text-ink"
+              }`}
+            >
+              <Icon size={22} strokeWidth={1.9} aria-hidden />
+              {t(key)}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </nav>
   );
 }

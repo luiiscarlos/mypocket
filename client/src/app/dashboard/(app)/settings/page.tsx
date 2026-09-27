@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { changePassword, deleteMyAccount, setNotifications, setPlan, updateProfile } from "@/app/dashboard/actions";
+import { changePassword, deleteMyAccount, setNotifications, setPlan } from "@/app/dashboard/actions";
 import { PageHeader, PageNotice, Section, smallButton } from "@/components/app/ui";
 import { inputClass, labelClass } from "@/components/forms";
 import { ThemeSwitcher } from "@/components/site/chrome";
@@ -11,11 +11,7 @@ import { logout } from "@/lib/auth-actions";
 import { appNotice } from "@/lib/auth-codes";
 import { getTheme } from "@/lib/preferences";
 
-type Me = {
-  email: string | null; displayName: string | null; fullName: string | null; phone: string | null; addressLine: string | null;
-  postalCode: string | null; city: string | null; country: string | null; birthDate: string | null; currency: string;
-  plan: "FREE" | "PRO"; notificationsEnabled: boolean; readOnly: boolean;
-};
+type Me = { email: string | null; plan: "FREE" | "PRO"; notificationsEnabled: boolean; readOnly: boolean };
 
 const PAGE = "/dashboard/settings";
 
@@ -29,38 +25,14 @@ export default async function SettingsPage({ searchParams }: PageProps<"/dashboa
     getLocale(),
     getTheme(),
     appNotice(await searchParams),
-    gql<{ me: Me }>("{ me { email displayName fullName phone addressLine postalCode city country birthDate currency plan notificationsEnabled readOnly } }"),
+    gql<{ me: Me }>("{ me { email plan notificationsEnabled readOnly } }"),
   ]);
-  const field = (name: keyof Me, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
-    <label className={labelClass}>
-      {t(`profile.${name}` as "profile.fullName")}
-      <input name={name} defaultValue={(me[name] as string | null) ?? ""} className={inputClass} {...props} />
-    </label>
-  );
   const hiddenBack = <input type="hidden" name="back" value={PAGE} />;
 
   return (
     <>
-      <PageHeader kicker={t("kicker")} title={t("title")} />
+      <PageHeader title={t("title")} />
       <PageNotice {...notice} />
-
-      <Section title={t("profile.title")} aside={<span className="font-mono text-xs text-ink-muted">{me.email}</span>}>
-        <form action={updateProfile} className="flex flex-col gap-4">
-          {hiddenBack}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {field("fullName", { maxLength: 100 })}
-            {field("displayName", { maxLength: 50 })}
-            {field("phone", { type: "tel", maxLength: 30, autoComplete: "tel" })}
-            {field("addressLine", { maxLength: 200, autoComplete: "street-address" })}
-            {field("postalCode", { maxLength: 12, autoComplete: "postal-code" })}
-            {field("city", { maxLength: 100, autoComplete: "address-level2" })}
-            {field("country", { maxLength: 2, pattern: "[A-Za-z]{2}", placeholder: "ES", className: `${inputClass} font-mono uppercase` })}
-            {field("birthDate", { type: "date", className: `${inputClass} font-mono` })}
-            {field("currency", { maxLength: 3, pattern: "[A-Za-z]{3}", required: true, className: `${inputClass} font-mono uppercase` })}
-          </div>
-          <button disabled={me.readOnly} className={`${smallButton} self-start`}>{t("save")}</button>
-        </form>
-      </Section>
 
       <div className="grid grid-cols-1 gap-10 xl:grid-cols-2">
         <Section title={t("preferences.title")}>
@@ -87,9 +59,9 @@ export default async function SettingsPage({ searchParams }: PageProps<"/dashboa
               <form action={setNotifications}>
                 {hiddenBack}
                 <input type="hidden" name="enabled" value={String(!me.notificationsEnabled)} />
-                <button role="switch" aria-checked={me.notificationsEnabled} disabled={me.readOnly} className={`${smallButton} aria-checked:bg-ink aria-checked:text-paper`}>
+                {!me.readOnly && <button role="switch" aria-checked={me.notificationsEnabled} className={`${smallButton} aria-checked:bg-ink aria-checked:text-paper`}>
                   {me.notificationsEnabled ? t("preferences.on") : t("preferences.off")}
-                </button>
+                </button>}
               </form>
             </div>
           </div>
@@ -101,7 +73,7 @@ export default async function SettingsPage({ searchParams }: PageProps<"/dashboa
           <form action={setPlan}>
             {hiddenBack}
             <input type="hidden" name="plan" value={me.plan === "PRO" ? "FREE" : "PRO"} />
-            <button disabled={me.readOnly} className={smallButton}>{me.plan === "PRO" ? t("plan.toFree") : t("plan.toPro")}</button>
+            {!me.readOnly && <button className={smallButton}>{me.plan === "PRO" ? t("plan.toFree") : t("plan.toPro")}</button>}
           </form>
           <Link href="/pricing" className="text-sm underline">{t("plan.compare")}</Link>
         </Section>
@@ -123,7 +95,7 @@ export default async function SettingsPage({ searchParams }: PageProps<"/dashboa
               {t("password.confirm")}
               <input name="confirm" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
             </label>
-            <button disabled={me.readOnly} className={`${smallButton} self-start`}>{t("password.submit")}</button>
+            {!me.readOnly && <button className={`${smallButton} self-start`}>{t("password.submit")}</button>}
           </form>
         </Section>
 
@@ -151,7 +123,7 @@ export default async function SettingsPage({ searchParams }: PageProps<"/dashboa
             {t("delete.confirm", { word: t("delete.word") })}
             <input name="confirm" required autoComplete="off" className={`${inputClass} max-w-xs`} />
           </label>
-          <button disabled={me.readOnly} className={`${smallButton} self-start border-danger text-danger`}>{t("delete.submit")}</button>
+          {!me.readOnly && <button className={`${smallButton} self-start border-danger text-danger`}>{t("delete.submit")}</button>}
         </form>
       </Section>
     </>

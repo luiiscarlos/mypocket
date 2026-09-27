@@ -23,3 +23,14 @@ export async function getTheme(): Promise<Theme> {
   const value = (await cookies()).get(THEME_COOKIE)?.value;
   return isTheme(value) ? value : "system";
 }
+
+const SIDEBAR_COOKIE = "sidebar";
+
+/** Dashboard sidebar folded to icons. Read on the server so the width never jumps. */
+export async function getSidebarCollapsed() {
+  return (await cookies()).get(SIDEBAR_COOKIE)?.value === "collapsed";
+}
+
+export async function setSidebarCollapsed(collapsed: boolean) {
+  await remember(SIDEBAR_COOKIE, collapsed ? "collapsed" : "expanded");
+}

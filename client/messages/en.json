@@ -421,7 +421,12 @@
       "simulations": "Simulations",
       "updates": "What's new",
       "settings": "Settings",
-      "logout": "Log out"
+      "logout": "Log out",
+      "newTransaction": "New transaction",
+      "add": "Add",
+      "more": "More",
+      "expand": "Expand menu",
+      "collapse": "Collapse menu"
     },
     "plans": {
       "FREE": "Free",
@@ -446,7 +451,8 @@
       "deleted": "Deleted.",
       "planChanged": "Plan updated.",
       "passwordChanged": "Password updated.",
-      "welcome": "All set! This is your money."
+      "welcome": "All set! This is your money.",
+      "recurringSaved": "Recurring transaction saved. Its charges will show in “Upcoming payments”."
     },
     "finance": {
       "delete": "Delete",
@@ -460,7 +466,10 @@
       "expenseKinds": {
         "SUBSCRIPTION": "Subscription",
         "DEBT": "Debt",
-        "OTHER": "Other fixed expense"
+        "OTHER": "Periodic expense",
+        "SALARY": "Salary",
+        "INVESTMENT": "Investment or dividends",
+        "OTHER_INCOME": "Other recurring income"
       },
       "instrumentKinds": {
         "ETF": "ETF",
@@ -496,7 +505,7 @@
         "searchPlaceholder": "IE00B4L5Y983 or bitcoin",
         "find": "Search",
         "searchError": "Search isn't available right now. Try again in a minute.",
-        "noResults": "No results. Check the ISIN.",
+        "noResults": "We couldn't find “{query}”. Check the ISIN (12 characters, starting with the country) or search crypto by name.",
         "noPrice": "No price",
         "quantity": "Units",
         "add": "Add",
@@ -505,18 +514,42 @@
       "expenses": {
         "empty": "You haven't added any fixed expenses yet.",
         "name": "Name",
-        "namePlaceholder": "Netflix, mortgage, gym…",
+        "namePlaceholder": "Netflix, salary, student loan…",
         "kind": "Type",
         "amount": "Amount",
-        "interval": "Every",
+        "interval": "Period",
         "nextCharge": "Next charge",
         "outstandingLabel": "Total outstanding",
-        "debtsOnly": "Debts only",
+        "debtsOnly": "debts only",
         "account": "Charged to",
-        "add": "Add fixed expense",
+        "add": "Add recurring",
         "next": "next {date}",
-        "outstanding": "{amount} left"
-      }
+        "outstanding": "{amount} left",
+        "finished": "Finished",
+        "until": "until {date}",
+        "paidOf": "Paid {paid} of {total}",
+        "endsOn": "Ends {date}",
+        "kindAuto": "From expense or income",
+        "expenseGroup": "Expenses",
+        "incomeGroup": "Income",
+        "every": "Every",
+        "start": "First charge",
+        "duration": "Duration",
+        "durationOpen": "No end",
+        "durationUntil": "Until",
+        "endDate": "End date",
+        "paymentsTotal": "Number of payments",
+        "payments": "payments",
+        "category": "Category",
+        "initialAmount": "Initial amount",
+        "initialHint": "What you owed at the start. With the installment and the first charge we work out what's paid, what's left and when it ends."
+      },
+      "units": {
+        "WEEK": "Weeks",
+        "MONTH": "Months",
+        "YEAR": "Years"
+      },
+      "everyN": "every {n} {unit}"
     },
     "home": {
       "kicker": "HOME",
@@ -527,30 +560,70 @@
       "accounts": "Accounts",
       "investments": "Investments",
       "debts": "Debts",
-      "seeNetWorth": "See breakdown",
+      "seeNetWorth": "See net worth",
       "latest": "Latest transactions",
       "seeAll": "See all",
       "noTransactions": "No transactions yet. Add the first one from “New transaction”.",
       "income": "Income",
       "expense": "Expense",
       "upcoming": "Upcoming payments",
-      "next30": "30 DAYS",
-      "noUpcoming": "Nothing to pay in the next 30 days."
+      "next30": "30 DAYS · {total}",
+      "noUpcoming": "Nothing to pay in the next 30 days.",
+      "currentLabel": "CURRENT BALANCE",
+      "currentSplit": "Accounts {accounts} · Investments {investments}",
+      "endOfMonth": "At month end",
+      "afterDebts": "After paying debts",
+      "kinds": {
+        "SUBSCRIPTION": "Subscription",
+        "DEBT": "Debt",
+        "OTHER": "Periodic expense",
+        "SALARY": "Salary",
+        "INVESTMENT": "Investment",
+        "OTHER_INCOME": "Recurring income"
+      },
+      "empty": {
+        "title": "Nothing to add up yet",
+        "text": "Add your first account or your cash and you'll see your balance, transactions and upcoming payments here.",
+        "cta": "Add account"
+      }
     },
     "netWorth": {
       "kicker": "NET WORTH",
-      "title": "Everything you own and owe",
+      "title": "Net worth",
       "total": "TOTAL · {currency}",
       "accounts": "Accounts",
       "investments": "Investments",
       "debts": "Debts",
-      "recurring": "Subscriptions and fixed expenses",
+      "recurring": "Subscriptions and periodic expenses",
       "addAccount": "Add account",
-      "addExpense": "Add fixed expense or debt"
+      "addExpense": "Add fixed expense or debt",
+      "current": "CURRENT BALANCE · {currency}",
+      "endOfMonth": "At month end (with recurring)",
+      "afterDebts": "After paying debts ({debts})",
+      "income": "Recurring income",
+      "addInvestment": "Add investment",
+      "addRecurring": "Add recurring: expense, debt or income",
+      "pricesSource": "Prices from [PRICE SOURCE], updated [FREQUENCY].",
+      "empty": {
+        "title": "Your net worth starts here",
+        "text": "Add your accounts, investments and debts, and you'll see how much you have in total and where every euro comes from."
+      },
+      "filters": {
+        "all": "All",
+        "apply": "Apply",
+        "reset": "Clear filters",
+        "kind": "TYPE",
+        "sort": "SORT",
+        "sorts": {
+          "amount": "Amount",
+          "name": "Name",
+          "next": "Next charge"
+        }
+      }
     },
     "transactions": {
       "kicker": "TRANSACTIONS",
-      "title": "New transaction",
+      "title": "Transactions",
       "type": "Type",
       "EXPENSE": "Expense",
       "INCOME": "Income",
@@ -566,7 +639,29 @@
       "balanceHint": "If you pick an account in the same currency, its balance updates automatically.",
       "history": "History",
       "empty": "No transactions yet.",
-      "delete": "Delete"
+      "delete": "Delete",
+      "new": "New transaction",
+      "periodic": "Recurring",
+      "periodicHint": "It repeats: salary, subscription, debt… Set how often and until when.",
+      "count": "{count, plural, one {# transaction} other {# transactions}}",
+      "noMatches": "No transactions match the filters.",
+      "filters": {
+        "all": "All",
+        "apply": "Apply",
+        "reset": "Clear filters",
+        "type": "TYPE",
+        "account": "ACCOUNT",
+        "category": "CATEGORY",
+        "from": "FROM",
+        "to": "TO",
+        "sort": "SORT",
+        "orders": {
+          "DATE_DESC": "Newest",
+          "DATE_ASC": "Oldest",
+          "AMOUNT_DESC": "Highest amount",
+          "AMOUNT_ASC": "Lowest amount"
+        }
+      }
     },
     "analytics": {
       "kicker": "ANALYTICS",
@@ -579,7 +674,12 @@
       "empty": "No spending this month.",
       "uncategorized": "Uncategorized",
       "count": "{count, plural, one {# transaction} other {# transactions}}",
-      "monthAria": "{month}: income {income}, expenses {expense}"
+      "monthAria": "{month}: income {income}, expenses {expense}",
+      "emptyAll": {
+        "title": "Nothing to analyse yet",
+        "text": "Once you log income and expenses, you'll see where your money goes month by month and by category.",
+        "cta": "Add transaction"
+      }
     },
     "simulations": {
       "kicker": "SIMULATIONS",
@@ -652,7 +752,8 @@
         "yearsToRetirement": "Years to retirement",
         "potAtRetirement": "Pot at retirement",
         "monthlyIncome": "Monthly income"
-      }
+      },
+      "disclaimer": "Estimates only, not financial advice."
     },
     "settings": {
       "kicker": "SETTINGS",
@@ -669,7 +770,11 @@
         "city": "City",
         "country": "Country (code)",
         "birthDate": "Date of birth",
-        "currency": "Main currency"
+        "currency": "Main currency",
+        "personal": "Personal details",
+        "address": "Address",
+        "money": "Currency",
+        "save": "Save changes"
       },
       "preferences": {
         "title": "Preferences",
@@ -784,6 +889,31 @@
           "text": "Unlimited accounts in one combined balance, analytics and predictions."
         }
       }
+    },
+    "loading": "Loading…",
+    "error": {
+      "title": "We couldn't load your data",
+      "text": "Check your connection and try again. Your data is safe.",
+      "retry": "Try again"
+    },
+    "demo": {
+      "user": "Demo account",
+      "readOnly": "Read-only",
+      "title": "Demo account · read-only.",
+      "text": "You can explore everything, but not create, edit or delete data.",
+      "cta": "Create my account"
+    },
+    "header": {
+      "preferences": "Language and appearance",
+      "language": "LANGUAGE",
+      "appearance": "APPEARANCE",
+      "themes": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      },
+      "account": "Your account",
+      "profile": "Profile"
     }
   }
 }

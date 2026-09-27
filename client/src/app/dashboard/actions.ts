@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 import { gql } from "@/lib/api";
 import { attempt, backOf, backWith, num, optional, text } from "@/lib/app-actions";
 import { requireUser, safeNext } from "@/lib/auth";
+import { setSidebarCollapsed } from "@/lib/preferences";
 import { createClient } from "@/lib/supabase/server";
 
 // Every action: verified session → API call (which re-checks auth, ownership and input) → back to the form
@@ -58,23 +59,46 @@ export async function deleteAccount(formData: FormData) {
 
 // --- recurring expenses (subscriptions, debts) --------------------------------------------------
 
+const INCOME_KINDS = ["SALARY", "INVESTMENT", "OTHER_INCOME"];
+
+/**
+ * Recurring item from the shared fields (expense form and the "periodic" part of the transaction form):
+ * kind decides expense/income; duration is open-ended, until a date or a number of charges.
+ */
+function recurringInput(formData: FormData, back: string, fallbackName: string) {
+  const amount = num(formData, "amount");
+  const kind = text(formData, "kind");
+  const duration = text(formData, "duration");
+  const initial = text(formData, "initialAmount");
+  const initialAmount = kind === "DEBT" && initial ? num(formData, "initialAmount") : null;
+  const paymentsTotal = duration === "count" ? Number(text(formData, "paymentsTotal")) : null;
+  invalidIf(back, !(amount > 0) || Number.isNaN(initialAmount) || (paymentsTotal !== null && !(paymentsTotal >= 1)));
+  return {
+    name: text(formData, "name") || fallbackName,
+    direction: INCOME_KINDS.includes(kind) ? "INCOME" : "EXPENSE",
+    kind,
+    amount,
+    currency: optional(text(formData, "currency").toUpperCase()),
+    intervalUnit: text(formData, "intervalUnit") || "MONTH",
+    intervalCount: Number(text(formData, "intervalCount")) || 1,
+    startDate: text(formData, "startDate"),
+    endDate: duration === "until" ? optional(text(formData, "endDate")) : null,
+    paymentsTotal,
+    initialAmount,
+    categoryId: optional(text(formData, "categoryId")),
+    accountId: optional(text(formData, "accountId")),
+  };
+}
+
+const kindName = async (kind: string) => {
+  const t = await getTranslations("app.finance.expenseKinds");
+  return t.has(kind as "DEBT") ? t(kind as "DEBT") : kind;
+};
+
 export async function createExpense(formData: FormData) {
   const back = backOf(formData);
-  const amount = num(formData, "amount");
-  const outstanding = text(formData, "outstandingAmount");
-  const outstandingAmount = outstanding ? num(formData, "outstandingAmount") : null;
-  invalidIf(back, Number.isNaN(amount) || Number.isNaN(outstandingAmount));
-  await mutate(back, `mutation ($i: RecurringExpenseInput!) { createRecurringExpense(input: $i) { id } }`, {
-    i: {
-      name: text(formData, "name"),
-      kind: text(formData, "kind"),
-      amount,
-      intervalUnit: text(formData, "intervalUnit") || "MONTH",
-      nextChargeDate: text(formData, "nextChargeDate"),
-      outstandingAmount,
-      accountId: optional(text(formData, "accountId")),
-    },
-  });
+  const input = recurringInput(formData, back, await kindName(text(formData, "kind")));
+  await mutate(back, `mutation ($i: RecurringExpenseInput!) { createRecurringExpense(input: $i) { id } }`, { i: input });
   backWith(back, { message: "saved" });
 }
 
@@ -111,6 +135,17 @@ export async function createTransaction(formData: FormData) {
   const back = backOf(formData);
   const amount = num(formData, "amount");
   invalidIf(back, !(amount > 0));
+  // Periodic: store the schedule instead of a single movement; charges show up in upcoming payments.
+  if (formData.get("periodic") === "on") {
+    formData.set("name", text(formData, "note"));
+    formData.set("startDate", text(formData, "occurredOn"));
+    if (!text(formData, "kind")) formData.set("kind", text(formData, "type") === "INCOME" ? "OTHER_INCOME" : "OTHER");
+    const input = recurringInput(formData, back, await kindName(text(formData, "kind")));
+    // The type radio and the kind must agree (an income can't be a debt).
+    invalidIf(back, (input.direction === "INCOME") !== (text(formData, "type") === "INCOME"));
+    await mutate(back, `mutation ($i: RecurringExpenseInput!) { createRecurringExpense(input: $i) { id } }`, { i: input });
+    backWith(back, { message: "recurringSaved" });
+  }
   await mutate(back, `mutation ($i: CreateTransactionInput!) { createTransaction(input: $i) { id } }`, {
     i: {
       type: text(formData, "type"),
@@ -229,4 +264,11 @@ export async function deleteMyAccount(formData: FormData) {
   await (await createClient()).auth.signOut({ scope: "local" });
   revalidatePath("/", "layout");
   redirect("/login?message=account_deleted");
+}
+
+// --- layout preferences ---------------------------------------------------------------------------
+
+export async function toggleSidebar(formData: FormData) {
+  await setSidebarCollapsed(text(formData, "collapse") === "true");
+  revalidatePath("/dashboard", "layout");
 }

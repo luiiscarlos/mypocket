@@ -421,7 +421,12 @@
       "simulations": "Simulaciones",
       "updates": "Novedades",
       "settings": "Ajustes",
-      "logout": "Cerrar sesión"
+      "logout": "Cerrar sesión",
+      "newTransaction": "Nuevo movimiento",
+      "add": "Añadir",
+      "more": "Más",
+      "expand": "Desplegar menú",
+      "collapse": "Plegar menú"
     },
     "plans": {
       "FREE": "Gratis",
@@ -446,7 +451,8 @@
       "deleted": "Eliminado.",
       "planChanged": "Plan actualizado.",
       "passwordChanged": "Contraseña actualizada.",
-      "welcome": "¡Todo listo! Este es tu dinero."
+      "welcome": "¡Todo listo! Este es tu dinero.",
+      "recurringSaved": "Movimiento periódico guardado. Verás sus cargos en «Próximos pagos»."
     },
     "finance": {
       "delete": "Eliminar",
@@ -460,7 +466,10 @@
       "expenseKinds": {
         "SUBSCRIPTION": "Suscripción",
         "DEBT": "Deuda",
-        "OTHER": "Otro gasto fijo"
+        "OTHER": "Gasto periódico",
+        "SALARY": "Nómina",
+        "INVESTMENT": "Inversión o dividendos",
+        "OTHER_INCOME": "Otro ingreso periódico"
       },
       "instrumentKinds": {
         "ETF": "ETF",
@@ -496,7 +505,7 @@
         "searchPlaceholder": "IE00B4L5Y983 o bitcoin",
         "find": "Buscar",
         "searchError": "No se pudo buscar ahora mismo. Inténtalo en un minuto.",
-        "noResults": "Sin resultados. Revisa el ISIN.",
+        "noResults": "No encontramos «{query}». Revisa el ISIN (12 caracteres, empieza por el país) o busca la cripto por su nombre.",
         "noPrice": "Sin precio",
         "quantity": "Participaciones",
         "add": "Añadir",
@@ -505,18 +514,42 @@
       "expenses": {
         "empty": "Aún no has añadido gastos fijos.",
         "name": "Nombre",
-        "namePlaceholder": "Netflix, hipoteca, gimnasio…",
+        "namePlaceholder": "Netflix, nómina, préstamo estudios…",
         "kind": "Tipo",
         "amount": "Importe",
-        "interval": "Cada",
+        "interval": "Periodo",
         "nextCharge": "Próximo cargo",
         "outstandingLabel": "Pendiente total",
-        "debtsOnly": "Solo deudas",
+        "debtsOnly": "solo deudas",
         "account": "Se cobra de",
-        "add": "Añadir gasto fijo",
+        "add": "Añadir periódico",
         "next": "próximo {date}",
-        "outstanding": "quedan {amount}"
-      }
+        "outstanding": "quedan {amount}",
+        "finished": "Terminado",
+        "until": "hasta {date}",
+        "paidOf": "Pagado {paid} de {total}",
+        "endsOn": "Termina en {date}",
+        "kindAuto": "Según gasto o ingreso",
+        "expenseGroup": "Gastos",
+        "incomeGroup": "Ingresos",
+        "every": "Cada",
+        "start": "Primer cargo",
+        "duration": "Duración",
+        "durationOpen": "Sin fin",
+        "durationUntil": "Hasta",
+        "endDate": "Fecha fin",
+        "paymentsTotal": "Número de pagos",
+        "payments": "pagos",
+        "category": "Categoría",
+        "initialAmount": "Importe inicial",
+        "initialHint": "Lo que debías al empezar. Con la cuota y el primer cargo calculamos lo pagado, lo pendiente y cuándo termina."
+      },
+      "units": {
+        "WEEK": "Semanas",
+        "MONTH": "Meses",
+        "YEAR": "Años"
+      },
+      "everyN": "cada {n} {unit}"
     },
     "home": {
       "kicker": "INICIO",
@@ -527,30 +560,70 @@
       "accounts": "Cuentas",
       "investments": "Inversiones",
       "debts": "Deudas",
-      "seeNetWorth": "Ver desglose",
+      "seeNetWorth": "Ver patrimonio",
       "latest": "Últimos movimientos",
       "seeAll": "Ver todos",
       "noTransactions": "Aún no hay movimientos. Añade el primero desde «Nuevo movimiento».",
       "income": "Ingreso",
       "expense": "Gasto",
       "upcoming": "Próximos pagos",
-      "next30": "30 DÍAS",
-      "noUpcoming": "Nada que pagar en los próximos 30 días."
+      "next30": "30 DÍAS · {total}",
+      "noUpcoming": "Nada que pagar en los próximos 30 días.",
+      "currentLabel": "SALDO ACTUAL",
+      "currentSplit": "Cuentas {accounts} · Inversiones {investments}",
+      "endOfMonth": "A fin de mes",
+      "afterDebts": "Tras pagar deudas",
+      "kinds": {
+        "SUBSCRIPTION": "Suscripción",
+        "DEBT": "Deuda",
+        "OTHER": "Gasto periódico",
+        "SALARY": "Nómina",
+        "INVESTMENT": "Inversión",
+        "OTHER_INCOME": "Ingreso periódico"
+      },
+      "empty": {
+        "title": "Aún no hay nada que sumar",
+        "text": "Añade tu primera cuenta o tu efectivo y aquí verás tu saldo, tus movimientos y tus próximos pagos.",
+        "cta": "Añadir cuenta"
+      }
     },
     "netWorth": {
       "kicker": "PATRIMONIO",
-      "title": "Todo lo que tienes y debes",
+      "title": "Patrimonio",
       "total": "TOTAL · {currency}",
       "accounts": "Cuentas",
       "investments": "Inversiones",
       "debts": "Deudas",
-      "recurring": "Suscripciones y gastos fijos",
+      "recurring": "Suscripciones y gastos periódicos",
       "addAccount": "Añadir cuenta",
-      "addExpense": "Añadir gasto fijo o deuda"
+      "addExpense": "Añadir gasto fijo o deuda",
+      "current": "SALDO ACTUAL · {currency}",
+      "endOfMonth": "A fin de mes (con periódicos)",
+      "afterDebts": "Tras pagar deudas ({debts})",
+      "income": "Ingresos periódicos",
+      "addInvestment": "Añadir inversión",
+      "addRecurring": "Añadir periódico: gasto, deuda o ingreso",
+      "pricesSource": "Precios de [FUENTE DE PRECIOS], actualizados [FRECUENCIA].",
+      "empty": {
+        "title": "Tu patrimonio empieza aquí",
+        "text": "Añade tus cuentas, tus inversiones y tus deudas, y aquí verás cuánto tienes en total y de dónde sale cada euro."
+      },
+      "filters": {
+        "all": "Todos",
+        "apply": "Aplicar",
+        "reset": "Quitar filtros",
+        "kind": "TIPO",
+        "sort": "ORDEN",
+        "sorts": {
+          "amount": "Importe",
+          "name": "Nombre",
+          "next": "Próximo cargo"
+        }
+      }
     },
     "transactions": {
       "kicker": "MOVIMIENTOS",
-      "title": "Nuevo movimiento",
+      "title": "Movimientos",
       "type": "Tipo",
       "EXPENSE": "Gasto",
       "INCOME": "Ingreso",
@@ -566,7 +639,29 @@
       "balanceHint": "Si eliges una cuenta en la misma moneda, su saldo se actualiza solo.",
       "history": "Historial",
       "empty": "Aún no hay movimientos.",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "new": "Nuevo movimiento",
+      "periodic": "Periódico",
+      "periodicHint": "Se repite: nómina, suscripción, deuda… Configura cada cuánto y hasta cuándo.",
+      "count": "{count, plural, one {# movimiento} other {# movimientos}}",
+      "noMatches": "Ningún movimiento coincide con los filtros.",
+      "filters": {
+        "all": "Todos",
+        "apply": "Aplicar",
+        "reset": "Quitar filtros",
+        "type": "TIPO",
+        "account": "CUENTA",
+        "category": "CATEGORÍA",
+        "from": "DESDE",
+        "to": "HASTA",
+        "sort": "ORDEN",
+        "orders": {
+          "DATE_DESC": "Más recientes",
+          "DATE_ASC": "Más antiguos",
+          "AMOUNT_DESC": "Importe mayor",
+          "AMOUNT_ASC": "Importe menor"
+        }
+      }
     },
     "analytics": {
       "kicker": "ANÁLISIS",
@@ -579,7 +674,12 @@
       "empty": "Sin gastos este mes.",
       "uncategorized": "Sin categoría",
       "count": "{count, plural, one {# movimiento} other {# movimientos}}",
-      "monthAria": "{month}: ingresos {income}, gastos {expense}"
+      "monthAria": "{month}: ingresos {income}, gastos {expense}",
+      "emptyAll": {
+        "title": "Todavía no hay nada que analizar",
+        "text": "Cuando registres ingresos y gastos, aquí verás en qué se va tu dinero mes a mes y por categoría.",
+        "cta": "Añadir movimiento"
+      }
     },
     "simulations": {
       "kicker": "SIMULACIONES",
@@ -652,7 +752,8 @@
         "yearsToRetirement": "Años hasta jubilarte",
         "potAtRetirement": "Hucha al jubilarte",
         "monthlyIncome": "Renta mensual"
-      }
+      },
+      "disclaimer": "Cálculos orientativos, no son asesoramiento financiero."
     },
     "settings": {
       "kicker": "AJUSTES",
@@ -669,7 +770,11 @@
         "city": "Ciudad",
         "country": "País (código)",
         "birthDate": "Fecha de nacimiento",
-        "currency": "Moneda principal"
+        "currency": "Moneda principal",
+        "personal": "Datos personales",
+        "address": "Dirección",
+        "money": "Moneda",
+        "save": "Guardar cambios"
       },
       "preferences": {
         "title": "Preferencias",
@@ -784,6 +889,31 @@
           "text": "Cuentas ilimitadas en un balance conjunto, analíticas y predicciones."
         }
       }
+    },
+    "loading": "Cargando…",
+    "error": {
+      "title": "No hemos podido cargar tus datos",
+      "text": "Revisa tu conexión y vuelve a intentarlo. Tus datos están a salvo.",
+      "retry": "Reintentar"
+    },
+    "demo": {
+      "user": "Cuenta demo",
+      "readOnly": "Solo lectura",
+      "title": "Cuenta demo · solo lectura.",
+      "text": "Puedes explorar todo, pero no crear, editar ni borrar datos.",
+      "cta": "Crear mi cuenta"
+    },
+    "header": {
+      "preferences": "Idioma y apariencia",
+      "language": "IDIOMA",
+      "appearance": "APARIENCIA",
+      "themes": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema"
+      },
+      "account": "Tu cuenta",
+      "profile": "Perfil"
     }
   }
 }

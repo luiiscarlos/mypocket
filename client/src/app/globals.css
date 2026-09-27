@@ -41,6 +41,16 @@
   --color-danger-bg: var(--mp-danger-bg);
   --color-danger-ink: var(--mp-danger-ink);
   --color-ok-bg: var(--mp-ok-bg);
+  --color-on-leaf: var(--mp-on-leaf);
+  --color-focus: var(--mp-focus);
+  --color-skeleton: var(--mp-skeleton);
+  --color-side: var(--mp-side);
+  /* Chart series: told apart by lightness, not hue (PATTERNS §1). */
+  --color-s1: var(--mp-s1);
+  --color-s2: var(--mp-s2);
+  --color-s3: var(--mp-s3);
+  --color-s4: var(--mp-s4);
+  --color-debt: var(--mp-debt);
 }
 
 :root {
@@ -58,6 +68,15 @@
   --mp-danger-bg: #FBEDEA;
   --mp-danger-ink: #7A2414;
   --mp-ok-bg: #E8EFEA;
+  --mp-on-leaf: #F3EFE4;
+  --mp-focus: #B7791F;
+  --mp-skeleton: #E4E1D8;
+  --mp-side: #1B4D3A;
+  --mp-s1: #1B4D3A;
+  --mp-s2: #4F7F66;
+  --mp-s3: #8FB09D;
+  --mp-s4: #C9D5CC;
+  --mp-debt: #C98B7C;
 }
 
 /* Dark palette: explicit choice ... */
@@ -76,6 +95,15 @@
   --mp-danger-bg: #2A1410;
   --mp-danger-ink: #F4BDB1;
   --mp-ok-bg: #16261D;
+  --mp-on-leaf: #10140F;
+  --mp-focus: #F2C66D;
+  --mp-skeleton: #222C26;
+  --mp-side: #0A2419;
+  --mp-s1: #86C9A3;
+  --mp-s2: #4F9474;
+  --mp-s3: #2F6A4F;
+  --mp-s4: #24463A;
+  --mp-debt: #B5604E;
 }
 
 /* ... or "system" (no data-theme) with a dark OS setting. Keep in sync with the block above. */
@@ -95,6 +123,15 @@
     --mp-danger-bg: #2A1410;
     --mp-danger-ink: #F4BDB1;
     --mp-ok-bg: #16261D;
+    --mp-on-leaf: #10140F;
+    --mp-focus: #F2C66D;
+    --mp-skeleton: #222C26;
+    --mp-side: #0A2419;
+    --mp-s1: #86C9A3;
+    --mp-s2: #4F9474;
+    --mp-s3: #2F6A4F;
+    --mp-s4: #24463A;
+    --mp-debt: #B5604E;
   }
 }
 
@@ -253,4 +290,10 @@
       transform: none;
     }
   }
+}
+
+/* Visible focus on every control (PATTERNS §9). */
+:focus-visible {
+  outline: 3px solid var(--mp-focus);
+  outline-offset: 2px;
 }

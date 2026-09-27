@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { Bar, Empty, List, PageHeader, Section } from "@/components/app/ui";
+import { Bar, Empty, EmptyAction, EmptyState, List, PageHeader, Section } from "@/components/app/ui";
 import { gql } from "@/lib/api";
 
 type Summary = {
@@ -48,9 +48,18 @@ export default async function AnalyticsPage({ searchParams }: PageProps<"/dashbo
   const maxCategory = Math.max(1, ...expenses.map((c) => c.total));
   const other = current.totals.filter((x) => x.currency !== currency);
 
+  if (summaries.every((s) => s.isEmpty)) {
+    return (
+      <>
+        <PageHeader title={t("title")} />
+        <EmptyState title={t("emptyAll.title")} text={t("emptyAll.text")} actions={<EmptyAction href="/dashboard/transactions#new">{t("emptyAll.cta")}</EmptyAction>} />
+      </>
+    );
+  }
+
   return (
     <>
-      <PageHeader kicker={t("kicker")} title={t("title")} />
+      <PageHeader title={t("title")} />
 
       <Section title={t("byMonth", { currency })}>
         <div className="grid grid-cols-6 items-end gap-2 sm:gap-4" role="list">
@@ -67,8 +76,8 @@ export default async function AnalyticsPage({ searchParams }: PageProps<"/dashbo
                 className="flex flex-col items-center gap-2 border-b-2 border-transparent pb-2 hover:no-underline aria-[current=true]:border-ink"
               >
                 <div className="flex h-40 w-full items-end justify-center gap-1">
-                  <div className="w-3 bg-leaf sm:w-5" style={{ height: `${(m.income / max) * 100}%` }} />
-                  <div className="w-3 bg-danger sm:w-5" style={{ height: `${(m.expense / max) * 100}%` }} />
+                  <div className="w-3 bg-s1 sm:w-5" style={{ height: `${(m.income / max) * 100}%` }} />
+                  <div className="w-3 bg-s3 sm:w-5" style={{ height: `${(m.expense / max) * 100}%` }} />
                 </div>
                 <div className="font-mono text-xs text-ink-muted">{monthLabel(s.month)}</div>
               </Link>
@@ -76,8 +85,8 @@ export default async function AnalyticsPage({ searchParams }: PageProps<"/dashbo
           })}
         </div>
         <div className="flex gap-6 font-mono text-xs text-ink-muted">
-          <span className="flex items-center gap-2"><span className="size-2.5 bg-leaf" />{t("income")}</span>
-          <span className="flex items-center gap-2"><span className="size-2.5 bg-danger" />{t("expense")}</span>
+          <span className="flex items-center gap-2"><span className="size-2.5 bg-s1" />{t("income")}</span>
+          <span className="flex items-center gap-2"><span className="size-2.5 bg-s3" />{t("expense")}</span>
         </div>
       </Section>
 
@@ -109,7 +118,7 @@ export default async function AnalyticsPage({ searchParams }: PageProps<"/dashbo
                     <span className="font-semibold">{c.category?.name ?? t("uncategorized")}</span>
                     <span className="font-mono">{money(c.total)} <span className="text-xs text-ink-muted">· {t("count", { count: c.count })}</span></span>
                   </div>
-                  <Bar value={c.total} max={maxCategory} tone="sage" />
+                  <Bar value={c.total} max={maxCategory} tone="s2" />
                 </li>
               ))}
             </List>

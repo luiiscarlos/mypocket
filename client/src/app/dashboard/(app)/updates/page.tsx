@@ -18,7 +18,7 @@ export default async function UpdatesPage() {
 
   return (
     <>
-      <PageHeader kicker={t("kicker")} title={t("title")} />
+      <PageHeader title={t("title")} />
       {appUpdates.length === 0 ? (
         <Empty>{t("empty")}</Empty>
       ) : (
