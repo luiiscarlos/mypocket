@@ -452,7 +452,7 @@
       "planChanged": "Plan updated.",
       "passwordChanged": "Password updated.",
       "welcome": "All set! This is your money.",
-      "recurringSaved": "Recurring transaction saved. Its charges will show in “Upcoming payments”."
+      "recurringSaved": "Recurring transaction saved. It will post itself on every charge date; if it starts today, it's already in the history."
     },
     "finance": {
       "delete": "Delete",
@@ -661,7 +661,8 @@
           "AMOUNT_DESC": "Highest amount",
           "AMOUNT_ASC": "Lowest amount"
         }
-      }
+      },
+      "recurringTag": "RECURRING"
     },
     "analytics": {
       "kicker": "ANALYTICS",

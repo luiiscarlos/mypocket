@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { inputClass, labelClass } from "@/components/forms";
 import { ApiError, gql } from "@/lib/api";
-import { Bar, Empty, List, Row, dangerLink, primaryBtn, smallButton } from "@/components/app/ui";
+import { Empty, List, Row, dangerLink, primaryBtn, smallButton } from "@/components/app/ui";
 import {
   addInvestment, createAccount, createExpense, deleteAccount, deleteExpense, deleteInvestment, updateAccountBalance,
 } from "@/app/dashboard/actions";
@@ -268,9 +268,13 @@ export async function ExpenseList({
             </div>
             {e.kind === "DEBT" && e.outstandingAmount != null && (
               <div className="flex flex-col gap-1.5 pl-[56px]">
-                {e.progress != null && <Bar value={e.progress} max={1} tone="s1" />}
+                {e.progress != null && (
+                  <div className="flex h-2.5 w-full bg-debt" aria-hidden="true">
+                    <div className="h-full bg-leaf" style={{ width: `${Math.round(e.progress * 100)}%` }} />
+                  </div>
+                )}
                 <div className="flex flex-wrap justify-between gap-x-4 font-mono text-xs text-ink-muted">
-                  <span>{t("expenses.outstanding", { amount: money(e.outstandingAmount, e.currency) })}</span>
+                  <span className="text-debt-ink">{t("expenses.outstanding", { amount: money(e.outstandingAmount, e.currency) })}</span>
                   {e.initialAmount != null && e.paidAmount != null && (
                     <span>{t("expenses.paidOf", { paid: money(e.paidAmount, e.currency), total: money(e.initialAmount, e.currency) })}</span>
                   )}

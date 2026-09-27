@@ -40,7 +40,7 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
   return (
     <div className="flex min-h-screen bg-paper text-ink">
       <aside
-        className={`sticky top-0 hidden h-screen shrink-0 flex-col border-r border-rule bg-paper py-5 lg:flex ${collapsed ? "w-[72px] px-3" : "w-[260px] px-5"}`}
+        className={`sticky top-0 hidden h-screen shrink-0 flex-col border-r border-rule bg-side py-5 lg:flex ${collapsed ? "w-[72px] px-3" : "w-[260px] px-5"}`}
       >
         <Link href="/dashboard" aria-label="mypocket" className={`flex h-12 items-center text-[22px] font-extrabold tracking-[-0.04em] text-ink hover:no-underline ${collapsed ? "justify-center" : "px-3"}`}>
           {collapsed ? <span className="text-leaf">m.</span> : <>mypocket<span className="text-leaf">.</span></>}
@@ -139,7 +139,7 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
 
         <main className="flex min-w-0 grow flex-col gap-8 px-5 pb-28 lg:px-14 lg:pb-12">
           {me.readOnly && (
-            <div role="status" className="mt-6 flex flex-wrap items-center justify-between gap-4 border border-leaf bg-ok-bg px-5 py-4 text-[15px]">
+            <div role="status" className="mt-6 flex flex-wrap items-center justify-between gap-4 border border-info bg-info-bg px-5 py-4 text-[15px] text-info-ink">
               <span><strong>{t("demo.title")}</strong> {t("demo.text")}</span>
               <Link href="/register" className={`${primaryBtn} h-11`}>{t("demo.cta")}</Link>
             </div>

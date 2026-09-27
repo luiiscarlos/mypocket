@@ -45,11 +45,11 @@ export function SideNav({ collapsed }: { collapsed: boolean }) {
               title={collapsed ? t(key) : undefined}
               aria-label={collapsed ? t(key) : undefined}
               aria-current={isActive(pathname, href) ? "page" : undefined}
-              className={`flex h-11 items-center gap-3 text-[15px] text-ink-muted hover:bg-band hover:text-ink hover:no-underline aria-[current=page]:bg-band aria-[current=page]:font-semibold aria-[current=page]:text-ink ${
+              className={`flex h-11 items-center gap-3 text-[15px] text-ink-muted group hover:bg-active hover:text-ink hover:no-underline aria-[current=page]:bg-active aria-[current=page]:font-semibold aria-[current=page]:text-ink ${
                 collapsed ? "justify-center" : "px-3"
               }`}
             >
-              <Icon {...icon} />
+              <Icon {...icon} className="group-aria-[current=page]:text-leaf" />
               {!collapsed && t(key)}
             </Link>
           </li>

@@ -452,7 +452,7 @@
       "planChanged": "Plan actualizado.",
       "passwordChanged": "Contraseña actualizada.",
       "welcome": "¡Todo listo! Este es tu dinero.",
-      "recurringSaved": "Movimiento periódico guardado. Verás sus cargos en «Próximos pagos»."
+      "recurringSaved": "Movimiento periódico guardado. Se registrará solo cada vez que toque; si empieza hoy, ya está en el historial."
     },
     "finance": {
       "delete": "Eliminar",
@@ -661,7 +661,8 @@
           "AMOUNT_DESC": "Importe mayor",
           "AMOUNT_ASC": "Importe menor"
         }
-      }
+      },
+      "recurringTag": "PERIÓDICO"
     },
     "analytics": {
       "kicker": "ANÁLISIS",

@@ -76,8 +76,8 @@ export default async function AnalyticsPage({ searchParams }: PageProps<"/dashbo
                 className="flex flex-col items-center gap-2 border-b-2 border-transparent pb-2 hover:no-underline aria-[current=true]:border-ink"
               >
                 <div className="flex h-40 w-full items-end justify-center gap-1">
-                  <div className="w-3 bg-s1 sm:w-5" style={{ height: `${(m.income / max) * 100}%` }} />
-                  <div className="w-3 bg-s3 sm:w-5" style={{ height: `${(m.expense / max) * 100}%` }} />
+                  <div className="w-3 bg-leaf sm:w-5" style={{ height: `${(m.income / max) * 100}%` }} />
+                  <div className="w-3 bg-expense sm:w-5" style={{ height: `${(m.expense / max) * 100}%` }} />
                 </div>
                 <div className="font-mono text-xs text-ink-muted">{monthLabel(s.month)}</div>
               </Link>
@@ -85,8 +85,8 @@ export default async function AnalyticsPage({ searchParams }: PageProps<"/dashbo
           })}
         </div>
         <div className="flex gap-6 font-mono text-xs text-ink-muted">
-          <span className="flex items-center gap-2"><span className="size-2.5 bg-s1" />{t("income")}</span>
-          <span className="flex items-center gap-2"><span className="size-2.5 bg-s3" />{t("expense")}</span>
+          <span className="flex items-center gap-2"><span className="size-2.5 bg-leaf" />{t("income")}</span>
+          <span className="flex items-center gap-2"><span className="size-2.5 bg-expense" />{t("expense")}</span>
         </div>
       </Section>
 

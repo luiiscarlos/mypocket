@@ -83,7 +83,7 @@ export default async function NetWorthPage({ searchParams }: PageProps<"/dashboa
         data.netWorth.totals.map((row) => {
           const parts = [
             { key: "accounts", value: row.accounts, color: "bg-s1" },
-            { key: "investments", value: row.investments, color: "bg-s2" },
+            { key: "investments", value: row.investments, color: "bg-leaf" },
           ] as const;
           return (
             <section key={row.currency} aria-label={t("current", { currency: row.currency })} className="flex flex-col gap-6">

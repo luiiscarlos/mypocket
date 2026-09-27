@@ -9,7 +9,7 @@ type Totals = { currency: string; accounts: number; investments: number; debts: 
 type Tx = { id: string; type: "INCOME" | "EXPENSE"; amount: number; currency: string; occurredOn: string; note: string | null; category: { name: string } | null; accountId: string | null };
 type Account = { id: string; name: string; balance: number; currency: string };
 
-const SERIES = ["bg-s1", "bg-s2", "bg-s3", "bg-s4"];
+const SERIES = ["bg-s1", "bg-s2", "bg-s3", "bg-s3"];
 
 export async function generateMetadata() {
   return { title: (await getTranslations("app.nav"))("home") };

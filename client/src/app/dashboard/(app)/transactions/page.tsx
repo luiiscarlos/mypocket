@@ -7,7 +7,7 @@ import { inputClass, labelClass } from "@/components/forms";
 import { gql } from "@/lib/api";
 import { appNotice } from "@/lib/auth-codes";
 
-type Tx = { id: string; type: "INCOME" | "EXPENSE"; amount: number; currency: string; occurredOn: string; note: string | null; category: { name: string } | null; accountId: string | null };
+type Tx = { id: string; source: string; type: "INCOME" | "EXPENSE"; amount: number; currency: string; occurredOn: string; note: string | null; category: { name: string } | null; accountId: string | null };
 
 const PAGE = "/dashboard/transactions";
 const ORDERS = ["DATE_DESC", "DATE_ASC", "AMOUNT_DESC", "AMOUNT_ASC"] as const;
@@ -40,7 +40,7 @@ export default async function TransactionsPage({ searchParams }: PageProps<"/das
         me { currency readOnly }
         categories { id name }
         accounts { id name currency }
-        transactions(filter: $f, orderBy: $o, limit: 100) { id type amount currency occurredOn note category { name } accountId }
+        transactions(filter: $f, orderBy: $o, limit: 100) { id source type amount currency occurredOn note category { name } accountId }
       }`,
       { f: filter, o: orderBy },
     ),
@@ -146,7 +146,12 @@ export default async function TransactionsPage({ searchParams }: PageProps<"/das
             {data.transactions.map((tx) => (
               <Row
                 key={tx.id}
-                title={tx.note ?? tx.category?.name ?? t(tx.type)}
+                title={
+                  <span className="flex flex-wrap items-center gap-2">
+                    {tx.note ?? tx.category?.name ?? t(tx.type)}
+                    {tx.source === "RECURRING" && <span className="border border-rule px-1.5 py-0.5 font-mono text-[10px] tracking-[0.06em] text-ink-muted">{t("recurringTag")}</span>}
+                  </span>
+                }
                 meta={[date(tx.occurredOn), tx.category?.name, tx.accountId && accountName.get(tx.accountId)].filter(Boolean).join(" · ")}
                 value={<span className={tx.type === "INCOME" ? "text-leaf" : ""}>{tx.type === "INCOME" ? "+" : "−"}{money(tx.amount, tx.currency)}</span>}
               >
