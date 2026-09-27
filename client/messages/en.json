@@ -201,14 +201,17 @@
     "tryPro": "Try Pro",
     "price": "2.99",
     "freeFeatures": {
-      "bank": "1 connected bank",
-      "cash": "Cash balance and manual transactions",
+      "accounts": "2 accounts",
+      "cash": "Cash and manual transactions",
+      "recurring": "Subscriptions, recurring expenses and debts",
+      "simulations": "Calculators: mortgage, loan, retirement…",
       "summary": "Monthly summary"
     },
     "proFeatures": {
-      "banks": "Unlimited banks in one combined balance",
+      "unlimited": "Unlimited accounts in one combined balance",
+      "bank": "Connect your bank",
+      "investments": "Investments: ETFs, stocks, funds and crypto",
       "analytics": "Analytics and predictions",
-      "subscriptions": "Subscription management",
       "ocr": "Receipt scanner with OCR"
     }
   },
@@ -216,10 +219,10 @@
     "eyebrow": "PRICING",
     "title1": "Two plans.",
     "title2": "No fine print.",
-    "lead": "One bank and your cash, free. Go Pro to add all your accounts to one combined balance.",
+    "lead": "Two accounts, your cash, your fixed expenses and the calculators, free. Go Pro to connect your bank, add your investments and analyse everything.",
     "tableLabel": "Plan comparison",
     "compare": "COMPARE PLANS",
-    "compareText": "Both include the combined balance and your cash. Pro unlocks every account and the analysis.",
+    "compareText": "Both include the combined balance, cash, fixed expenses and calculators. Pro adds connected banks, investments and analytics.",
     "freeTagline": "To start getting your money in order.",
     "proTagline": "All your accounts, in one number.",
     "recommended": "RECOMMENDED",
@@ -227,17 +230,20 @@
     "unlimited": "Unlimited",
     "groups": {
       "accounts": "ACCOUNTS & BALANCE",
-      "analysis": "ANALYSIS",
-      "automation": "AUTOMATION"
+      "planning": "PLANNING",
+      "pro": "INVESTMENTS & ANALYTICS"
     },
     "rows": {
-      "banks": "Connected banks",
+      "accounts": "Accounts",
+      "bank": "Connect your bank (PSD2, read-only)",
       "balance": "Combined and individual balance",
-      "cash": "Cash balance and manual transactions",
+      "cash": "Cash and manual transactions",
+      "recurring": "Subscriptions, recurring expenses and debts",
+      "simulations": "Calculators (mortgage, loan, retirement…)",
       "summary": "Monthly summary",
+      "investments": "Investments (ETFs, stocks, funds and crypto)",
       "analytics": "Analytics",
       "predictions": "Predictions",
-      "subscriptions": "Subscription management",
       "ocr": "Receipt scanner with OCR"
     },
     "trust": {
@@ -278,7 +284,7 @@
           },
           "several": {
             "q": "Can I connect several banks at once?",
-            "a": "Yes. The combined balance adds up all your accounts and each keeps its own balance. The Free plan includes 1 bank; Pro, unlimited."
+            "a": "Yes, with Pro: connect all your banks and each account keeps its own balance inside the combined one. The Free plan includes 2 accounts you keep by hand."
           },
           "disconnect": {
             "q": "How do I disconnect a bank?",
@@ -317,7 +323,7 @@
         "items": {
           "free": {
             "q": "What does the Free plan include?",
-            "a": "1 connected bank, a cash balance with manual transactions and a monthly summary."
+            "a": "2 accounts, cash and manual transactions, subscriptions, recurring expenses and debts, the calculators and the monthly summary. Pro adds unlimited accounts, bank connection, investments, analytics and the receipt scanner."
           },
           "cancel": {
             "q": "Can I cancel Pro anytime?",
@@ -438,7 +444,7 @@
       "notFound": "That no longer exists.",
       "readOnly": "The demo account is read-only.",
       "conflict": "Something with those details already exists.",
-      "planLimit": "Your Free plan allows 1 bank account (cash doesn't count). Go Pro to add more.",
+      "planLimit": "This is part of Pro, or you've reached the 2-account limit of the Free plan (cash doesn't count). You can change plan in Settings → Plan.",
       "rateLimited": "Too many requests in a row. Wait a moment.",
       "generic": "Something went wrong. Try again.",
       "passwordShort": "The new password must be at least 8 characters.",
@@ -821,8 +827,8 @@
           "PRO": "€2.99/mo"
         },
         "text": {
-          "FREE": "1 bank account plus all your cash, fixed and recurring expenses.",
-          "PRO": "Unlimited accounts, investments, simulations, analytics and predictions."
+          "FREE": "2 accounts, cash, subscriptions, recurring expenses, debts and calculators.",
+          "PRO": "Unlimited accounts, bank connection, investments, analytics and predictions, and the receipt scanner."
         },
         "currentTag": "YOUR CURRENT PLAN"
       },
@@ -919,11 +925,11 @@
         "noPayments": "Nothing is charged for now: we only store your choice, and you can change it in Settings.",
         "FREE": {
           "name": "Free",
-          "text": "1 bank account plus all your cash, investments, fixed expenses and simulations."
+          "text": "2 accounts, your cash, subscriptions, debts and calculators."
         },
         "PRO": {
           "name": "Pro",
-          "text": "Unlimited accounts in one combined balance, analytics and predictions."
+          "text": "Unlimited accounts, bank connection, investments and analytics. €2.99/month."
         }
       }
     },
@@ -993,6 +999,19 @@
         "reset": "Clear filters",
         "status": "STATUS",
         "all": "All"
+      }
+    },
+    "pro": {
+      "cta": "See the Pro plan",
+      "ctaOnboarding": "Choose Pro in step 2",
+      "analytics": {
+        "title": "Analytics is part of Pro",
+        "text": "With Pro you'll see where your money goes month by month and by category, plus a forecast of how you'll end the month. Pro costs €2.99/month."
+      },
+      "investments": {
+        "title": "Investments are part of Pro",
+        "text": "With Pro you add your ETFs, stocks, funds and crypto by ISIN or name, and their value adds to your net worth. Pro costs €2.99/month.",
+        "onboarding": "With Pro you can add your ETFs, stocks, funds and crypto. If you stay on Free, skip this step: you can go Pro whenever you like."
       }
     }
   }

@@ -11,20 +11,27 @@ export async function generateMetadata(): Promise<Metadata> {
 // true = included, "—" = not included, "unlimited" = translated label, anything else is shown as is.
 type Cell = true | string;
 type Row =
-  | { group: "accounts" | "analysis" | "automation" }
-  | { label: "banks" | "balance" | "cash" | "summary" | "analytics" | "predictions" | "subscriptions" | "ocr"; free: Cell; pro: Cell };
+  | { group: "accounts" | "planning" | "pro" }
+  | {
+      label: "accounts" | "bank" | "balance" | "cash" | "recurring" | "simulations" | "summary" | "investments" | "analytics" | "predictions" | "ocr";
+      free: Cell;
+      pro: Cell;
+    };
 
 const ROWS: Row[] = [
   { group: "accounts" },
-  { label: "banks", free: "1", pro: "unlimited" },
+  { label: "accounts", free: "2", pro: "unlimited" },
+  { label: "bank", free: "—", pro: true },
   { label: "balance", free: true, pro: true },
   { label: "cash", free: true, pro: true },
-  { group: "analysis" },
+  { group: "planning" },
+  { label: "recurring", free: true, pro: true },
+  { label: "simulations", free: true, pro: true },
   { label: "summary", free: true, pro: true },
+  { group: "pro" },
+  { label: "investments", free: "—", pro: true },
   { label: "analytics", free: "—", pro: true },
   { label: "predictions", free: "—", pro: true },
-  { group: "automation" },
-  { label: "subscriptions", free: "—", pro: true },
   { label: "ocr", free: "—", pro: true },
 ];
 

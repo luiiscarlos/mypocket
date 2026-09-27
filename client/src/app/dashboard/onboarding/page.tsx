@@ -6,7 +6,7 @@ import {
   ACCOUNT_FIELDS, AccountForm, AccountList, EXPENSE_FIELDS, ExpenseForm, ExpenseList, INVESTMENT_FIELDS, InvestmentList,
   InvestmentSearch, searchInstruments, type Account, type Category, type Expense, type Investment,
 } from "@/components/app/finance";
-import { PageNotice, Section, smallButton } from "@/components/app/ui";
+import { PageNotice, ProUpsell, Section, smallButton } from "@/components/app/ui";
 import { inputClass, labelClass, primaryButton } from "@/components/forms";
 import { Logo, eyebrow } from "@/components/site/chrome";
 import { gql } from "@/lib/api";
@@ -34,7 +34,7 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
   const back = `${PAGE}?step=${step}`;
   const nextStep = `${PAGE}?step=${step + 1}`;
 
-  const [t, notice, data, search] = await Promise.all([
+  const [t, notice, data, search, pro] = await Promise.all([
     getTranslations("app.onboarding"),
     appNotice(sp as { error?: string; message?: string }),
     gql<{ me: Me; accounts: Account[]; investments: Investment[]; recurringExpenses: Expense[]; categories: Category[] }>(`{
@@ -45,6 +45,7 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
       categories { id name }
     }`),
     step === 3 ? searchInstruments(q) : Promise.resolve({}),
+    getTranslations("app.pro"),
   ]);
   const { me } = data;
   if (me.onboardingCompleted) redirect("/dashboard");
@@ -170,7 +171,11 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
         {key === "investments" && (
           <Section title={t("steps.investments.yours")}>
             <InvestmentList investments={data.investments} back={back} readOnly={me.readOnly} />
-            <InvestmentSearch action={PAGE} hidden={{ step: "3" }} query={q} {...search} back={q ? `${back}&q=${encodeURIComponent(q)}` : back} readOnly={me.readOnly} />
+            {me.plan === "PRO" ? (
+              <InvestmentSearch action={PAGE} hidden={{ step: "3" }} query={q} {...search} back={q ? `${back}&q=${encodeURIComponent(q)}` : back} readOnly={me.readOnly} />
+            ) : (
+              <ProUpsell title={pro("investments.title")} text={pro("investments.onboarding")} cta={pro("ctaOnboarding")} href={`${PAGE}?step=2`} />
+            )}
           </Section>
         )}
 

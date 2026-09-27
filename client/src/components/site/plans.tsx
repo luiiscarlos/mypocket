@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-const FREE = ["bank", "cash", "summary"] as const;
-const PRO = ["banks", "analytics", "subscriptions", "ocr"] as const;
+const FREE = ["accounts", "cash", "recurring", "simulations", "summary"] as const;
+const PRO = ["unlimited", "bank", "investments", "analytics", "ocr"] as const;
 
 export function PlanCards() {
   const t = useTranslations("plans");

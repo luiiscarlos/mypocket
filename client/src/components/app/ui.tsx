@@ -169,3 +169,15 @@ export function ListControls({ action, controls, keep = {}, apply, reset }: { ac
 export function pick<T extends string>(value: string | string[] | undefined, allowed: readonly T[]): T | undefined {
   return typeof value === "string" && (allowed as readonly string[]).includes(value) ? (value as T) : undefined;
 }
+
+/** Pro feature seen from the Free plan: what it does and the way to upgrade (Settings → Plan). */
+export function ProUpsell({ title, text, cta, href = "/dashboard/settings?tab=plan" }: { title: string; text: string; cta: string; href?: string }) {
+  return (
+    <div className="flex flex-col items-start gap-4 border border-leaf bg-ok-bg p-6 sm:p-8">
+      <span className="border border-leaf px-2 py-0.5 font-mono text-[11px] tracking-[0.06em] text-leaf">PRO</span>
+      <h2 className="m-0 text-2xl font-extrabold tracking-[-0.03em]">{title}</h2>
+      <p className="m-0 max-w-[560px] text-[15px] leading-[1.55] text-ink-muted">{text}</p>
+      <Link href={href} className={primaryBtn}>{cta}</Link>
+    </div>
+  );
+}

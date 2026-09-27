@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { Bar, Empty, EmptyAction, EmptyState, List, PageHeader, Section } from "@/components/app/ui";
+import { Bar, Empty, EmptyAction, EmptyState, List, PageHeader, ProUpsell, Section } from "@/components/app/ui";
 import { gql } from "@/lib/api";
 
 type Summary = {
@@ -27,6 +27,18 @@ export default async function AnalyticsPage({ searchParams }: PageProps<"/dashbo
   const now = new Date();
   const months = Array.from({ length: MONTHS }, (_, i) => monthStart(now, MONTHS - 1 - i));
   const selected = typeof month === "string" && /^\d{4}-\d{2}$/.test(month) && months.includes(`${month}-01`) ? `${month}-01` : months.at(-1)!;
+
+  // Analytics is a Pro feature: Free users get the upgrade state instead of a failing query.
+  const { me } = await gql<{ me: { plan: "FREE" | "PRO" } }>("{ me { plan } }");
+  if (me.plan !== "PRO") {
+    const [t, pro] = await Promise.all([getTranslations("app.analytics"), getTranslations("app.pro")]);
+    return (
+      <>
+        <PageHeader title={t("title")} />
+        <ProUpsell title={pro("analytics.title")} text={pro("analytics.text")} cta={pro("cta")} />
+      </>
+    );
+  }
 
   // One request: an alias per month (the API allows up to 10 aliases).
   const fields = "month isEmpty totals { currency income expense balance } byCategory { category { name } type currency total count }";

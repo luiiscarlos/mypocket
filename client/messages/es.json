@@ -201,14 +201,17 @@
     "tryPro": "Probar Pro",
     "price": "2,99",
     "freeFeatures": {
-      "bank": "1 banco conectado",
-      "cash": "Balance de efectivo y movimientos manuales",
+      "accounts": "2 cuentas",
+      "cash": "Efectivo y movimientos manuales",
+      "recurring": "Suscripciones, gastos periódicos y deudas",
+      "simulations": "Simuladores: hipoteca, préstamo, jubilación…",
       "summary": "Resumen del mes"
     },
     "proFeatures": {
-      "banks": "Bancos ilimitados en un balance conjunto",
-      "analytics": "Analíticas y predicciones",
-      "subscriptions": "Gestión de suscripciones",
+      "unlimited": "Cuentas ilimitadas en un balance conjunto",
+      "bank": "Conecta tu banco",
+      "investments": "Inversiones: ETF, acciones, fondos y cripto",
+      "analytics": "Análisis y predicciones",
       "ocr": "Lector de tickets con OCR"
     }
   },
@@ -216,10 +219,10 @@
     "eyebrow": "PRECIOS",
     "title1": "Dos planes.",
     "title2": "Sin letra pequeña.",
-    "lead": "Un banco y tu efectivo, gratis. Pasa a Pro para sumar todas tus cuentas en un balance conjunto.",
+    "lead": "Dos cuentas, tu efectivo, tus gastos fijos y los simuladores, gratis. Pasa a Pro para conectar tu banco, sumar tus inversiones y analizarlo todo.",
     "tableLabel": "Comparativa de planes",
     "compare": "COMPARA LOS PLANES",
-    "compareText": "Los dos incluyen el balance conjunto y tu efectivo. Pro desbloquea todas las cuentas y el análisis.",
+    "compareText": "Los dos incluyen el balance conjunto, el efectivo, los gastos fijos y los simuladores. Pro añade bancos conectados, inversiones y análisis.",
     "freeTagline": "Para empezar a ordenar tu dinero.",
     "proTagline": "Todas tus cuentas, en un solo número.",
     "recommended": "RECOMENDADO",
@@ -227,17 +230,20 @@
     "unlimited": "Ilimitados",
     "groups": {
       "accounts": "CUENTAS Y BALANCE",
-      "analysis": "ANÁLISIS",
-      "automation": "AUTOMATIZACIÓN"
+      "planning": "PLANIFICACIÓN",
+      "pro": "INVERSIONES Y ANÁLISIS"
     },
     "rows": {
-      "banks": "Bancos conectados",
+      "accounts": "Cuentas",
+      "bank": "Conectar tu banco (PSD2, solo lectura)",
       "balance": "Balance conjunto e individual",
-      "cash": "Balance de efectivo y movimientos manuales",
+      "cash": "Efectivo y movimientos manuales",
+      "recurring": "Suscripciones, gastos periódicos y deudas",
+      "simulations": "Simuladores (hipoteca, préstamo, jubilación…)",
       "summary": "Resumen del mes",
-      "analytics": "Analíticas",
+      "investments": "Inversiones (ETF, acciones, fondos y cripto)",
+      "analytics": "Análisis",
       "predictions": "Predicciones",
-      "subscriptions": "Gestión de suscripciones",
       "ocr": "Lector de tickets con OCR"
     },
     "trust": {
@@ -278,7 +284,7 @@
           },
           "several": {
             "q": "¿Puedo conectar varios bancos a la vez?",
-            "a": "Sí. El balance conjunto suma todas tus cuentas y cada una mantiene su balance individual. El plan Gratis incluye 1 banco; Pro, ilimitados."
+            "a": "Sí, con el plan Pro: conectas todos tus bancos y cada cuenta mantiene su balance individual dentro del balance conjunto. El plan Gratis incluye 2 cuentas que llevas a mano."
           },
           "disconnect": {
             "q": "¿Cómo desconecto un banco?",
@@ -317,7 +323,7 @@
         "items": {
           "free": {
             "q": "¿Qué incluye el plan Gratis?",
-            "a": "1 banco conectado, balance de efectivo con movimientos manuales y resumen del mes."
+            "a": "2 cuentas, efectivo y movimientos manuales, suscripciones, gastos periódicos y deudas, los simuladores y el resumen del mes. Pro añade cuentas ilimitadas, conexión con tu banco, inversiones, análisis y el lector de tickets."
           },
           "cancel": {
             "q": "¿Puedo cancelar Pro cuando quiera?",
@@ -438,7 +444,7 @@
       "notFound": "Eso ya no existe.",
       "readOnly": "La cuenta demo es de solo lectura.",
       "conflict": "Ya existe algo con esos datos.",
-      "planLimit": "Tu plan Gratis permite 1 cuenta bancaria (el efectivo no cuenta). Pasa a Pro para añadir más.",
+      "planLimit": "Esto es del plan Pro, o has llegado al límite de 2 cuentas del plan Gratis (el efectivo no cuenta). Puedes cambiar de plan en Ajustes → Plan.",
       "rateLimited": "Demasiadas peticiones seguidas. Espera un momento.",
       "generic": "Algo ha fallado. Inténtalo de nuevo.",
       "passwordShort": "La nueva contraseña debe tener al menos 8 caracteres.",
@@ -821,8 +827,8 @@
           "PRO": "2,99 €/mes"
         },
         "text": {
-          "FREE": "1 cuenta bancaria y todo tu efectivo, gastos fijos y periódicos.",
-          "PRO": "Cuentas ilimitadas, inversiones, simulaciones, análisis y predicciones."
+          "FREE": "2 cuentas, efectivo, suscripciones, gastos periódicos, deudas y simuladores.",
+          "PRO": "Cuentas ilimitadas, conexión con tu banco, inversiones, análisis y predicciones y lector de tickets."
         },
         "currentTag": "TU PLAN ACTUAL"
       },
@@ -919,11 +925,11 @@
         "noPayments": "Por ahora no se cobra nada: solo guardamos tu elección y puedes cambiarla en Ajustes.",
         "FREE": {
           "name": "Gratis",
-          "text": "1 cuenta bancaria y todo tu efectivo, inversiones, gastos fijos y simulaciones."
+          "text": "2 cuentas, tu efectivo, suscripciones, deudas y simuladores."
         },
         "PRO": {
           "name": "Pro",
-          "text": "Cuentas ilimitadas en un balance conjunto, analíticas y predicciones."
+          "text": "Cuentas ilimitadas, conexión con tu banco, inversiones y análisis. 2,99 €/mes."
         }
       }
     },
@@ -993,6 +999,19 @@
         "reset": "Quitar filtros",
         "status": "ESTADO",
         "all": "Todas"
+      }
+    },
+    "pro": {
+      "cta": "Ver el plan Pro",
+      "ctaOnboarding": "Elegir Pro en el paso 2",
+      "analytics": {
+        "title": "El análisis es del plan Pro",
+        "text": "Con Pro verás en qué se va tu dinero mes a mes y por categoría, y una predicción de cómo acabarás el mes. Pro cuesta 2,99 €/mes."
+      },
+      "investments": {
+        "title": "Las inversiones son del plan Pro",
+        "text": "Con Pro añades tus ETF, acciones, fondos y cripto por ISIN o nombre, y su valor se suma a tu patrimonio. Pro cuesta 2,99 €/mes.",
+        "onboarding": "Con Pro puedes añadir tus ETF, acciones, fondos y cripto. Si sigues en Gratis, sáltate este paso: podrás pasarte a Pro cuando quieras."
       }
     }
   }

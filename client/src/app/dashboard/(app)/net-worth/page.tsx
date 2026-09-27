@@ -3,7 +3,7 @@ import {
   ACCOUNT_FIELDS, AccountList, AddAccount, AddExpense, EXPENSE_FIELDS, EXPENSE_KINDS, ExpenseList, INCOME_KINDS, INVESTMENT_FIELDS,
   InvestmentList, InvestmentSearch, searchInstruments, type Account, type Category, type Expense, type Investment,
 } from "@/components/app/finance";
-import { EmptyAction, EmptyState, ListControls, PageHeader, PageNotice, Section, pick } from "@/components/app/ui";
+import { EmptyAction, EmptyState, ListControls, PageHeader, PageNotice, Section, pick, ProUpsell } from "@/components/app/ui";
 import { gql } from "@/lib/api";
 import { appNotice } from "@/lib/auth-codes";
 
@@ -22,14 +22,15 @@ export default async function NetWorthPage({ searchParams }: PageProps<"/dashboa
   const q = typeof sp.q === "string" ? sp.q : undefined;
   const sort = pick(sp.sort, SORTS);
   const kind = pick(sp.kind, KINDS);
-  const [t, finance, format, notice, search, data] = await Promise.all([
+  const [t, pro, finance, format, notice, search, data] = await Promise.all([
     getTranslations("app.netWorth"),
+    getTranslations("app.pro"),
     getTranslations("app.finance"),
     getFormatter(),
     appNotice(sp as { error?: string; message?: string }),
     searchInstruments(q),
-    gql<{ me: { currency: string; readOnly: boolean }; netWorth: { totals: Totals[] }; accounts: Account[]; investments: Investment[]; recurringExpenses: Expense[]; categories: Category[] }>(`{
-      me { currency readOnly }
+    gql<{ me: { currency: string; readOnly: boolean; plan: "FREE" | "PRO" }; netWorth: { totals: Totals[] }; accounts: Account[]; investments: Investment[]; recurringExpenses: Expense[]; categories: Category[] }>(`{
+      me { currency readOnly plan }
       netWorth { totals { currency accounts investments debts current endOfMonth total } }
       accounts { ${ACCOUNT_FIELDS} }
       investments { ${INVESTMENT_FIELDS} }
@@ -138,8 +139,14 @@ export default async function NetWorthPage({ searchParams }: PageProps<"/dashboa
 
       <Section id="investments" title={t("investments")}>
         <InvestmentList investments={investments} back={back} readOnly={me.readOnly} />
-        <InvestmentSearch action={PAGE} query={q} results={search.results} error={search.error} back={back} readOnly={me.readOnly} />
-        <p className="m-0 text-[13px] text-ink-muted">{t("pricesSource")}</p>
+        {me.plan === "PRO" ? (
+          <>
+            <InvestmentSearch action={PAGE} query={q} results={search.results} error={search.error} back={back} readOnly={me.readOnly} />
+            <p className="m-0 text-[13px] text-ink-muted">{t("pricesSource")}</p>
+          </>
+        ) : (
+          <ProUpsell title={pro("investments.title")} text={pro("investments.text")} cta={pro("cta")} />
+        )}
       </Section>
 
       {(!kind || kind === "DEBT") && (
