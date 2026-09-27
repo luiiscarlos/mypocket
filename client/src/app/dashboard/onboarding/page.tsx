@@ -144,7 +144,7 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
           <>
             <Section title={t("steps.accounts.yours")}>
               <AccountList accounts={data.accounts} back={back} readOnly={me.readOnly} />
-              <AccountForm back={back} currency={me.currency} readOnly={me.readOnly} />
+              {!me.readOnly && <div className="border border-ink p-5"><AccountForm back={back} currency={me.currency} /></div>}
             </Section>
             <Section title={t("plan.title")}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -176,8 +176,8 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
 
         {key === "expenses" && (
           <Section title={t("steps.expenses.yours")}>
-            <ExpenseList expenses={data.recurringExpenses} back={back} readOnly={me.readOnly} categories={data.categories} />
-            <ExpenseForm back={back} accounts={data.accounts} categories={data.categories} readOnly={me.readOnly} />
+            <ExpenseList expenses={data.recurringExpenses} back={back} readOnly={me.readOnly} categories={data.categories} accounts={data.accounts} />
+            {!me.readOnly && <div className="border border-ink p-5"><ExpenseForm back={back} accounts={data.accounts} categories={data.categories} /></div>}
           </Section>
         )}
 

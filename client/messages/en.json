@@ -199,7 +199,7 @@
     "perMonth": "/mo",
     "startFree": "Start for free",
     "tryPro": "Try Pro",
-    "price": "[PRICE]",
+    "price": "2.99",
     "freeFeatures": {
       "bank": "1 connected bank",
       "cash": "Cash balance and manual transactions",
@@ -452,7 +452,8 @@
       "planChanged": "Plan updated.",
       "passwordChanged": "Password updated.",
       "welcome": "All set! This is your money.",
-      "recurringSaved": "Recurring transaction saved. It will post itself on every charge date; if it starts today, it's already in the history."
+      "recurringSaved": "Recurring transaction saved. It will post itself on every charge date; if it starts today, it's already in the history.",
+      "ticketSent": "Ticket sent. We'll answer right here."
     },
     "finance": {
       "delete": "Delete",
@@ -497,7 +498,8 @@
         "balance": "Current balance",
         "update": "Update",
         "add": "Add account",
-        "bankSoon": "For now you set the balance yourself. Automatic bank connection is coming later."
+        "bankSoon": "For now you set the balance yourself. Automatic bank connection is coming later.",
+        "editTitle": "Edit account"
       },
       "investments": {
         "empty": "You haven't added any investments yet.",
@@ -509,7 +511,8 @@
         "noPrice": "No price",
         "quantity": "Units",
         "add": "Add",
-        "units": "{quantity} units"
+        "units": "{quantity} units",
+        "costBasis": "Total invested"
       },
       "expenses": {
         "empty": "You haven't added any fixed expenses yet.",
@@ -542,14 +545,19 @@
         "payments": "payments",
         "category": "Category",
         "initialAmount": "Initial amount",
-        "initialHint": "What you owed at the start. With the installment and the first charge we work out what's paid, what's left and when it ends."
+        "initialHint": "What you owed at the start. With the installment and the first charge we work out what's paid, what's left and when it ends.",
+        "editTitle": "Edit recurring item"
       },
       "units": {
         "WEEK": "Weeks",
         "MONTH": "Months",
         "YEAR": "Years"
       },
-      "everyN": "every {n} {unit}"
+      "everyN": "every {n} {unit}",
+      "edit": "Edit",
+      "close": "Close",
+      "save": "Save changes",
+      "optional": "optional"
     },
     "home": {
       "kicker": "HOME",
@@ -662,7 +670,11 @@
           "AMOUNT_ASC": "Lowest amount"
         }
       },
-      "recurringTag": "RECURRING"
+      "recurringTag": "RECURRING",
+      "close": "Close",
+      "editTitle": "Edit transaction",
+      "edit": "Edit",
+      "update": "Save changes"
     },
     "analytics": {
       "kicker": "ANALYTICS",
@@ -758,11 +770,11 @@
     },
     "settings": {
       "kicker": "SETTINGS",
-      "title": "Your account",
+      "title": "Settings",
       "save": "Save",
       "logout": "Log out",
       "profile": {
-        "title": "Profile",
+        "title": "Personal details",
         "fullName": "Full name",
         "displayName": "What we call you",
         "phone": "Phone",
@@ -788,6 +800,11 @@
         "locales": {
           "es": "Español",
           "en": "English"
+        },
+        "themes": {
+          "light": "Light",
+          "dark": "Dark",
+          "system": "System"
         }
       },
       "plan": {
@@ -798,7 +815,16 @@
         "noPayments": "Nothing is charged for now: we only store your choice.",
         "toPro": "Go Pro",
         "toFree": "Back to Free",
-        "compare": "Compare plans"
+        "compare": "Compare plans",
+        "price": {
+          "FREE": "€0/mo",
+          "PRO": "€2.99/mo"
+        },
+        "text": {
+          "FREE": "1 bank account plus all your cash, fixed and recurring expenses.",
+          "PRO": "Unlimited accounts, investments, simulations, analytics and predictions."
+        },
+        "currentTag": "YOUR CURRENT PLAN"
       },
       "password": {
         "title": "Password",
@@ -813,7 +839,8 @@
         "faq": "FAQ",
         "updates": "What's new",
         "privacy": "Privacy policy",
-        "terms": "Terms of use"
+        "terms": "Terms of use",
+        "support": "Support and tickets"
       },
       "data": {
         "title": "Your data",
@@ -822,9 +849,18 @@
       },
       "delete": {
         "warning": "Deleting the account permanently removes all your data. This can't be undone.",
-        "confirm": "Type {word} to confirm",
-        "word": "DELETE",
-        "submit": "Delete my account"
+        "confirm": "To confirm, type “{word}”",
+        "word": "Delete my account",
+        "submit": "Delete my account",
+        "title": "Delete my account"
+      },
+      "sections": "Settings sections",
+      "close": "Close",
+      "tabs": {
+        "profile": "Profile",
+        "preferences": "Preferences",
+        "plan": "Plan",
+        "help": "Help and legal"
       }
     },
     "updates": {
@@ -906,7 +942,7 @@
     },
     "header": {
       "preferences": "Language and appearance",
-      "language": "LANGUAGE",
+      "language": "Language",
       "appearance": "APPEARANCE",
       "themes": {
         "light": "Light",
@@ -914,7 +950,50 @@
         "system": "System"
       },
       "account": "Your account",
-      "profile": "Profile"
+      "profile": "Profile",
+      "support": "Support",
+      "admin": "Tickets (admin)"
+    },
+    "support": {
+      "title": "Support",
+      "new": "New ticket",
+      "close": "Close",
+      "subject": "Subject",
+      "category": "Type",
+      "message": "What happened",
+      "messageHint": "Tell us what you were doing, what you expected and what happened. Don't include passwords or bank details.",
+      "send": "Send ticket",
+      "yours": "Your tickets",
+      "reply": "TEAM ANSWER",
+      "empty": {
+        "title": "Something not working?",
+        "text": "Open a ticket and the team will look into it. You'll see its status and the answer here."
+      },
+      "statuses": {
+        "OPEN": "OPEN",
+        "IN_PROGRESS": "IN PROGRESS",
+        "RESOLVED": "RESOLVED",
+        "CLOSED": "CLOSED"
+      },
+      "categories": {
+        "BUG": "Bug",
+        "ACCOUNT": "Account",
+        "BANK": "Banks",
+        "BILLING": "Plan and billing",
+        "IDEA": "Suggestion",
+        "OTHER": "Other"
+      },
+      "adminTitle": "Tickets",
+      "count": "{count, plural, one {# ticket} other {# tickets}}",
+      "adminEmpty": "No tickets match this filter.",
+      "answer": "Answer / change status",
+      "saveAnswer": "Save",
+      "filters": {
+        "apply": "Apply",
+        "reset": "Clear filters",
+        "status": "STATUS",
+        "all": "All"
+      }
     }
   }
 }

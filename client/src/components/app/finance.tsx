@@ -1,32 +1,33 @@
 // Lists and forms for accounts, investments and recurring items. Shared by the onboarding, Net worth and Transactions.
-// In the read-only demo every write control is hidden, not just disabled (PATTERNS §7).
+// Add and edit forms open in a modal; in the read-only demo every write control is hidden (PATTERNS §7).
 import { getFormatter, getTranslations } from "next-intl/server";
 import {
-  Banknote, CalendarClock, CreditCard, HandCoins, Landmark, PiggyBank, Plus, Repeat, TrendingUp, Trash2, Wallet, type LucideIcon,
+  Banknote, CalendarClock, CreditCard, HandCoins, Landmark, Pencil, PiggyBank, Plus, Repeat, TrendingUp, Trash2, Wallet, type LucideIcon,
 } from "lucide-react";
 import { inputClass, labelClass } from "@/components/forms";
+import { Modal } from "@/components/app/modal";
 import { ApiError, gql } from "@/lib/api";
-import { Empty, List, Row, dangerLink, primaryBtn, smallButton } from "@/components/app/ui";
+import { Empty, List, Row, dangerLink, primaryBtn, secondaryBtn, smallButton } from "@/components/app/ui";
 import {
-  addInvestment, createAccount, createExpense, deleteAccount, deleteExpense, deleteInvestment, updateAccountBalance,
+  addInvestment, createAccount, createExpense, deleteAccount, deleteExpense, deleteInvestment, updateAccount, updateExpense, updateInvestment,
 } from "@/app/dashboard/actions";
 
 export type Account = { id: string; name: string; institution: string | null; kind: "CHECKING" | "SAVINGS" | "CASH"; currency: string; balance: number };
 export type Instrument = { id: string; isin: string | null; symbol: string; name: string; kind: string; currency: string; exchange: string | null; lastPrice: number | null };
-export type Investment = { id: string; quantity: number; value: number | null; currency: string; instrument: Instrument };
+export type Investment = { id: string; quantity: number; costBasis: number | null; value: number | null; currency: string; instrument: Instrument };
 export type ExpenseKind = "SUBSCRIPTION" | "DEBT" | "OTHER" | "SALARY" | "INVESTMENT" | "OTHER_INCOME";
 export type Expense = {
   id: string; name: string; direction: "EXPENSE" | "INCOME"; kind: ExpenseKind; amount: number; currency: string;
-  intervalUnit: "WEEK" | "MONTH" | "YEAR"; intervalCount: number; startDate: string; nextChargeDate: string | null;
-  initialAmount: number | null; outstandingAmount: number | null; paidAmount: number | null; progress: number | null;
-  endsOn: string | null; monthlyAmount: number; categoryId: string | null;
+  intervalUnit: "WEEK" | "MONTH" | "YEAR"; intervalCount: number; startDate: string; endDate: string | null; paymentsTotal: number | null;
+  nextChargeDate: string | null; initialAmount: number | null; outstandingAmount: number | null; paidAmount: number | null; progress: number | null;
+  endsOn: string | null; monthlyAmount: number; categoryId: string | null; accountId: string | null;
 };
 export type Category = { id: string; name: string };
 
 export const ACCOUNT_FIELDS = "id name institution kind currency balance";
-export const INVESTMENT_FIELDS = "id quantity value currency instrument { id isin symbol name kind currency exchange lastPrice }";
+export const INVESTMENT_FIELDS = "id quantity costBasis value currency instrument { id isin symbol name kind currency exchange lastPrice }";
 export const EXPENSE_FIELDS =
-  "id name direction kind amount currency intervalUnit intervalCount startDate nextChargeDate initialAmount outstandingAmount paidAmount progress endsOn monthlyAmount categoryId";
+  "id name direction kind amount currency intervalUnit intervalCount startDate endDate paymentsTotal nextChargeDate initialAmount outstandingAmount paidAmount progress endsOn monthlyAmount categoryId accountId";
 
 export const EXPENSE_KINDS = ["SUBSCRIPTION", "OTHER", "DEBT"] as const;
 export const INCOME_KINDS = ["SALARY", "INVESTMENT", "OTHER_INCOME"] as const;
@@ -57,6 +58,7 @@ export async function searchInstruments(q: string | undefined): Promise<{ result
 }
 
 const grid = "grid grid-cols-1 gap-4 sm:grid-cols-2";
+const iconAction = `${smallButton} w-11 px-0`;
 
 async function tools() {
   const [t, format] = await Promise.all([getTranslations("app.finance"), getFormatter()]);
@@ -81,6 +83,22 @@ function DeleteButton({ label }: { label: string }) {
   );
 }
 
+/** Row actions: edit (modal) and delete. */
+async function RowActions({ editTitle, edit, deleteAction, back, id }: { editTitle: string; edit: React.ReactNode; deleteAction: (f: FormData) => Promise<void>; back: string; id: string }) {
+  const { t } = await tools();
+  return (
+    <div className="flex items-center gap-1">
+      <Modal title={editTitle} trigger={<Pencil size={16} aria-hidden />} triggerLabel={t("edit")} triggerClassName={iconAction} closeLabel={t("close")}>
+        {edit}
+      </Modal>
+      <form action={deleteAction}>
+        <Hidden back={back} id={id} />
+        <DeleteButton label={t("delete")} />
+      </form>
+    </div>
+  );
+}
+
 // --- accounts -------------------------------------------------------------------------------
 
 export async function AccountList({ accounts, back, readOnly }: { accounts: Account[]; back: string; readOnly: boolean }) {
@@ -96,18 +114,8 @@ export async function AccountList({ accounts, back, readOnly }: { accounts: Acco
           value={money(a.balance, a.currency)}
         >
           {!readOnly && (
-            <>
-              <form action={updateAccountBalance} className="flex items-center gap-2">
-                <Hidden back={back} id={a.id} />
-                <label className="sr-only" htmlFor={`balance-${a.id}`}>{t("accounts.balance")}</label>
-                <input id={`balance-${a.id}`} name="balance" inputMode="decimal" defaultValue={a.balance} required className={`${inputClass} h-11 w-32 font-mono`} />
-                <button className={smallButton}>{t("accounts.update")}</button>
-              </form>
-              <form action={deleteAccount}>
-                <Hidden back={back} id={a.id} />
-                <DeleteButton label={t("delete")} />
-              </form>
-            </>
+            <RowActions editTitle={t("accounts.editTitle")} deleteAction={deleteAccount} back={back} id={a.id}
+              edit={<AccountForm back={back} currency={a.currency} account={a} />} />
           )}
         </Row>
       ))}
@@ -115,24 +123,24 @@ export async function AccountList({ accounts, back, readOnly }: { accounts: Acco
   );
 }
 
-export async function AccountForm({ back, currency, readOnly }: { back: string; currency: string; readOnly: boolean }) {
-  if (readOnly) return null;
+/** Create (no `account`) or edit an account. */
+export async function AccountForm({ back, currency, account }: { back: string; currency: string; account?: Account }) {
   const { t } = await tools();
   return (
-    <form id="add-account" action={createAccount} className="flex scroll-mt-24 flex-col gap-4 border border-ink p-5">
-      <Hidden back={back} />
+    <form action={account ? updateAccount : createAccount} className="flex flex-col gap-4">
+      <Hidden back={back} id={account?.id} />
       <div className={grid}>
         <label className={labelClass}>
           {t("accounts.name")}
-          <input name="name" required maxLength={60} placeholder={t("accounts.namePlaceholder")} className={inputClass} />
+          <input name="name" required maxLength={60} defaultValue={account?.name} placeholder={t("accounts.namePlaceholder")} className={inputClass} />
         </label>
         <label className={labelClass}>
           {t("accounts.institution")}
-          <input name="institution" maxLength={60} className={inputClass} />
+          <input name="institution" maxLength={60} defaultValue={account?.institution ?? ""} className={inputClass} />
         </label>
         <label className={labelClass}>
           {t("accounts.kind")}
-          <select name="kind" defaultValue="CHECKING" className={`${inputClass} px-3`}>
+          <select name="kind" defaultValue={account?.kind ?? "CHECKING"} className={`${inputClass} px-3`}>
             {(["CHECKING", "SAVINGS", "CASH"] as const).map((k) => (
               <option key={k} value={k}>{t(`accountKinds.${k}`)}</option>
             ))}
@@ -141,17 +149,28 @@ export async function AccountForm({ back, currency, readOnly }: { back: string; 
         <div className="grid grid-cols-[1fr_96px] gap-3">
           <label className={labelClass}>
             {t("accounts.balance")}
-            <input name="balance" inputMode="decimal" required placeholder="0,00" className={`${inputClass} font-mono`} />
+            <input name="balance" inputMode="decimal" required defaultValue={account?.balance} placeholder="0,00" className={`${inputClass} font-mono`} />
           </label>
           <label className={labelClass}>
             {t("currency")}
-            <input name="currency" defaultValue={currency} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
+            <input name="currency" defaultValue={account?.currency ?? currency} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
           </label>
         </div>
       </div>
-      <p className="m-0 text-[13px] text-ink-muted">{t("accounts.bankSoon")}</p>
-      <button className={`${primaryBtn} self-start`}><Plus size={16} aria-hidden />{t("accounts.add")}</button>
+      {!account && <p className="m-0 text-[13px] text-ink-muted">{t("accounts.bankSoon")}</p>}
+      <button className={`${primaryBtn} self-start`}>{account ? t("save") : <><Plus size={16} aria-hidden />{t("accounts.add")}</>}</button>
     </form>
+  );
+}
+
+/** "Add account" button + modal. */
+export async function AddAccount({ back, currency, readOnly, primary = false }: { back: string; currency: string; readOnly: boolean; primary?: boolean }) {
+  if (readOnly) return null;
+  const { t } = await tools();
+  return (
+    <Modal title={t("accounts.add")} trigger={<><Plus size={16} aria-hidden />{t("accounts.add")}</>} triggerClassName={primary ? primaryBtn : secondaryBtn} closeLabel={t("close")}>
+      <AccountForm back={back} currency={currency} />
+    </Modal>
   );
 }
 
@@ -171,10 +190,28 @@ export async function InvestmentList({ investments, back, readOnly }: { investme
           sub={t("investments.units", { quantity: i.quantity })}
         >
           {!readOnly && (
-            <form action={deleteInvestment}>
-              <Hidden back={back} id={i.id} />
-              <DeleteButton label={t("delete")} />
-            </form>
+            <RowActions
+              editTitle={i.instrument.name}
+              deleteAction={deleteInvestment}
+              back={back}
+              id={i.id}
+              edit={
+                <form action={updateInvestment} className="flex flex-col gap-4">
+                  <Hidden back={back} id={i.id} />
+                  <div className={grid}>
+                    <label className={labelClass}>
+                      {t("investments.quantity")}
+                      <input name="quantity" inputMode="decimal" required defaultValue={i.quantity} className={`${inputClass} font-mono`} />
+                    </label>
+                    <label className={labelClass}>
+                      <span>{t("investments.costBasis")} <span className="font-normal text-ink-muted">({t("optional")})</span></span>
+                      <input name="costBasis" inputMode="decimal" defaultValue={i.costBasis ?? ""} className={`${inputClass} font-mono`} />
+                    </label>
+                  </div>
+                  <button className={`${primaryBtn} self-start`}>{t("save")}</button>
+                </form>
+              }
+            />
           )}
         </Row>
       ))}
@@ -232,8 +269,8 @@ export async function InvestmentSearch({
 // --- recurring items (subscriptions, periodic expenses, debts, recurring income) ----------------
 
 export async function ExpenseList({
-  expenses, back, readOnly, categories = [],
-}: { expenses: Expense[]; back: string; readOnly: boolean; categories?: Category[] }) {
+  expenses, back, readOnly, categories = [], accounts = [],
+}: { expenses: Expense[]; back: string; readOnly: boolean; categories?: Category[]; accounts?: Account[] }) {
   const { t, money, date, monthYear } = await tools();
   if (expenses.length === 0) return <Empty>{t("expenses.empty")}</Empty>;
   const categoryName = new Map(categories.map((c) => [c.id, c.name]));
@@ -260,10 +297,8 @@ export async function ExpenseList({
                 {e.endsOn && e.kind !== "DEBT" && <span className="text-xs text-ink-muted">{t("expenses.until", { date: monthYear(e.endsOn) })}</span>}
               </div>
               {!readOnly && (
-                <form action={deleteExpense}>
-                  <Hidden back={back} id={e.id} />
-                  <DeleteButton label={t("delete")} />
-                </form>
+                <RowActions editTitle={t("expenses.editTitle")} deleteAction={deleteExpense} back={back} id={e.id}
+                  edit={<ExpenseForm back={back} accounts={accounts} categories={categories} expense={e} />} />
               )}
             </div>
             {e.kind === "DEBT" && e.outstandingAmount != null && (
@@ -294,33 +329,29 @@ export async function ExpenseList({
  * kind (grouped by expense/income), category, frequency, start, duration and, for debts, the initial amount.
  */
 export async function RecurringFields({
-  categories, startName = "startDate", kinds = "both", withCategory = true,
-}: { categories: Category[]; startName?: string; kinds?: "both" | "none"; withCategory?: boolean }) {
+  categories, startName = "startDate", kinds = "both", withCategory = true, expense,
+}: { categories: Category[]; startName?: string; kinds?: "both" | "none"; withCategory?: boolean; expense?: Expense }) {
   const { t } = await tools();
+  const duration = expense?.endDate ? "until" : expense?.paymentsTotal ? "count" : "open";
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {kinds === "both" && (
         <label className={labelClass}>
           {t("expenses.kind")}
           <select name="kind" defaultValue="" className={`${inputClass} px-3`}>
             <option value="">{t("expenses.kindAuto")}</option>
-            <optgroup label={t("expenses.expenseGroup")}>
-              {EXPENSE_KINDS.map((k) => <option key={k} value={k}>{t(`expenseKinds.${k}`)}</option>)}
-            </optgroup>
-            <optgroup label={t("expenses.incomeGroup")}>
-              {INCOME_KINDS.map((k) => <option key={k} value={k}>{t(`expenseKinds.${k}`)}</option>)}
-            </optgroup>
+            <KindOptions t={t} />
           </select>
         </label>
       )}
       <div className="grid grid-cols-[88px_1fr] gap-3">
         <label className={labelClass}>
           {t("expenses.every")}
-          <input name="intervalCount" type="number" min={1} max={36} defaultValue={1} className={`${inputClass} font-mono`} />
+          <input name="intervalCount" type="number" min={1} max={36} defaultValue={expense?.intervalCount ?? 1} className={`${inputClass} font-mono`} />
         </label>
         <label className={labelClass}>
           {t("expenses.interval")}
-          <select name="intervalUnit" defaultValue="MONTH" className={`${inputClass} px-3`}>
+          <select name="intervalUnit" defaultValue={expense?.intervalUnit ?? "MONTH"} className={`${inputClass} px-3`}>
             {(["WEEK", "MONTH", "YEAR"] as const).map((u) => <option key={u} value={u}>{t(`units.${u}`)}</option>)}
           </select>
         </label>
@@ -328,20 +359,20 @@ export async function RecurringFields({
       {startName === "startDate" && (
         <label className={labelClass}>
           {t("expenses.start")}
-          <input name="startDate" type="date" required className={`${inputClass} font-mono`} />
+          <input name="startDate" type="date" required defaultValue={expense?.startDate} className={`${inputClass} font-mono`} />
         </label>
       )}
-      <fieldset className="m-0 flex flex-col gap-2 border-0 p-0 sm:col-span-2 xl:col-span-3">
+      <fieldset className="m-0 flex flex-col gap-2 border-0 p-0 sm:col-span-2">
         <legend className="mb-2 text-sm font-semibold">{t("expenses.duration")}</legend>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[15px]">
-          <label className="flex items-center gap-2"><input type="radio" name="duration" value="open" defaultChecked className="size-5 accent-leaf" />{t("expenses.durationOpen")}</label>
+          <label className="flex items-center gap-2"><input type="radio" name="duration" value="open" defaultChecked={duration === "open"} className="size-5 accent-leaf" />{t("expenses.durationOpen")}</label>
           <label className="flex items-center gap-2">
-            <input type="radio" name="duration" value="until" className="size-5 accent-leaf" />{t("expenses.durationUntil")}
-            <input name="endDate" type="date" aria-label={t("expenses.endDate")} className={`${inputClass} h-11 w-44 font-mono`} />
+            <input type="radio" name="duration" value="until" defaultChecked={duration === "until"} className="size-5 accent-leaf" />{t("expenses.durationUntil")}
+            <input name="endDate" type="date" defaultValue={expense?.endDate ?? ""} aria-label={t("expenses.endDate")} className={`${inputClass} h-11 w-44 font-mono`} />
           </label>
           <label className="flex items-center gap-2">
-            <input type="radio" name="duration" value="count" className="size-5 accent-leaf" />
-            <input name="paymentsTotal" type="number" min={1} max={1200} aria-label={t("expenses.paymentsTotal")} className={`${inputClass} h-11 w-24 font-mono`} />
+            <input type="radio" name="duration" value="count" defaultChecked={duration === "count"} className="size-5 accent-leaf" />
+            <input name="paymentsTotal" type="number" min={1} max={1200} defaultValue={expense?.paymentsTotal ?? ""} aria-label={t("expenses.paymentsTotal")} className={`${inputClass} h-11 w-24 font-mono`} />
             {t("expenses.payments")}
           </label>
         </div>
@@ -349,7 +380,7 @@ export async function RecurringFields({
       {withCategory && (
         <label className={labelClass}>
           {t("expenses.category")}
-          <select name="categoryId" defaultValue="" className={`${inputClass} px-3`}>
+          <select name="categoryId" defaultValue={expense?.categoryId ?? ""} className={`${inputClass} px-3`}>
             <option value="">{t("none")}</option>
             {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
@@ -357,55 +388,74 @@ export async function RecurringFields({
       )}
       <label className={labelClass}>
         <span>{t("expenses.initialAmount")} <span className="font-normal text-ink-muted">({t("expenses.debtsOnly")})</span></span>
-        <input name="initialAmount" inputMode="decimal" placeholder="0,00" aria-describedby="initial-hint" className={`${inputClass} font-mono`} />
-        <span id="initial-hint" className="text-[13px] font-normal text-ink-muted">{t("expenses.initialHint")}</span>
+        <input name="initialAmount" inputMode="decimal" placeholder="0,00" defaultValue={expense?.initialAmount ?? ""} aria-describedby={`initial-hint-${expense?.id ?? startName}`} className={`${inputClass} font-mono`} />
+        <span id={`initial-hint-${expense?.id ?? startName}`} className="text-[13px] font-normal text-ink-muted">{t("expenses.initialHint")}</span>
       </label>
     </div>
   );
 }
 
-export async function ExpenseForm({ back, accounts, categories, readOnly }: { back: string; accounts: Account[]; categories: Category[]; readOnly: boolean }) {
-  if (readOnly) return null;
+function KindOptions({ t }: { t: Awaited<ReturnType<typeof tools>>["t"] }) {
+  return (
+    <>
+      <optgroup label={t("expenses.expenseGroup")}>
+        {EXPENSE_KINDS.map((k) => <option key={k} value={k}>{t(`expenseKinds.${k}`)}</option>)}
+      </optgroup>
+      <optgroup label={t("expenses.incomeGroup")}>
+        {INCOME_KINDS.map((k) => <option key={k} value={k}>{t(`expenseKinds.${k}`)}</option>)}
+      </optgroup>
+    </>
+  );
+}
+
+/** Create (no `expense`) or edit a recurring item. */
+export async function ExpenseForm({ back, accounts, categories, expense }: { back: string; accounts: Account[]; categories: Category[]; expense?: Expense }) {
   const { t } = await tools();
   return (
-    <form id="add-recurring" action={createExpense} className="flex scroll-mt-24 flex-col gap-4 border border-ink p-5">
-      <Hidden back={back} />
+    <form action={expense ? updateExpense : createExpense} className="flex flex-col gap-4">
+      <Hidden back={back} id={expense?.id} />
       <div className={grid}>
         <label className={labelClass}>
           {t("expenses.name")}
-          <input name="name" required maxLength={60} placeholder={t("expenses.namePlaceholder")} className={inputClass} />
+          <input name="name" required maxLength={60} defaultValue={expense?.name} placeholder={t("expenses.namePlaceholder")} className={inputClass} />
         </label>
         <div className="grid grid-cols-[1fr_96px] gap-3">
           <label className={labelClass}>
             {t("expenses.amount")}
-            <input name="amount" inputMode="decimal" required placeholder="0,00" className={`${inputClass} font-mono`} />
+            <input name="amount" inputMode="decimal" required defaultValue={expense?.amount} placeholder="0,00" className={`${inputClass} font-mono`} />
           </label>
           <label className={labelClass}>
             {t("currency")}
-            <input name="currency" defaultValue="EUR" pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
+            <input name="currency" defaultValue={expense?.currency ?? "EUR"} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
           </label>
         </div>
         <label className={labelClass}>
           {t("expenses.kind")}
-          <select name="kind" defaultValue="SUBSCRIPTION" className={`${inputClass} px-3`}>
-            <optgroup label={t("expenses.expenseGroup")}>
-              {EXPENSE_KINDS.map((k) => <option key={k} value={k}>{t(`expenseKinds.${k}`)}</option>)}
-            </optgroup>
-            <optgroup label={t("expenses.incomeGroup")}>
-              {INCOME_KINDS.map((k) => <option key={k} value={k}>{t(`expenseKinds.${k}`)}</option>)}
-            </optgroup>
+          <select name="kind" defaultValue={expense?.kind ?? "SUBSCRIPTION"} className={`${inputClass} px-3`}>
+            <KindOptions t={t} />
           </select>
         </label>
         <label className={labelClass}>
           {t("expenses.account")}
-          <select name="accountId" defaultValue="" className={`${inputClass} px-3`}>
+          <select name="accountId" defaultValue={expense?.accountId ?? ""} className={`${inputClass} px-3`}>
             <option value="">{t("none")}</option>
             {accounts.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
           </select>
         </label>
       </div>
-      <RecurringFields categories={categories} kinds="none" />
-      <button className={`${primaryBtn} self-start`}><Plus size={16} aria-hidden />{t("expenses.add")}</button>
+      <RecurringFields categories={categories} kinds="none" expense={expense} />
+      <button className={`${primaryBtn} self-start`}>{expense ? t("save") : <><Plus size={16} aria-hidden />{t("expenses.add")}</>}</button>
     </form>
+  );
+}
+
+/** "Add recurring" button + modal. */
+export async function AddExpense({ back, accounts, categories, readOnly, primary = false }: { back: string; accounts: Account[]; categories: Category[]; readOnly: boolean; primary?: boolean }) {
+  if (readOnly) return null;
+  const { t } = await tools();
+  return (
+    <Modal title={t("expenses.add")} trigger={<><Plus size={16} aria-hidden />{t("expenses.add")}</>} triggerClassName={primary ? primaryBtn : secondaryBtn} closeLabel={t("close")}>
+      <ExpenseForm back={back} accounts={accounts} categories={categories} />
+    </Modal>
   );
 }

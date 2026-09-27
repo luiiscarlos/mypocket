@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
-  ArrowLeftRight, Calculator, ChartColumn, House, Landmark, Menu, Plus, Settings, Sparkles, type LucideIcon,
+  ArrowLeftRight, Calculator, ChartColumn, House, Landmark, Menu, Plus, type LucideIcon,
 } from "lucide-react";
 
 type Entry = { href: string; key: "home" | "netWorth" | "transactions" | "analytics" | "simulations" | "updates" | "settings" | "add" | "more"; Icon: LucideIcon };
@@ -15,15 +15,13 @@ const SIDE: Entry[] = [
   { href: "/dashboard/transactions", key: "transactions", Icon: ArrowLeftRight },
   { href: "/dashboard/analytics", key: "analytics", Icon: ChartColumn },
   { href: "/dashboard/simulations", key: "simulations", Icon: Calculator },
-  { href: "/dashboard/updates", key: "updates", Icon: Sparkles },
-  { href: "/dashboard/settings", key: "settings", Icon: Settings },
 ];
 
 // Mobile bottom bar: 5 entries, the middle one is "Add".
 const BOTTOM: Entry[] = [
   { href: "/dashboard", key: "home", Icon: House },
   { href: "/dashboard/net-worth", key: "netWorth", Icon: Landmark },
-  { href: "/dashboard/transactions", key: "add", Icon: Plus },
+  { href: "/dashboard/transactions?new=1", key: "add", Icon: Plus },
   { href: "/dashboard/analytics", key: "analytics", Icon: ChartColumn },
   { href: "/dashboard/settings", key: "more", Icon: Menu },
 ];

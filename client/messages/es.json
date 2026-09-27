@@ -199,7 +199,7 @@
     "perMonth": "/mes",
     "startFree": "Empezar gratis",
     "tryPro": "Probar Pro",
-    "price": "[PRECIO]",
+    "price": "2,99",
     "freeFeatures": {
       "bank": "1 banco conectado",
       "cash": "Balance de efectivo y movimientos manuales",
@@ -452,7 +452,8 @@
       "planChanged": "Plan actualizado.",
       "passwordChanged": "Contraseña actualizada.",
       "welcome": "¡Todo listo! Este es tu dinero.",
-      "recurringSaved": "Movimiento periódico guardado. Se registrará solo cada vez que toque; si empieza hoy, ya está en el historial."
+      "recurringSaved": "Movimiento periódico guardado. Se registrará solo cada vez que toque; si empieza hoy, ya está en el historial.",
+      "ticketSent": "Incidencia enviada. Te responderemos aquí mismo."
     },
     "finance": {
       "delete": "Eliminar",
@@ -497,7 +498,8 @@
         "balance": "Saldo actual",
         "update": "Actualizar",
         "add": "Añadir cuenta",
-        "bankSoon": "Por ahora el saldo lo pones tú. La conexión automática con tu banco llegará más adelante."
+        "bankSoon": "Por ahora el saldo lo pones tú. La conexión automática con tu banco llegará más adelante.",
+        "editTitle": "Editar cuenta"
       },
       "investments": {
         "empty": "Aún no has añadido inversiones.",
@@ -509,7 +511,8 @@
         "noPrice": "Sin precio",
         "quantity": "Participaciones",
         "add": "Añadir",
-        "units": "{quantity} participaciones"
+        "units": "{quantity} participaciones",
+        "costBasis": "Total invertido"
       },
       "expenses": {
         "empty": "Aún no has añadido gastos fijos.",
@@ -542,14 +545,19 @@
         "payments": "pagos",
         "category": "Categoría",
         "initialAmount": "Importe inicial",
-        "initialHint": "Lo que debías al empezar. Con la cuota y el primer cargo calculamos lo pagado, lo pendiente y cuándo termina."
+        "initialHint": "Lo que debías al empezar. Con la cuota y el primer cargo calculamos lo pagado, lo pendiente y cuándo termina.",
+        "editTitle": "Editar periódico"
       },
       "units": {
         "WEEK": "Semanas",
         "MONTH": "Meses",
         "YEAR": "Años"
       },
-      "everyN": "cada {n} {unit}"
+      "everyN": "cada {n} {unit}",
+      "edit": "Editar",
+      "close": "Cerrar",
+      "save": "Guardar cambios",
+      "optional": "opcional"
     },
     "home": {
       "kicker": "INICIO",
@@ -662,7 +670,11 @@
           "AMOUNT_ASC": "Importe menor"
         }
       },
-      "recurringTag": "PERIÓDICO"
+      "recurringTag": "PERIÓDICO",
+      "close": "Cerrar",
+      "editTitle": "Editar movimiento",
+      "edit": "Editar",
+      "update": "Guardar cambios"
     },
     "analytics": {
       "kicker": "ANÁLISIS",
@@ -758,11 +770,11 @@
     },
     "settings": {
       "kicker": "AJUSTES",
-      "title": "Tu cuenta",
+      "title": "Ajustes",
       "save": "Guardar",
       "logout": "Cerrar sesión",
       "profile": {
-        "title": "Perfil",
+        "title": "Datos personales",
         "fullName": "Nombre completo",
         "displayName": "Cómo te llamamos",
         "phone": "Teléfono",
@@ -788,6 +800,11 @@
         "locales": {
           "es": "Español",
           "en": "English"
+        },
+        "themes": {
+          "light": "Claro",
+          "dark": "Oscuro",
+          "system": "Sistema"
         }
       },
       "plan": {
@@ -798,7 +815,16 @@
         "noPayments": "Por ahora no se cobra nada: solo guardamos tu elección.",
         "toPro": "Pasar a Pro",
         "toFree": "Volver a Gratis",
-        "compare": "Comparar planes"
+        "compare": "Comparar planes",
+        "price": {
+          "FREE": "0 €/mes",
+          "PRO": "2,99 €/mes"
+        },
+        "text": {
+          "FREE": "1 cuenta bancaria y todo tu efectivo, gastos fijos y periódicos.",
+          "PRO": "Cuentas ilimitadas, inversiones, simulaciones, análisis y predicciones."
+        },
+        "currentTag": "TU PLAN ACTUAL"
       },
       "password": {
         "title": "Contraseña",
@@ -813,7 +839,8 @@
         "faq": "Preguntas frecuentes",
         "updates": "Novedades",
         "privacy": "Política de privacidad",
-        "terms": "Términos de uso"
+        "terms": "Términos de uso",
+        "support": "Soporte e incidencias"
       },
       "data": {
         "title": "Tus datos",
@@ -822,9 +849,18 @@
       },
       "delete": {
         "warning": "Borrar la cuenta elimina todos tus datos de forma permanente. No se puede deshacer.",
-        "confirm": "Escribe {word} para confirmar",
-        "word": "BORRAR",
-        "submit": "Borrar mi cuenta"
+        "confirm": "Para confirmar, escribe «{word}»",
+        "word": "Borrar mi cuenta",
+        "submit": "Borrar mi cuenta",
+        "title": "Borrar mi cuenta"
+      },
+      "sections": "Secciones de ajustes",
+      "close": "Cerrar",
+      "tabs": {
+        "profile": "Perfil",
+        "preferences": "Preferencias",
+        "plan": "Plan",
+        "help": "Ayuda y legal"
       }
     },
     "updates": {
@@ -906,7 +942,7 @@
     },
     "header": {
       "preferences": "Idioma y apariencia",
-      "language": "IDIOMA",
+      "language": "Idioma",
       "appearance": "APARIENCIA",
       "themes": {
         "light": "Claro",
@@ -914,7 +950,50 @@
         "system": "Sistema"
       },
       "account": "Tu cuenta",
-      "profile": "Perfil"
+      "profile": "Perfil",
+      "support": "Soporte",
+      "admin": "Incidencias (admin)"
+    },
+    "support": {
+      "title": "Soporte",
+      "new": "Nueva incidencia",
+      "close": "Cerrar",
+      "subject": "Asunto",
+      "category": "Tipo",
+      "message": "Qué ha pasado",
+      "messageHint": "Cuéntanos qué hacías, qué esperabas y qué ha pasado. No incluyas contraseñas ni datos bancarios.",
+      "send": "Enviar incidencia",
+      "yours": "Tus incidencias",
+      "reply": "RESPUESTA DEL EQUIPO",
+      "empty": {
+        "title": "¿Algo no va bien?",
+        "text": "Abre una incidencia y el equipo la revisará. Verás aquí su estado y la respuesta."
+      },
+      "statuses": {
+        "OPEN": "ABIERTA",
+        "IN_PROGRESS": "EN CURSO",
+        "RESOLVED": "RESUELTA",
+        "CLOSED": "CERRADA"
+      },
+      "categories": {
+        "BUG": "Error",
+        "ACCOUNT": "Cuenta",
+        "BANK": "Bancos",
+        "BILLING": "Plan y pagos",
+        "IDEA": "Sugerencia",
+        "OTHER": "Otro"
+      },
+      "adminTitle": "Incidencias",
+      "count": "{count, plural, one {# incidencia} other {# incidencias}}",
+      "adminEmpty": "No hay incidencias con este filtro.",
+      "answer": "Responder / cambiar estado",
+      "saveAnswer": "Guardar",
+      "filters": {
+        "apply": "Aplicar",
+        "reset": "Quitar filtros",
+        "status": "ESTADO",
+        "all": "Todas"
+      }
     }
   }
 }

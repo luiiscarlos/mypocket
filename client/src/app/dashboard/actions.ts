@@ -40,6 +40,24 @@ export async function createAccount(formData: FormData) {
   backWith(back, { message: "saved" });
 }
 
+/** Full edit of an account (modal): name, bank, type, currency and balance. */
+export async function updateAccount(formData: FormData) {
+  const back = backOf(formData);
+  const balance = num(formData, "balance");
+  invalidIf(back, Number.isNaN(balance));
+  await mutate(back, `mutation ($id: ID!, $i: UpdateAccountInput!) { updateAccount(id: $id, input: $i) { id } }`, {
+    id: text(formData, "id"),
+    i: {
+      name: text(formData, "name"),
+      institution: optional(text(formData, "institution")),
+      kind: text(formData, "kind"),
+      currency: text(formData, "currency").toUpperCase(),
+      balance,
+    },
+  });
+  backWith(back, { message: "saved" });
+}
+
 export async function updateAccountBalance(formData: FormData) {
   const back = backOf(formData);
   const balance = num(formData, "balance");
@@ -102,6 +120,17 @@ export async function createExpense(formData: FormData) {
   backWith(back, { message: "saved" });
 }
 
+export async function updateExpense(formData: FormData) {
+  const back = backOf(formData);
+  const input = recurringInput(formData, back, await kindName(text(formData, "kind")));
+  await mutate(back, `mutation ($id: ID!, $i: UpdateRecurringExpenseInput!) { updateRecurringExpense(id: $id, input: $i) { id } }`, {
+    id: text(formData, "id"),
+    // An edit always sends the whole schedule, so clearing the end date or the debt amount sticks.
+    i: { ...input, outstandingAmount: undefined },
+  });
+  backWith(back, { message: "saved" });
+}
+
 export async function deleteExpense(formData: FormData) {
   const back = backOf(formData);
   await mutate(back, `mutation ($id: ID!) { deleteRecurringExpense(id: $id) }`, { id: text(formData, "id") });
@@ -121,6 +150,19 @@ export async function addInvestment(formData: FormData) {
   const url = new URL(back, "http://local");
   url.searchParams.delete("q");
   backWith(url.pathname + url.search, { message: "saved" });
+}
+
+export async function updateInvestment(formData: FormData) {
+  const back = backOf(formData);
+  const quantity = num(formData, "quantity");
+  const cost = text(formData, "costBasis");
+  const costBasis = cost ? num(formData, "costBasis") : null;
+  invalidIf(back, !(quantity > 0) || Number.isNaN(costBasis));
+  await mutate(back, `mutation ($id: ID!, $i: UpdateInvestmentInput!) { updateInvestment(id: $id, input: $i) { id } }`, {
+    id: text(formData, "id"),
+    i: { quantity, costBasis },
+  });
+  backWith(back, { message: "saved" });
 }
 
 export async function deleteInvestment(formData: FormData) {
@@ -154,6 +196,25 @@ export async function createTransaction(formData: FormData) {
       categoryId: optional(text(formData, "categoryId")),
       accountId: optional(text(formData, "accountId")),
       occurredOn: optional(text(formData, "occurredOn")),
+      note: optional(text(formData, "note")),
+    },
+  });
+  backWith(back, { message: "saved" });
+}
+
+export async function updateTransaction(formData: FormData) {
+  const back = backOf(formData);
+  const amount = num(formData, "amount");
+  invalidIf(back, !(amount > 0));
+  await mutate(back, `mutation ($id: ID!, $i: UpdateTransactionInput!) { updateTransaction(id: $id, input: $i) { id } }`, {
+    id: text(formData, "id"),
+    i: {
+      type: text(formData, "type"),
+      amount,
+      currency: text(formData, "currency").toUpperCase(),
+      categoryId: optional(text(formData, "categoryId")),
+      accountId: optional(text(formData, "accountId")),
+      occurredOn: text(formData, "occurredOn"),
       note: optional(text(formData, "note")),
     },
   });
@@ -264,6 +325,27 @@ export async function deleteMyAccount(formData: FormData) {
   await (await createClient()).auth.signOut({ scope: "local" });
   revalidatePath("/", "layout");
   redirect("/login?message=account_deleted");
+}
+
+// --- support ---------------------------------------------------------------------------------------
+
+export async function createSupportTicket(formData: FormData) {
+  const back = backOf(formData);
+  await mutate(back, `mutation ($i: SupportTicketInput!) { createSupportTicket(input: $i) { id } }`, {
+    i: { subject: text(formData, "subject"), category: text(formData, "category"), message: text(formData, "message") },
+  });
+  backWith(back, { message: "ticketSent" });
+}
+
+/** Admins only (the API checks the role again). */
+export async function answerSupportTicket(formData: FormData) {
+  const back = backOf(formData);
+  await mutate(back, `mutation ($id: ID!, $s: TicketStatus!, $r: String) { answerSupportTicket(id: $id, status: $s, reply: $r) { id } }`, {
+    id: text(formData, "id"),
+    s: text(formData, "status"),
+    r: text(formData, "reply"),
+  });
+  backWith(back, { message: "saved" });
 }
 
 // --- layout preferences ---------------------------------------------------------------------------

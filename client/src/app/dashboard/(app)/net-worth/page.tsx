@@ -1,9 +1,9 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import {
-  ACCOUNT_FIELDS, AccountForm, AccountList, EXPENSE_FIELDS, EXPENSE_KINDS, ExpenseForm, ExpenseList, INCOME_KINDS, INVESTMENT_FIELDS,
+  ACCOUNT_FIELDS, AccountList, AddAccount, AddExpense, EXPENSE_FIELDS, EXPENSE_KINDS, ExpenseList, INCOME_KINDS, INVESTMENT_FIELDS,
   InvestmentList, InvestmentSearch, searchInstruments, type Account, type Category, type Expense, type Investment,
 } from "@/components/app/finance";
-import { EmptyAction, EmptyState, ListControls, PageHeader, PageNotice, Section, pick, textLink } from "@/components/app/ui";
+import { EmptyAction, EmptyState, ListControls, PageHeader, PageNotice, Section, pick } from "@/components/app/ui";
 import { gql } from "@/lib/api";
 import { appNotice } from "@/lib/auth-codes";
 
@@ -74,7 +74,7 @@ export default async function NetWorthPage({ searchParams }: PageProps<"/dashboa
           text={t("empty.text")}
           actions={!me.readOnly && (
             <>
-              <EmptyAction href="#add-account">{t("addAccount")}</EmptyAction>
+              <AddAccount back={back} currency={me.currency} readOnly={me.readOnly} primary />
               <EmptyAction href="#investments" secondary>{t("addInvestment")}</EmptyAction>
             </>
           )}
@@ -132,9 +132,8 @@ export default async function NetWorthPage({ searchParams }: PageProps<"/dashboa
         />
       )}
 
-      <Section id="accounts" title={t("accounts")} aside={!me.readOnly && <a href="#add-account" className={textLink}>+ {t("addAccount")}</a>}>
+      <Section id="accounts" title={t("accounts")} aside={<AddAccount back={back} currency={me.currency} readOnly={me.readOnly} />}>
         <AccountList accounts={accounts} back={back} readOnly={me.readOnly} />
-        <AccountForm back={back} currency={me.currency} readOnly={me.readOnly} />
       </Section>
 
       <Section id="investments" title={t("investments")}>
@@ -144,28 +143,23 @@ export default async function NetWorthPage({ searchParams }: PageProps<"/dashboa
       </Section>
 
       {(!kind || kind === "DEBT") && (
-        <Section id="debts" title={t("debts")}>
-          <ExpenseList expenses={debts} back={back} readOnly={me.readOnly} categories={data.categories} />
+        <Section id="debts" title={t("debts")} aside={<AddExpense back={back} accounts={data.accounts} categories={data.categories} readOnly={me.readOnly} />}>
+          <ExpenseList expenses={debts} back={back} readOnly={me.readOnly} categories={data.categories} accounts={data.accounts} />
         </Section>
       )}
 
       {(!kind || (EXPENSE_KINDS as readonly string[]).includes(kind)) && kind !== "DEBT" && (
-        <Section id="recurring" title={t("recurring")}>
-          <ExpenseList expenses={expenses} back={back} readOnly={me.readOnly} categories={data.categories} />
+        <Section id="recurring" title={t("recurring")} aside={<AddExpense back={back} accounts={data.accounts} categories={data.categories} readOnly={me.readOnly} />}>
+          <ExpenseList expenses={expenses} back={back} readOnly={me.readOnly} categories={data.categories} accounts={data.accounts} />
         </Section>
       )}
 
       {(!kind || (INCOME_KINDS as readonly string[]).includes(kind)) && (
-        <Section id="income" title={t("income")}>
-          <ExpenseList expenses={income} back={back} readOnly={me.readOnly} categories={data.categories} />
+        <Section id="income" title={t("income")} aside={<AddExpense back={back} accounts={data.accounts} categories={data.categories} readOnly={me.readOnly} />}>
+          <ExpenseList expenses={income} back={back} readOnly={me.readOnly} categories={data.categories} accounts={data.accounts} />
         </Section>
       )}
 
-      {!me.readOnly && (
-        <Section title={t("addRecurring")}>
-          <ExpenseForm back={back} accounts={data.accounts} categories={data.categories} readOnly={me.readOnly} />
-        </Section>
-      )}
     </>
   );
 }
