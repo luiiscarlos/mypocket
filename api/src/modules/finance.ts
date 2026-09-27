@@ -164,8 +164,8 @@ const typeDefs = /* GraphQL */ `
   }
 `;
 
-// Free plan: one bank account (checking or savings); cash accounts are unlimited.
-const FREE_BANK_ACCOUNTS = 1;
+// Free plan: two bank accounts (checking or savings); cash accounts are unlimited.
+const FREE_BANK_ACCOUNTS = 2;
 
 type AccountRow = {
   id: number; name: string; institution: string | null; kind: string; currency: string;
@@ -296,7 +296,7 @@ async function assertPlanAllowsBankAccount(user: AuthedUser, kind: string | unde
   if (!kind || kind === "cash") return;
   const { plan } = await profileOf(user);
   if (plan === "free" && (await bankAccountCount(user, excludeId)) >= FREE_BANK_ACCOUNTS) {
-    throw clientError("El plan Gratis incluye 1 banco. Pasa a Pro para añadir más", "PLAN_LIMIT");
+    throw clientError("El plan Gratis incluye 2 cuentas. Pasa a Pro para añadir más", "PLAN_LIMIT");
   }
 }
 
@@ -503,7 +503,7 @@ export const finance: Module = {
       setPlan: async (_, args: { plan: "free" | "pro" }, ctx) => {
         const user = await requireWritable(ctx);
         if (args.plan === "free" && (await bankAccountCount(user)) > FREE_BANK_ACCOUNTS) {
-          throw clientError("Elimina bancos hasta dejar 1 antes de pasar al plan Gratis", "PLAN_LIMIT");
+          throw clientError("Elimina cuentas hasta dejar 2 antes de pasar al plan Gratis", "PLAN_LIMIT");
         }
         // plan is not user-writable in the database: only the API (secret key) changes it.
         const { error } = await requireAdmin(ctx).from("profiles").update({ plan: args.plan }).eq("id", user.userId);

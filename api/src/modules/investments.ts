@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { GraphQLError } from "graphql";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { clientError, fail, requireAdmin, requireUser, requireWritable, round2, type AuthedUser, type Context, type Module } from "../core.js";
+import { clientError, fail, requireAdmin, requirePro, requireUser, requireWritable, round2, type AuthedUser, type Context, type Module } from "../core.js";
 import { parse, primitives as p } from "../validation.js";
 import { rateLimit } from "../rate-limit.js";
 import { coinPricesEur, isValidIsin, listingsForIsin, openFigiName, searchCoins, twelveDataPrice } from "../providers.js";
@@ -219,6 +219,7 @@ export const investments: Module = {
 
       searchInstruments: async (_, args: { query: string }, ctx) => {
         const user = requireUser(ctx);
+        await requirePro(user);
         const query = parse(schemas.query, args.query);
         const retryAfter = rateLimit(`search:${user.userId}`, 20);
         if (retryAfter !== null) {
@@ -236,6 +237,7 @@ export const investments: Module = {
     Mutation: {
       addInvestment: async (_, args: { input: unknown }, ctx) => {
         const user = await requireWritable(ctx);
+        await requirePro(user);
         const input = parse(schemas.add, args.input);
         const { data, error } = await user.db
           .from("investments")

@@ -154,3 +154,11 @@ export async function toMe(ctx: Context, user: AuthedUser) {
     isAdmin: p.is_admin,
   };
 }
+
+/**
+ * Pro-only features (investments, analytics, bank connection, receipt OCR). No payments yet: the plan
+ * is the choice stored in the profile. PLAN_LIMIT lets the UI show the "upgrade to Pro" state.
+ */
+export async function requirePro(user: AuthedUser) {
+  if ((await profileOf(user)).plan !== "pro") throw clientError("Disponible en el plan Pro", "PLAN_LIMIT");
+}

@@ -48,7 +48,12 @@ try {
   cleanup.push(`mutation { deleteAccount(id: "${bank.id}") }`);
   const cash = ok(await gql(`mutation { createAccount(input: { name: "Smoke cash", kind: CASH, balance: 200 }) { id } }`)).createAccount;
   cleanup.push(`mutation { deleteAccount(id: "${cash.id}") }`);
-  assert.equal(code(await gql(`mutation { createAccount(input: { name: "Smoke 2nd bank", kind: SAVINGS, balance: 1 }) { id } }`)), "PLAN_LIMIT");
+  // Free plan: 2 bank accounts (cash doesn't count); investments and analytics are Pro.
+  const second = ok(await gql(`mutation { createAccount(input: { name: "Smoke 2nd bank", kind: SAVINGS, balance: 1 }) { id } }`)).createAccount;
+  cleanup.push(`mutation { deleteAccount(id: "${second.id}") }`);
+  assert.equal(code(await gql(`mutation { createAccount(input: { name: "Smoke 3rd bank", kind: SAVINGS, balance: 1 }) { id } }`)), "PLAN_LIMIT");
+  assert.equal(code(await gql(`{ searchInstruments(query: "bitcoin") { id } }`)), "PLAN_LIMIT");
+  assert.equal(code(await gql(`{ monthlySummary(month: "2026-09-01") { month } }`)), "PLAN_LIMIT");
   ok(await gql(`mutation { setPlan(plan: PRO) { plan } }`));
   const savings = ok(await gql(`mutation { createAccount(input: { name: "Smoke savings", kind: SAVINGS, balance: 3000 }) { id } }`)).createAccount;
   cleanup.push(`mutation { deleteAccount(id: "${savings.id}") }`);

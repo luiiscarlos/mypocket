@@ -3,7 +3,7 @@ import { GraphQLError } from "graphql";
 import { parse, schemas } from "./validation.js";
 import { rateLimit } from "./rate-limit.js";
 import {
-  JSONScalar, assertOwned, toMe, clientError, fail, profileOf, requireAdmin, requireUser, requireWritable, round2, toColumns,
+  JSONScalar, assertOwned, toMe, clientError, fail, profileOf, requireAdmin, requirePro, requireUser, requireWritable, round2, toColumns,
   type AuthedUser, type Context, type ResolverMap,
 } from "./core.js";
 import { finance } from "./modules/finance.js";
@@ -382,6 +382,7 @@ const base: ResolverMap = {
 
       monthlySummary: async (_, args: { month: string }, ctx) => {
         const user = requireUser(ctx);
+        await requirePro(user);
         const month = parse(schemas.month, args.month);
         const { data: rows, error } = await user.db.rpc("monthly_summary", { p_month: month });
         if (error) fail(error);
