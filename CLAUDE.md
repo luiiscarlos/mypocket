@@ -30,3 +30,7 @@ feat(landing): añadir tabla comparativa de planes
 refactor(supabase-client): centralizar tipos generados de la base de datos
 chore(repo): actualizar dependencias de Turborepo
 ```
+
+## Interfaz
+
+La UI sigue `docs/PATTERNS.md` (patrones de Claude Design; `docs/` es local y no se versiona). Si una pantalla necesita algo que no está ahí, se pide a la sesión de diseño en vez de inventarlo.
