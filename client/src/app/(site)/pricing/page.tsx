@@ -35,7 +35,7 @@ const grid = "grid grid-cols-[6fr_3fr_3fr]";
 function Check({ light = false }: { light?: boolean }) {
   const t = useTranslations("pricing");
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" className={light ? "text-cream" : "text-ink"} strokeWidth="2.4" strokeLinecap="square" role="img" aria-label={t("included")}>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" className={light ? "text-on-strip" : "text-ink"} strokeWidth="2.4" strokeLinecap="square" role="img" aria-label={t("included")}>
       <path d="M5 12l5 5 9-10" />
     </svg>
   );
@@ -83,7 +83,7 @@ export default function PricingPage() {
                   {plans("startFree")}
                 </Link>
               </div>
-              <div role="columnheader" className="flex flex-col gap-5 border-b-[3px] border-ink bg-brand p-8 text-cream lg:py-10">
+              <div role="columnheader" className="flex flex-col gap-5 border-b-[3px] border-ink bg-strip p-8 text-on-strip lg:py-10">
                 <div className="flex items-center justify-between">
                   <div className="text-[30px] font-extrabold tracking-[-0.03em]">Pro</div>
                   <div className="border border-cream/60 px-2 py-[5px] font-mono text-[11px] tracking-[0.06em]">{t("recommended")}</div>
@@ -92,7 +92,7 @@ export default function PricingPage() {
                   {plans("price")} €<span className="text-sm tracking-normal text-mist"> {plans("perMonth")}</span>
                 </div>
                 <div className="text-[15px] text-mist">{t("proTagline")}</div>
-                <Link href="/register" className="btn flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline">
+                <Link href="/register" className="btn flex h-[52px] items-center justify-center bg-mint text-[15px] font-semibold text-on-mint hover:no-underline">
                   {plans("tryPro")}
                 </Link>
               </div>
@@ -101,9 +101,9 @@ export default function PricingPage() {
             {ROWS.map((row) =>
               "group" in row ? (
                 <div key={row.group} className={grid} role="row">
-                  <div role="rowheader" className="pb-3.5 pt-9 font-mono text-xs tracking-[0.06em] text-leaf">{t(`groups.${row.group}`)}</div>
+                  <div role="rowheader" className="pb-3.5 pt-9 font-mono text-xs tracking-[0.06em] text-ink-muted">{t(`groups.${row.group}`)}</div>
                   <div role="cell" />
-                  <div role="cell" className="bg-brand" />
+                  <div role="cell" className="bg-strip" />
                 </div>
               ) : (
                 <div key={row.label} className={`${grid} text-[17px]`} role="row">
@@ -111,7 +111,7 @@ export default function PricingPage() {
                   <div role="cell" className="flex items-center border-t border-rule px-8 py-[18px] font-mono text-[15px]">
                     {row.free === true ? <Check /> : <span className={row.free === "—" ? "text-dash" : ""}>{cell(row.free)}</span>}
                   </div>
-                  <div role="cell" className="flex items-center border-t border-cream/25 bg-brand px-8 py-[18px] font-mono text-[15px] text-cream">
+                  <div role="cell" className="flex items-center border-t border-cream/25 bg-strip px-8 py-[18px] font-mono text-[15px] text-on-strip">
                     {row.pro === true ? <Check light /> : <span>{cell(row.pro)}</span>}
                   </div>
                 </div>
@@ -121,7 +121,7 @@ export default function PricingPage() {
             <div className={grid} aria-hidden="true">
               <div className="border-t-[3px] border-ink" />
               <div className="border-t-[3px] border-ink" />
-              <div className="h-8 border-t-[3px] border-ink bg-brand" />
+              <div className="h-8 border-t-[3px] border-ink bg-strip" />
             </div>
           </div>
         </div>

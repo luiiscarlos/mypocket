@@ -5,9 +5,9 @@ import { Logo, eyebrow } from "./chrome";
 
 // Sample figures from the design, not real data. Widths make the cards look stacked behind the total.
 const STACK = [
-  { name: null, amount: 680, dot: "bg-sage-light", card: "w-[77%] h-[52px] px-5 bg-[#367057]" },
-  { name: "BBVA", amount: 8566.24, dot: "bg-sage", card: "w-[85%] h-14 px-[22px] bg-[#2C624B]" },
-  { name: "Trade Republic", amount: 15072.18, dot: "bg-cream", card: "w-[92%] h-[60px] px-6 bg-[#23553F]" },
+  { name: null, amount: 680, dot: "bg-mist/50", card: "w-[77%] h-[52px] px-5 bg-white/[0.08]" },
+  { name: "BBVA", amount: 8566.24, dot: "bg-mist", card: "w-[85%] h-14 px-[22px] bg-white/[0.12]" },
+  { name: "Trade Republic", amount: 15072.18, dot: "bg-mint", card: "w-[92%] h-[60px] px-6 bg-white/[0.16]" },
 ];
 const SAMPLE_TOTAL = 24318.42;
 
@@ -32,10 +32,10 @@ export function AuthShell({
 
   return (
     <div className="grid min-h-screen bg-paper text-ink lg:grid-cols-2">
-      <aside className="hidden flex-col bg-brand px-[72px] pb-16 text-cream lg:flex">
+      <aside className="hidden flex-col bg-strip px-[72px] pb-16 text-on-strip lg:flex">
         <div className="flex h-[88px] shrink-0 items-center justify-between border-b border-cream/20">
           <Logo />
-          <span className="font-mono text-xs tracking-[0.06em] text-[#C3CEC0]">{t("panel.summary")}</span>
+          <span className="font-mono text-xs tracking-[0.06em] text-mist">{t("panel.summary")}</span>
         </div>
 
         <div className="flex grow items-center justify-center py-10" aria-hidden="true">
@@ -56,9 +56,9 @@ export function AuthShell({
               </div>
               <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em] xl:text-[56px]">{eur(SAMPLE_TOTAL)}</div>
               <div className="flex h-2.5 gap-[3px]">
-                <div className="grow-[62] bg-brand" />
-                <div className="grow-[35] bg-sage" />
-                <div className="grow-[3] bg-sage-light" />
+                <div className="grow-[62] bg-night" />
+                <div className="grow-[35] bg-[#6B7069]" />
+                <div className="grow-[3] bg-[#B7B9B1]" />
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@ export function AuthShell({
 
         <div className="flex items-end justify-between gap-8 border-t border-cream/20 pt-7">
           <div className="max-w-[340px] text-[34px] font-extrabold leading-none tracking-[-0.04em]">{tagline}</div>
-          <div className="flex items-center gap-2 whitespace-nowrap font-mono text-xs text-[#C3CEC0]">
+          <div className="flex items-center gap-2 whitespace-nowrap font-mono text-xs text-mist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
               <rect x="5" y="11" width="14" height="10" />
               <path d="M8 11V7a4 4 0 0 1 8 0v4" />

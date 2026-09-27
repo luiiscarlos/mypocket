@@ -12,126 +12,168 @@
   }
 }
 
-/* mypocket brand (design: Claude Design artifact EdCx4zKL6SVzMiKUK9Kmrq).
-   Constant colors: green bands and cream buttons look the same in both themes.
-   Themed colors: defined as --mp-* below and switched by [data-theme] / prefers-color-scheme. */
+/* mypocket tokens v2 (docs/PATTERNS.md §1). Green (leaf) only for the logo dot, the main action,
+   active states and positive figures; everything else is neutral. */
 @theme {
+  /* Constant brand colors. */
   --color-brand: #1B4D3A;
   --color-cream: #F3EFE4;
-  --color-mist: #D6DDD0;
+  /* Secondary text on landing strips. */
+  --color-mist: #B9BDB3;
+  /* Mint CTA on strips and its text. */
+  --color-mint: #86C9A3;
+  --color-on-mint: #10140F;
   --color-sage: #7FA08D;
   --color-sage-light: #C9D5CC;
-  /* Text on cream surfaces (always dark). */
+  /* Text on light surfaces that never change with the theme (the paper receipt). */
   --color-night: #10140F;
   --color-night-muted: #4B5249;
 }
 
 @theme inline {
   --color-paper: var(--mp-paper);
+  --color-field: var(--mp-field);
+  --color-band: var(--mp-band);
+  --color-side: var(--mp-side);
+  --color-active: var(--mp-active);
   --color-ink: var(--mp-ink);
   --color-ink-muted: var(--mp-ink-muted);
   --color-ink-legal: var(--mp-ink-legal);
   --color-rule: var(--mp-rule);
-  --color-band: var(--mp-band);
   --color-dash: var(--mp-dash);
-  /* Green used as text/lines on the page background. */
+  --color-skeleton: var(--mp-skeleton);
   --color-leaf: var(--mp-leaf);
-  --color-field: var(--mp-field);
+  --color-on-leaf: var(--mp-on-leaf);
+  --color-ok-bg: var(--mp-ok-bg);
+  --color-warn: var(--mp-warn);
+  --color-warn-bg: var(--mp-warn-bg);
+  --color-warn-ink: var(--mp-warn-ink);
+  --color-info: var(--mp-info);
+  --color-info-bg: var(--mp-info-bg);
+  --color-info-ink: var(--mp-info-ink);
+  --color-debt: var(--mp-debt);
+  --color-debt-ink: var(--mp-debt-ink);
   --color-danger: var(--mp-danger);
   --color-danger-bg: var(--mp-danger-bg);
   --color-danger-ink: var(--mp-danger-ink);
-  --color-ok-bg: var(--mp-ok-bg);
-  --color-on-leaf: var(--mp-on-leaf);
   --color-focus: var(--mp-focus);
-  --color-skeleton: var(--mp-skeleton);
-  --color-side: var(--mp-side);
-  /* Chart series: told apart by lightness, not hue (PATTERNS §1). */
   --color-s1: var(--mp-s1);
   --color-s2: var(--mp-s2);
   --color-s3: var(--mp-s3);
-  --color-s4: var(--mp-s4);
-  --color-debt: var(--mp-debt);
+  --color-expense: var(--mp-expense);
+  --color-strip: var(--mp-strip);
+  --color-on-strip: var(--mp-on-strip);
 }
 
 :root {
   color-scheme: light;
   --mp-paper: #FBFAF6;
+  --mp-field: #FFFFFF;
+  --mp-band: #EFEDE5;
+  --mp-side: #F4F3EE;
+  --mp-active: #E8E6DF;
   --mp-ink: #10140F;
   --mp-ink-muted: #4B5249;
   --mp-ink-legal: #33382F;
   --mp-rule: #CFCCC1;
-  --mp-band: #EFEDE5;
   --mp-dash: #8E948A;
+  --mp-skeleton: #E4E1D8;
   --mp-leaf: #1B4D3A;
-  --mp-field: #FFFFFF;
+  --mp-on-leaf: #F3EFE4;
+  --mp-ok-bg: #E8EFEA;
+  --mp-warn: #B7791F;
+  --mp-warn-bg: #FBF1DC;
+  --mp-warn-ink: #7A4D00;
+  --mp-info: #2F6FA8;
+  --mp-info-bg: #E8F0F8;
+  --mp-info-ink: #1F4E79;
+  --mp-debt: #AE6555;
+  --mp-debt-ink: #9A4A3C;
   --mp-danger: #A3321F;
   --mp-danger-bg: #FBEDEA;
   --mp-danger-ink: #7A2414;
-  --mp-ok-bg: #E8EFEA;
-  --mp-on-leaf: #F3EFE4;
-  --mp-focus: #B7791F;
-  --mp-skeleton: #E4E1D8;
-  --mp-side: #1B4D3A;
-  --mp-s1: #1B4D3A;
-  --mp-s2: #4F7F66;
-  --mp-s3: #8FB09D;
-  --mp-s4: #C9D5CC;
-  --mp-debt: #C98B7C;
+  --mp-focus: #2F6FA8;
+  --mp-s1: #10140F;
+  --mp-s2: #6B7069;
+  --mp-s3: #B7B9B1;
+  --mp-expense: #9A9C95;
+  --mp-strip: #10140F;
+  --mp-on-strip: #F3EFE4;
 }
 
 /* Dark palette: explicit choice ... */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --mp-paper: #10140F;
-  --mp-ink: #EEEAE0;
-  --mp-ink-muted: #A7B0A4;
-  --mp-ink-legal: #D2D8CD;
-  --mp-rule: #2F362D;
-  --mp-band: #181D17;
-  --mp-dash: #6E756B;
+  --mp-paper: #0A0A0A;
+  --mp-field: #111111;
+  --mp-band: #161616;
+  --mp-side: #111111;
+  --mp-active: #1C1C1C;
+  --mp-ink: #EDEDEA;
+  --mp-ink-muted: #A3A39E;
+  --mp-ink-legal: #D2D2CD;
+  --mp-rule: #262626;
+  --mp-dash: #5E5E5A;
+  --mp-skeleton: #1C1C1C;
   --mp-leaf: #86C9A3;
-  --mp-field: #171C16;
+  --mp-on-leaf: #0A0A0A;
+  --mp-ok-bg: #0F1F17;
+  --mp-warn: #B7791F;
+  --mp-warn-bg: #1F1808;
+  --mp-warn-ink: #F2C66D;
+  --mp-info: #4A86C0;
+  --mp-info-bg: #0D1823;
+  --mp-info-ink: #9CC3EA;
+  --mp-debt: #B5604E;
+  --mp-debt-ink: #E3A092;
   --mp-danger: #E0694F;
   --mp-danger-bg: #2A1410;
   --mp-danger-ink: #F4BDB1;
-  --mp-ok-bg: #16261D;
-  --mp-on-leaf: #10140F;
-  --mp-focus: #F2C66D;
-  --mp-skeleton: #222C26;
-  --mp-side: #0A2419;
-  --mp-s1: #86C9A3;
-  --mp-s2: #4F9474;
-  --mp-s3: #2F6A4F;
-  --mp-s4: #24463A;
-  --mp-debt: #B5604E;
+  --mp-focus: #9CC3EA;
+  --mp-s1: #EDEDEA;
+  --mp-s2: #8A8A85;
+  --mp-s3: #4A4A47;
+  --mp-expense: #6B6B67;
+  --mp-strip: #161616;
+  --mp-on-strip: #EDEDEA;
 }
 
-/* ... or "system" (no data-theme) with a dark OS setting. Keep in sync with the block above. */
+/* ... or "system" (no data-theme) with a dark OS setting. Generated from the same table as above. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     color-scheme: dark;
-    --mp-paper: #10140F;
-    --mp-ink: #EEEAE0;
-    --mp-ink-muted: #A7B0A4;
-    --mp-ink-legal: #D2D8CD;
-    --mp-rule: #2F362D;
-    --mp-band: #181D17;
-    --mp-dash: #6E756B;
+    --mp-paper: #0A0A0A;
+    --mp-field: #111111;
+    --mp-band: #161616;
+    --mp-side: #111111;
+    --mp-active: #1C1C1C;
+    --mp-ink: #EDEDEA;
+    --mp-ink-muted: #A3A39E;
+    --mp-ink-legal: #D2D2CD;
+    --mp-rule: #262626;
+    --mp-dash: #5E5E5A;
+    --mp-skeleton: #1C1C1C;
     --mp-leaf: #86C9A3;
-    --mp-field: #171C16;
+    --mp-on-leaf: #0A0A0A;
+    --mp-ok-bg: #0F1F17;
+    --mp-warn: #B7791F;
+    --mp-warn-bg: #1F1808;
+    --mp-warn-ink: #F2C66D;
+    --mp-info: #4A86C0;
+    --mp-info-bg: #0D1823;
+    --mp-info-ink: #9CC3EA;
+    --mp-debt: #B5604E;
+    --mp-debt-ink: #E3A092;
     --mp-danger: #E0694F;
     --mp-danger-bg: #2A1410;
     --mp-danger-ink: #F4BDB1;
-    --mp-ok-bg: #16261D;
-    --mp-on-leaf: #10140F;
-    --mp-focus: #F2C66D;
-    --mp-skeleton: #222C26;
-    --mp-side: #0A2419;
-    --mp-s1: #86C9A3;
-    --mp-s2: #4F9474;
-    --mp-s3: #2F6A4F;
-    --mp-s4: #24463A;
-    --mp-debt: #B5604E;
+    --mp-focus: #9CC3EA;
+    --mp-s1: #EDEDEA;
+    --mp-s2: #8A8A85;
+    --mp-s3: #4A4A47;
+    --mp-expense: #6B6B67;
+    --mp-strip: #161616;
+    --mp-on-strip: #EDEDEA;
   }
 }
 

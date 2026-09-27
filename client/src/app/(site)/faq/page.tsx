@@ -49,7 +49,7 @@ export default function FaqPage() {
           {groups.map((g) => (
             <a key={g.id} href={`#${g.id}`} className="flex justify-between border-b border-rule py-3.5 text-base hover:underline">
               <span className="flex gap-3.5">
-                <span className="pt-[3px] font-mono text-xs text-leaf">{g.n}</span>
+                <span className="pt-[3px] font-mono text-xs text-ink">{g.n}</span>
                 {t(`groups.${g.key}.title`)}
               </span>
               <span className="pt-[3px] font-mono text-xs text-ink-muted">{g.items.length}</span>
@@ -61,14 +61,14 @@ export default function FaqPage() {
           {groups.map((g, gi) => (
             <section key={g.id} id={g.id} className="flex scroll-mt-6 flex-col">
               <h2 className="mb-5 mt-0 flex items-baseline gap-5 text-4xl font-extrabold tracking-[-0.04em]">
-                <span className="font-mono text-sm font-medium tracking-normal text-leaf">{g.n}</span>
+                <span className="font-mono text-sm font-medium tracking-normal text-ink">{g.n}</span>
                 {t(`groups.${g.key}.title`)}
               </h2>
               {g.items.map((item, qi) => (
                 <details key={item} open={gi === 0 && qi === 0} className="group border-t border-ink">
                   <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 py-5 text-xl font-semibold tracking-[-0.01em] [&::-webkit-details-marker]:hidden">
                     {q(g.key, item, "q")}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" aria-hidden="true" className="shrink-0 text-leaf transition-transform group-open:rotate-45">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" aria-hidden="true" className="shrink-0 text-ink transition-transform group-open:rotate-45">
                       <path d="M12 5v14M5 12h14" />
                     </svg>
                   </summary>
@@ -86,7 +86,7 @@ export default function FaqPage() {
           <h2 className="m-0 text-4xl font-extrabold leading-[0.95] tracking-[-0.045em] lg:text-5xl">{t("notFound")}</h2>
           <p className="m-0 text-[17px] text-ink-muted">{t("writeUs")}</p>
         </div>
-        <Link href="/contact" className="btn inline-flex h-14 shrink-0 items-center self-start bg-brand px-7 text-base font-semibold text-cream hover:no-underline sm:self-auto">
+        <Link href="/contact" className="btn inline-flex h-14 shrink-0 items-center self-start bg-leaf px-7 text-base font-semibold text-on-leaf hover:opacity-90 hover:no-underline sm:self-auto">
           {t("contact")}
         </Link>
       </section>

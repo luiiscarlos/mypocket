@@ -5,9 +5,9 @@ import { PlanCards } from "@/components/site/plans";
 
 // Sample figures from the design, not real data.
 const ACCOUNTS = [
-  { color: "bg-leaf", name: "Trade Republic", meta: "tradeRepublic", amount: "15.072,18 €", share: "62 %" },
-  { color: "bg-sage", name: "BBVA", meta: "bbva", amount: "8.566,24 €", share: "35 %" },
-  { color: "bg-sage-light", name: "cash", meta: "manual", amount: "680,00 €", share: "3 %" },
+  { color: "bg-s1", name: "Trade Republic", meta: "tradeRepublic", amount: "15.072,18 €", share: "62 %" },
+  { color: "bg-s2", name: "BBVA", meta: "bbva", amount: "8.566,24 €", share: "35 %" },
+  { color: "bg-s3", name: "cash", meta: "manual", amount: "680,00 €", share: "3 %" },
 ] as const;
 
 const STEPS = ["connect", "cash", "total"] as const;
@@ -58,7 +58,7 @@ export default function LandingPage() {
               {t("lead")}
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-1">
-              <Link href="/register" className="btn inline-flex h-14 items-center gap-2.5 bg-cream px-7 text-base font-semibold text-brand hover:no-underline">
+              <Link href="/register" className="btn inline-flex h-14 items-center gap-2.5 bg-mint px-7 text-base font-semibold text-on-mint hover:no-underline">
                 {t("createAccount")} {arrow}
               </Link>
               <Link href="#how-it-works" className="btn inline-flex h-14 items-center border border-cream/50 px-7 text-base font-medium hover:no-underline">
@@ -77,9 +77,9 @@ export default function LandingPage() {
               <div className="border border-ink px-2.5 py-1.5 font-mono text-xs">{t("sample.accounts")}</div>
             </div>
             <div className="flex h-3 gap-[3px]" aria-hidden="true">
-              <div className="grow-[62] bg-leaf" />
-              <div className="grow-[35] bg-sage" />
-              <div className="grow-[3] bg-sage-light" />
+              <div className="grow-[62] bg-s1" />
+              <div className="grow-[35] bg-s2" />
+              <div className="grow-[3] bg-s3" />
             </div>
             <div className="flex flex-col">
               {ACCOUNTS.map((a) => (
@@ -116,7 +116,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {STEPS.map((step, i) => (
             <div key={step} className="flex flex-col gap-4 border-t-[3px] border-ink pt-6">
-              <div className="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-leaf">{String(i + 1).padStart(2, "0")}</div>
+              <div className="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-ink">{String(i + 1).padStart(2, "0")}</div>
               <h3 className="m-0 text-2xl font-semibold tracking-[-0.02em]">{t(`how.${step}.title`)}</h3>
               <p className="m-0 text-base leading-[1.55] text-ink-muted">{t(`how.${step}.text`)}</p>
             </div>
@@ -133,7 +133,7 @@ export default function LandingPage() {
           {FEATURES.map((f, i) => (
             <article
               key={f.key}
-              className={`flex flex-col gap-5 px-7 py-8 text-leaf ${i < FEATURES.length - 1 ? "border-b border-ink lg:border-b-0 lg:border-r" : ""} ${i % 2 === 0 ? "sm:border-r" : ""}`}
+              className={`flex flex-col gap-5 px-7 py-8 text-ink ${i < FEATURES.length - 1 ? "border-b border-ink lg:border-b-0 lg:border-r" : ""} ${i % 2 === 0 ? "sm:border-r" : ""}`}
             >
               {f.icon}
               <h3 className="m-0 text-[22px] font-semibold tracking-[-0.02em] text-ink">{t(`features.${f.key}.title`)}</h3>
@@ -152,10 +152,10 @@ export default function LandingPage() {
           </p>
           <ul className="m-0 flex list-none flex-col p-0 text-base">
             <li className="flex items-center gap-3.5 border-t border-ink py-3.5">
-              <span className="font-mono text-xs text-leaf">A.</span>{t("tickets.a")}
+              <span className="font-mono text-xs text-ink">A.</span>{t("tickets.a")}
             </li>
             <li className="flex items-center gap-3.5 border-y border-ink py-3.5">
-              <span className="font-mono text-xs text-leaf">B.</span>{t("tickets.b")}
+              <span className="font-mono text-xs text-ink">B.</span>{t("tickets.b")}
             </li>
           </ul>
         </div>
@@ -177,7 +177,7 @@ export default function LandingPage() {
           </svg>
 
           <div className="flex w-full max-w-[260px] flex-col gap-4">
-            <div className="flex flex-col gap-3.5 bg-brand p-[22px] text-cream">
+            <div className="flex flex-col gap-3.5 bg-strip p-[22px] text-on-strip">
               <div className="font-mono text-[11px] tracking-[0.06em]">{t("tickets.match")}</div>
               <div className="flex items-baseline gap-3">
                 <div className="flex grow flex-col gap-0.5">
@@ -186,7 +186,7 @@ export default function LandingPage() {
                 </div>
                 <div className="font-mono text-[15px]">−23,40 €</div>
               </div>
-              <div className="flex h-11 items-center justify-center bg-cream text-sm font-semibold text-brand">{t("tickets.link")}</div>
+              <div className="flex h-11 items-center justify-center bg-mint text-sm font-semibold text-on-mint">{t("tickets.link")}</div>
             </div>
             <div className="flex flex-col gap-3.5 border border-ink bg-paper p-[22px]">
               <div className="text-[15px] text-ink-muted">{t("tickets.paidCash")}</div>

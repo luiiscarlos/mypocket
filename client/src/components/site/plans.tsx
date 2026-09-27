@@ -30,7 +30,7 @@ export function PlanCards() {
         </Link>
       </div>
 
-      <div className="flex w-full max-w-[410px] flex-col gap-8 bg-brand p-8 text-cream sm:p-10">
+      <div className="flex w-full max-w-[410px] flex-col gap-8 bg-strip p-8 text-on-strip sm:p-10">
         <div className="flex items-baseline justify-between">
           <div className="text-[28px] font-extrabold tracking-[-0.03em]">Pro</div>
           <div className="font-mono text-[40px] font-medium tracking-[-0.04em]">
@@ -46,7 +46,7 @@ export function PlanCards() {
         </ul>
         <Link
           href="/register"
-          className="btn mt-auto flex h-[52px] items-center justify-center bg-cream text-[15px] font-semibold text-brand hover:no-underline"
+          className="btn mt-auto flex h-[52px] items-center justify-center bg-mint text-[15px] font-semibold text-on-mint hover:no-underline"
         >
           {t("tryPro")}
         </Link>

@@ -62,7 +62,7 @@ export function ContactForm() {
       </div>
       <button
         disabled={pending}
-        className="h-14 cursor-pointer self-start border-0 bg-brand px-8 font-sans text-base font-semibold text-cream hover:bg-brand/90 disabled:opacity-60"
+        className="h-14 cursor-pointer self-start border-0 bg-leaf px-8 font-sans text-base font-semibold text-on-leaf hover:opacity-90 disabled:opacity-60"
       >
         {pending ? t("sending") : t("send")}
       </button>

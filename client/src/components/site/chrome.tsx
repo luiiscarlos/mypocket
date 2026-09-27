@@ -21,7 +21,7 @@ export const eyebrow = "font-mono text-[13px] tracking-[0.06em]";
 export function Logo() {
   return (
     <Link href="/" className="text-[22px] font-extrabold tracking-[-0.04em] hover:no-underline">
-      mypocket.
+      mypocket<span className="text-mint">.</span>
     </Link>
   );
 }
@@ -45,7 +45,7 @@ function SiteHeader({ current }: { current: Page }) {
         <Link href="/login" className="hover:underline">
           {t("login")}
         </Link>
-        <Link href="/register" className="btn inline-flex h-11 items-center bg-cream px-5 font-semibold text-brand hover:no-underline">
+        <Link href="/register" className="btn inline-flex h-11 items-center bg-mint px-5 font-semibold text-on-mint hover:no-underline">
           {t("signUp")}
         </Link>
       </nav>
@@ -56,7 +56,7 @@ function SiteHeader({ current }: { current: Page }) {
 /** Green top band with the site header; every public page starts with one. */
 export function GreenHero({ current, children, className = "" }: { current?: Page; children: ReactNode; className?: string }) {
   return (
-    <section id="top" className={`flex flex-col bg-brand px-5 text-cream lg:px-20 ${className}`}>
+    <section id="top" className={`flex flex-col bg-strip px-5 text-on-strip lg:px-20 ${className}`}>
       <SiteHeader current={current} />
       {children}
     </section>
@@ -75,7 +75,7 @@ function LocaleSwitcher() {
           name="locale"
           value={locale}
           aria-pressed={locale === current}
-          className="cursor-pointer border-0 bg-transparent p-0 uppercase text-mist hover:underline aria-pressed:text-cream aria-pressed:underline"
+          className="cursor-pointer border-0 bg-transparent p-0 uppercase text-mist hover:underline aria-pressed:text-on-strip aria-pressed:underline"
         >
           {locale}
         </button>
@@ -107,7 +107,7 @@ export function ThemeSwitcher({ current, className = "" }: { current: string; cl
 export async function SiteFooter() {
   const [t, theme] = await Promise.all([getTranslations("footer"), getTheme()]);
   return (
-    <footer className="flex min-h-24 shrink-0 flex-col justify-center gap-3 border-t border-cream/20 bg-brand band py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
+    <footer className="flex min-h-24 shrink-0 flex-col justify-center gap-3 border-t border-cream/20 bg-strip band py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
       <div>{t("copyright", { year: new Date().getFullYear() })}</div>
       <div className="flex flex-wrap items-center gap-8">
         <nav aria-label={t("legal")} className="flex gap-8">
@@ -126,7 +126,7 @@ export function CtaBand({ centered = false }: { centered?: boolean }) {
   const t = useTranslations("cta");
   return (
     <section
-      className={`flex grow gap-10 bg-brand band py-20 text-cream lg:py-28 ${
+      className={`flex grow gap-10 bg-strip band py-20 text-on-strip lg:py-28 ${
         centered ? "flex-col items-center justify-center text-center" : "flex-col lg:flex-row lg:items-center lg:justify-between"
       }`}
     >
@@ -141,7 +141,7 @@ export function CtaBand({ centered = false }: { centered?: boolean }) {
       </h2>
       <Link
         href="/register"
-        className="btn inline-flex h-[60px] shrink-0 items-center self-start bg-cream px-8 text-[17px] font-semibold text-brand hover:no-underline lg:self-auto"
+        className="btn inline-flex h-[60px] shrink-0 items-center self-start bg-mint px-8 text-[17px] font-semibold text-on-mint hover:no-underline lg:self-auto"
       >
         {t("button")}
       </Link>
