@@ -12,22 +12,20 @@
   }
 }
 
-/* mypocket tokens v2 (docs/PATTERNS.md §1). Green (leaf) only for the logo dot, the main action,
-   active states and positive figures; everything else is neutral. */
+/* mypocket tokens v3 (Claude Design, "Inicio v3"): white + beige, soft radii, brand green as accent;
+   dark is black with the green and accents kept. */
 @theme {
-  /* Constant brand colors. */
   --color-brand: #1B4D3A;
-  --color-cream: #F3EFE4;
-  /* Secondary text on landing strips. */
+  --color-cream: #F6F2EA;
   --color-mist: #B9BDB3;
-  /* Mint CTA on strips and its text. */
   --color-mint: #86C9A3;
-  --color-on-mint: #10140F;
-  --color-sage: #7FA08D;
-  --color-sage-light: #C9D5CC;
+  --color-on-mint: #000000;
   /* Text on light surfaces that never change with the theme (the paper receipt). */
-  --color-night: #10140F;
-  --color-night-muted: #4B5249;
+  --color-night: #14170F;
+  --color-night-muted: #5B6157;
+  --radius-control: 12px;
+  --radius-card: 20px;
+  --radius-block: 28px;
 }
 
 @theme inline {
@@ -41,6 +39,7 @@
   --color-ink-legal: var(--mp-ink-legal);
   --color-rule: var(--mp-rule);
   --color-dash: var(--mp-dash);
+  --color-control: var(--mp-control);
   --color-skeleton: var(--mp-skeleton);
   --color-leaf: var(--mp-leaf);
   --color-on-leaf: var(--mp-on-leaf);
@@ -63,24 +62,30 @@
   --color-expense: var(--mp-expense);
   --color-strip: var(--mp-strip);
   --color-on-strip: var(--mp-on-strip);
+  --color-cta-btn: var(--mp-cta-btn);
+  --color-on-cta-btn: var(--mp-on-cta-btn);
+  --color-header: var(--mp-header);
+  --shadow-soft: var(--mp-shadow);
+  --shadow-float: var(--mp-shadow-lg);
 }
 
 :root {
   color-scheme: light;
-  --mp-paper: #FBFAF6;
+  --mp-paper: #FFFFFF;
   --mp-field: #FFFFFF;
-  --mp-band: #EFEDE5;
-  --mp-side: #F4F3EE;
-  --mp-active: #E8E6DF;
-  --mp-ink: #10140F;
-  --mp-ink-muted: #4B5249;
+  --mp-band: #F6F2EA;
+  --mp-side: #F6F2EA;
+  --mp-active: #ECE6DA;
+  --mp-ink: #14170F;
+  --mp-ink-muted: #5B6157;
   --mp-ink-legal: #33382F;
-  --mp-rule: #CFCCC1;
-  --mp-dash: #8E948A;
-  --mp-skeleton: #E4E1D8;
+  --mp-rule: #E7E2D8;
+  --mp-dash: #C9C2B4;
+  --mp-control: #8F8A7F;
+  --mp-skeleton: #EFEAE0;
   --mp-leaf: #1B4D3A;
-  --mp-on-leaf: #F3EFE4;
-  --mp-ok-bg: #E8EFEA;
+  --mp-on-leaf: #FFFFFF;
+  --mp-ok-bg: #E6EFE9;
   --mp-warn: #B7791F;
   --mp-warn-bg: #FBF1DC;
   --mp-warn-ink: #7A4D00;
@@ -93,30 +98,36 @@
   --mp-danger-bg: #FBEDEA;
   --mp-danger-ink: #7A2414;
   --mp-focus: #2F6FA8;
-  --mp-s1: #10140F;
-  --mp-s2: #6B7069;
-  --mp-s3: #B7B9B1;
+  --mp-s1: #14170F;
+  --mp-s2: #8A8F86;
+  --mp-s3: #C9C4B8;
   --mp-expense: #9A9C95;
-  --mp-strip: #10140F;
-  --mp-on-strip: #F3EFE4;
+  --mp-strip: #1B4D3A;
+  --mp-on-strip: #F6F2EA;
+  --mp-cta-btn: #F6F2EA;
+  --mp-on-cta-btn: #1B4D3A;
+  --mp-header: rgb(255 255 255 / 0.86);
+  --mp-shadow: 0 1px 2px rgb(20 23 15 / 0.04), 0 8px 24px rgb(20 23 15 / 0.06);
+  --mp-shadow-lg: 0 16px 40px rgb(20 23 15 / 0.12);
 }
 
 /* Dark palette: explicit choice ... */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --mp-paper: #0A0A0A;
-  --mp-field: #111111;
-  --mp-band: #161616;
-  --mp-side: #111111;
+  --mp-paper: #000000;
+  --mp-field: #151515;
+  --mp-band: #0E0E0E;
+  --mp-side: #0E0E0E;
   --mp-active: #1C1C1C;
-  --mp-ink: #EDEDEA;
+  --mp-ink: #F2F2EF;
   --mp-ink-muted: #A3A39E;
   --mp-ink-legal: #D2D2CD;
-  --mp-rule: #262626;
-  --mp-dash: #5E5E5A;
-  --mp-skeleton: #1C1C1C;
+  --mp-rule: #242424;
+  --mp-dash: #4A4A47;
+  --mp-control: #6B6B67;
+  --mp-skeleton: #1A1A1A;
   --mp-leaf: #86C9A3;
-  --mp-on-leaf: #0A0A0A;
+  --mp-on-leaf: #000000;
   --mp-ok-bg: #0F1F17;
   --mp-warn: #B7791F;
   --mp-warn-bg: #1F1808;
@@ -130,31 +141,37 @@
   --mp-danger-bg: #2A1410;
   --mp-danger-ink: #F4BDB1;
   --mp-focus: #9CC3EA;
-  --mp-s1: #EDEDEA;
-  --mp-s2: #8A8A85;
-  --mp-s3: #4A4A47;
+  --mp-s1: #F2F2EF;
+  --mp-s2: #6E6E69;
+  --mp-s3: #3A3A37;
   --mp-expense: #6B6B67;
-  --mp-strip: #161616;
-  --mp-on-strip: #EDEDEA;
+  --mp-strip: #1B4D3A;
+  --mp-on-strip: #F6F2EA;
+  --mp-cta-btn: #86C9A3;
+  --mp-on-cta-btn: #000000;
+  --mp-header: rgb(0 0 0 / 0.78);
+  --mp-shadow: none;
+  --mp-shadow-lg: 0 16px 40px rgb(0 0 0 / 0.6);
 }
 
 /* ... or "system" (no data-theme) with a dark OS setting. Generated from the same table as above. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     color-scheme: dark;
-    --mp-paper: #0A0A0A;
-    --mp-field: #111111;
-    --mp-band: #161616;
-    --mp-side: #111111;
+    --mp-paper: #000000;
+    --mp-field: #151515;
+    --mp-band: #0E0E0E;
+    --mp-side: #0E0E0E;
     --mp-active: #1C1C1C;
-    --mp-ink: #EDEDEA;
+    --mp-ink: #F2F2EF;
     --mp-ink-muted: #A3A39E;
     --mp-ink-legal: #D2D2CD;
-    --mp-rule: #262626;
-    --mp-dash: #5E5E5A;
-    --mp-skeleton: #1C1C1C;
+    --mp-rule: #242424;
+    --mp-dash: #4A4A47;
+    --mp-control: #6B6B67;
+    --mp-skeleton: #1A1A1A;
     --mp-leaf: #86C9A3;
-    --mp-on-leaf: #0A0A0A;
+    --mp-on-leaf: #000000;
     --mp-ok-bg: #0F1F17;
     --mp-warn: #B7791F;
     --mp-warn-bg: #1F1808;
@@ -168,12 +185,17 @@
     --mp-danger-bg: #2A1410;
     --mp-danger-ink: #F4BDB1;
     --mp-focus: #9CC3EA;
-    --mp-s1: #EDEDEA;
-    --mp-s2: #8A8A85;
-    --mp-s3: #4A4A47;
+    --mp-s1: #F2F2EF;
+    --mp-s2: #6E6E69;
+    --mp-s3: #3A3A37;
     --mp-expense: #6B6B67;
-    --mp-strip: #161616;
-    --mp-on-strip: #EDEDEA;
+    --mp-strip: #1B4D3A;
+    --mp-on-strip: #F6F2EA;
+    --mp-cta-btn: #86C9A3;
+    --mp-on-cta-btn: #000000;
+    --mp-header: rgb(0 0 0 / 0.78);
+    --mp-shadow: none;
+    --mp-shadow-lg: 0 16px 40px rgb(0 0 0 / 0.6);
   }
 }
 

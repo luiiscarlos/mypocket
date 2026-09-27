@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { GreenHero, SiteFooter, SitePage, eyebrow } from "./chrome";
+import { PageHero, SiteFooter, SitePage, eyebrow } from "./chrome";
 
 // Section keys in display order (titles in messages legal.docs.*); bodies are pending legal text.
 const DOCS = {
@@ -19,15 +19,15 @@ export function LegalDocument({ doc }: { doc: keyof typeof DOCS }) {
 
   return (
     <SitePage>
-      <GreenHero className="pb-16 lg:pb-20">
+      <PageHero className="pb-16 lg:pb-20">
         <div className="flex flex-col justify-between gap-6 pt-16 lg:flex-row lg:items-end lg:pt-20">
           <div className="flex flex-col gap-6">
             <div className={eyebrow}>{t("eyebrow")}</div>
             <h1 className="m-0 text-6xl font-extrabold leading-[0.9] tracking-[-0.055em] lg:text-[96px]">{title}</h1>
           </div>
-          <div className="font-mono text-[13px] text-mist">{t("lastUpdated", { date: t("date") })}</div>
+          <div className="font-mono text-[13px] text-ink-muted">{t("lastUpdated", { date: t("date") })}</div>
         </div>
-      </GreenHero>
+      </PageHero>
 
       <section className="grid grow grid-cols-1 items-start gap-12 band py-20 lg:grid-cols-12 lg:gap-x-6 lg:py-24">
         <nav aria-label={t("index")} className="flex flex-col border-t-[3px] border-ink lg:sticky lg:top-6 lg:col-span-3">

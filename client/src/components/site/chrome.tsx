@@ -1,155 +1,187 @@
+// Public site chrome, design v3 (Claude Design "LHeader" / "LFooter"): sticky translucent header,
+// white + beige surfaces, soft radii and the brand green as accent.
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { ChevronDown, Monitor, Moon, Sun } from "lucide-react";
+import { FLAGS } from "@/components/app/flags";
 import { locales } from "@/i18n/config";
 import { setLocale, setTheme } from "@/i18n/actions";
 import { getTheme } from "@/lib/preferences";
-import { themes } from "@/lib/theme";
 
-type Page = "pricing" | "faq" | undefined;
+type Page = "pricing" | "faq" | "contact" | undefined;
 
 const NAV = [
-  { href: "/#how-it-works", key: "howItWorks", wide: true },
-  { href: "/#tickets", key: "tickets", wide: true },
+  { href: "/#how-it-works", key: "howItWorks" },
+  { href: "/#features", key: "features" },
   { href: "/pricing", key: "pricing", page: "pricing" },
-  { href: "/faq", key: "faq", page: "faq", wide: true },
+  { href: "/faq", key: "faq", page: "faq" },
 ] as const;
 
-export const eyebrow = "font-mono text-[13px] tracking-[0.06em]";
+export const eyebrow = "text-sm font-semibold text-leaf";
+const pill = "flex h-10 cursor-pointer items-center gap-2 rounded-full border border-rule bg-transparent px-3 font-sans text-sm text-ink hover:border-control";
+const summaryReset = "list-none [&::-webkit-details-marker]:hidden";
 
-export function Logo() {
+export function Logo({ className = "" }: { className?: string }) {
   return (
-    <Link href="/" className="text-[22px] font-extrabold tracking-[-0.04em] hover:no-underline">
-      mypocket<span className="text-mint">.</span>
+    <Link href="/" className={`text-[21px] font-bold tracking-[-0.03em] text-ink hover:no-underline ${className}`}>
+      mypocket<span className="text-leaf">.</span>
     </Link>
   );
 }
 
-function SiteHeader({ current }: { current: Page }) {
-  const t = useTranslations("nav");
+/** Language pill with flags (dropdown). */
+export async function LanguagePill({ up = false }: { up?: boolean }) {
+  const [t, locale] = await Promise.all([getTranslations("footer"), getLocale()]);
+  const Flag = FLAGS[locale as keyof typeof FLAGS] ?? FLAGS.es;
   return (
-    <header className="flex h-[88px] items-center justify-between border-b border-cream/20">
+    <details className="relative">
+      <summary className={`${summaryReset} ${pill}`} aria-label={t("language")}>
+        <Flag className="h-3.5 w-5 rounded-[3px]" />
+        <span className="uppercase">{locale}</span>
+        <ChevronDown size={14} aria-hidden />
+      </summary>
+      <form action={setLocale} className={`absolute right-0 z-30 flex w-44 flex-col rounded-2xl border border-rule bg-field p-1.5 shadow-float ${up ? "bottom-12" : "top-12"}`}>
+        {locales.map((l) => {
+          const F = FLAGS[l];
+          return (
+            <button key={l} name="locale" value={l} aria-pressed={l === locale} className="flex h-10 cursor-pointer items-center gap-3 rounded-xl border-0 bg-transparent px-3 font-sans text-sm text-ink hover:bg-band aria-pressed:font-semibold">
+              <F className="h-3.5 w-5 rounded-[3px]" />
+              {t(`languages.${l}`)}
+            </button>
+          );
+        })}
+      </form>
+    </details>
+  );
+}
+
+async function SiteHeader({ current }: { current: Page }) {
+  const [t, theme] = await Promise.all([getTranslations("nav"), getTheme()]);
+  // One round button toggles light/dark; "system" lives in the footer selector.
+  const next = theme === "dark" ? "light" : "dark";
+  return (
+    <header className="sticky top-0 z-20 flex h-[72px] shrink-0 items-center justify-between gap-4 border-b border-rule bg-header px-5 backdrop-blur-md lg:px-16">
       <Logo />
-      <nav aria-label={t("label")} className="flex items-center gap-5 text-[15px] lg:gap-9">
+      <nav aria-label={t("label")} className="hidden items-center gap-1 text-[15px] lg:flex">
         {NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             aria-current={"page" in item && item.page === current ? "page" : undefined}
-            className={`${"wide" in item ? "hidden lg:inline" : "hidden sm:inline"} hover:underline aria-[current=page]:underline aria-[current=page]:underline-offset-[6px]`}
+            className="rounded-[10px] px-3.5 py-2.5 text-ink-muted hover:bg-band hover:text-ink hover:no-underline aria-[current=page]:bg-band aria-[current=page]:font-semibold aria-[current=page]:text-ink"
           >
             {t(item.key)}
           </Link>
         ))}
-        <Link href="/login" className="hover:underline">
-          {t("login")}
-        </Link>
-        <Link href="/register" className="btn inline-flex h-11 items-center bg-mint px-5 font-semibold text-on-mint hover:no-underline">
+      </nav>
+      <div className="flex items-center gap-2">
+        <div className="hidden sm:block"><LanguagePill /></div>
+        <form action={setTheme} className="hidden sm:block">
+          <button name="theme" value={next} aria-label={t(next === "dark" ? "toDark" : "toLight")} title={t(next === "dark" ? "toDark" : "toLight")} className={`${pill} w-10 justify-center px-0`}>
+            {next === "dark" ? <Moon size={17} aria-hidden /> : <Sun size={17} aria-hidden />}
+          </button>
+        </form>
+        <Link href="/login" className="rounded-[10px] px-3.5 py-2.5 text-[15px] font-medium text-ink hover:bg-band hover:no-underline">{t("login")}</Link>
+        <Link href="/register" className="btn inline-flex h-[42px] items-center rounded-control bg-leaf px-[18px] text-[15px] font-semibold text-on-leaf hover:no-underline">
           {t("signUp")}
         </Link>
-      </nav>
+      </div>
     </header>
   );
 }
 
-/** Green top band with the site header; every public page starts with one. */
-export function GreenHero({ current, children, className = "" }: { current?: Page; children: ReactNode; className?: string }) {
+/** Top of every public page: sticky header + the page's intro block. */
+export function PageHero({ current, children, className = "" }: { current?: Page; children: ReactNode; className?: string }) {
   return (
-    <section id="top" className={`flex flex-col bg-strip px-5 text-on-strip lg:px-20 ${className}`}>
+    <>
       <SiteHeader current={current} />
-      {children}
-    </section>
+      <section id="top" className={`flex flex-col band ${className}`}>{children}</section>
+    </>
   );
 }
 
-// ponytail: plain ES · EN switch in the footer until the design places a language selector.
-function LocaleSwitcher() {
-  const t = useTranslations("footer");
-  const current = useLocale();
-  return (
-    <form action={setLocale} aria-label={t("language")} className="flex gap-3 font-mono text-xs">
-      {locales.map((locale) => (
-        <button
-          key={locale}
-          name="locale"
-          value={locale}
-          aria-pressed={locale === current}
-          className="cursor-pointer border-0 bg-transparent p-0 uppercase text-mist hover:underline aria-pressed:text-on-strip aria-pressed:underline"
-        >
-          {locale}
-        </button>
-      ))}
-    </form>
-  );
-}
+const THEME_ICONS = { light: Sun, dark: Moon, system: Monitor } as const;
 
-/** Light / dark / system. The active one comes from the server so it can be marked without client JS. */
-export function ThemeSwitcher({ current, className = "" }: { current: string; className?: string }) {
-  const t = useTranslations("theme");
+/** Light / dark / system icons in a pill. The active one comes from the server (no client JS). */
+export async function ThemeSwitcher({ className = "" }: { className?: string }) {
+  const [t, current] = await Promise.all([getTranslations("theme"), getTheme()]);
   return (
-    <form action={setTheme} aria-label={t("label")} className={`flex gap-3 font-mono text-xs ${className}`}>
-      {themes.map((theme) => (
-        <button
-          key={theme}
-          name="theme"
-          value={theme}
-          aria-pressed={theme === current}
-          className="cursor-pointer border-0 bg-transparent p-0 uppercase text-inherit opacity-70 hover:underline aria-pressed:underline aria-pressed:opacity-100"
-        >
-          {t(theme)}
-        </button>
-      ))}
+    <form action={setTheme} aria-label={t("label")} className={`inline-flex gap-0.5 rounded-full border border-rule p-[3px] ${className}`}>
+      {(["light", "dark", "system"] as const).map((theme) => {
+        const Icon = THEME_ICONS[theme];
+        return (
+          <button
+            key={theme}
+            name="theme"
+            value={theme}
+            aria-pressed={theme === current}
+            aria-label={t(theme)}
+            title={t(theme)}
+            className="inline-flex size-[30px] cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-ink-muted aria-pressed:bg-band aria-pressed:text-ink"
+          >
+            <Icon size={14} aria-hidden />
+          </button>
+        );
+      })}
     </form>
   );
 }
 
 export async function SiteFooter() {
-  const [t, theme] = await Promise.all([getTranslations("footer"), getTheme()]);
+  const [t, nav] = await Promise.all([getTranslations("footer"), getTranslations("nav")]);
+  const columns = [
+    { title: t("product"), links: [["/#features", nav("features")], ["/pricing", nav("pricing")], ["/login", nav("login")]] },
+    { title: t("help"), links: [["/faq", nav("faq")], ["/contact", t("contact")]] },
+    { title: t("legal"), links: [["/privacy", t("privacy")], ["/terms", t("terms")]] },
+  ];
   return (
-    <footer className="flex min-h-24 shrink-0 flex-col justify-center gap-3 border-t border-cream/20 bg-strip band py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
-      <div>{t("copyright", { year: new Date().getFullYear() })}</div>
-      <div className="flex flex-wrap items-center gap-8">
-        <nav aria-label={t("legal")} className="flex gap-8">
-          <Link href="/privacy" className="hover:underline">{t("privacy")}</Link>
-          <Link href="/terms" className="hover:underline">{t("terms")}</Link>
-          <Link href="/contact" className="hover:underline">{t("contact")}</Link>
-        </nav>
-        <ThemeSwitcher current={theme} />
-        <LocaleSwitcher />
+    <footer className="flex shrink-0 flex-col gap-12 border-t border-rule bg-paper band pb-10 pt-16 text-ink">
+      <div className="grid grid-cols-2 gap-8 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+        <div className="col-span-2 flex flex-col gap-3 lg:col-span-1">
+          <Logo />
+          <span className="max-w-[280px] text-sm leading-[1.55] text-ink-muted">{t("tagline")}</span>
+        </div>
+        {columns.map((c) => (
+          <nav key={c.title} aria-label={c.title} className="flex flex-col gap-2.5 text-sm">
+            <span className="font-semibold">{c.title}</span>
+            {c.links.map(([href, label]) => (
+              <Link key={href} href={href} className="text-ink-muted hover:text-ink">{label}</Link>
+            ))}
+          </nav>
+        ))}
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-rule pt-6 text-[13px] text-ink-muted">
+        <span>{t("copyright", { year: new Date().getFullYear() })}</span>
+        <span className="flex items-center gap-2">
+          <LanguagePill up />
+          <ThemeSwitcher />
+        </span>
       </div>
     </footer>
   );
 }
 
-export function CtaBand({ centered = false }: { centered?: boolean }) {
-  const t = useTranslations("cta");
+/** Brand-green closing block with the sign-up call to action. */
+export async function CtaBand() {
+  const t = await getTranslations("cta");
   return (
-    <section
-      className={`flex grow gap-10 bg-strip band py-20 text-on-strip lg:py-28 ${
-        centered ? "flex-col items-center justify-center text-center" : "flex-col lg:flex-row lg:items-center lg:justify-between"
-      }`}
-    >
-      <h2
-        className={`m-0 font-extrabold leading-[0.9] tracking-[-0.055em] ${
-          centered ? "text-6xl sm:text-8xl lg:text-[128px] lg:leading-[0.88]" : "text-6xl sm:text-7xl lg:text-[96px]"
-        }`}
-      >
-        {t("line1")}
-        <br />
-        {t("line2")}
-      </h2>
-      <Link
-        href="/register"
-        className="btn inline-flex h-[60px] shrink-0 items-center self-start bg-mint px-8 text-[17px] font-semibold text-on-mint hover:no-underline lg:self-auto"
-      >
-        {t("button")}
-      </Link>
+    <section className="band py-20 lg:py-28">
+      <div className="flex flex-col gap-10 rounded-block bg-strip p-10 text-on-strip lg:flex-row lg:items-center lg:justify-between lg:p-[72px]">
+        <h2 className="m-0 text-5xl font-bold leading-[1.02] tracking-[-0.045em] lg:text-[56px]">
+          {t("line1")}
+          <br />
+          {t("line2")}
+        </h2>
+        <Link href="/register" className="btn inline-flex h-14 shrink-0 items-center self-start rounded-[14px] bg-cta-btn px-7 text-base font-semibold text-on-cta-btn hover:no-underline lg:self-auto">
+          {t("button")}
+        </Link>
+      </div>
     </section>
   );
 }
 
-/** Wrapper for the public (site) pages: paper background + footer. */
+/** Wrapper for the public (site) pages. */
 export function SitePage({ children }: { children: ReactNode }) {
   return <div className="flex min-h-screen flex-col bg-paper text-ink">{children}</div>;
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { GreenHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
+import { PageHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getTranslations("meta"))("faq") };
@@ -30,7 +30,7 @@ export default function FaqPage() {
   const q = (g: string, item: string, part: "q" | "a") => t(`groups.${g}.items.${item}.${part}` as "groups.banks.items.safe.q");
   return (
     <SitePage>
-      <GreenHero current="faq" className="pb-16 lg:pb-20">
+      <PageHero current="faq" className="pb-16 lg:pb-20">
         <div className="grid grid-cols-1 items-end gap-8 pt-16 lg:grid-cols-12 lg:gap-x-6 lg:pt-20">
           <div className="flex flex-col gap-7 lg:col-span-8">
             <div className={eyebrow}>{t("eyebrow")}</div>
@@ -38,11 +38,11 @@ export default function FaqPage() {
               {t("title")}
             </h1>
           </div>
-          <p className="m-0 text-[19px] leading-normal text-mist lg:col-span-4 lg:col-start-9">
+          <p className="m-0 text-[19px] leading-normal text-ink-muted lg:col-span-4 lg:col-start-9">
             {t("lead")}
           </p>
         </div>
-      </GreenHero>
+      </PageHero>
 
       <section className="grid grow grid-cols-1 items-start gap-12 band py-20 lg:grid-cols-12 lg:gap-x-6 lg:py-24">
         <nav aria-label={t("categories")} className="flex flex-col border-t-[3px] border-ink lg:sticky lg:top-6 lg:col-span-3">

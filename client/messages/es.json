@@ -6,7 +6,10 @@
     "pricing": "Precios",
     "faq": "Preguntas",
     "login": "Iniciar sesión",
-    "signUp": "Empezar gratis"
+    "signUp": "Empezar gratis",
+    "features": "Funciones",
+    "toDark": "Cambiar a tema oscuro",
+    "toLight": "Cambiar a tema claro"
   },
   "footer": {
     "copyright": "© {year} mypocket",
@@ -14,7 +17,14 @@
     "privacy": "Privacidad",
     "terms": "Términos",
     "contact": "Contacto",
-    "language": "Idioma"
+    "language": "Idioma",
+    "product": "Producto",
+    "help": "Ayuda",
+    "tagline": "Todo tu dinero, en un único sitio.",
+    "languages": {
+      "es": "Español",
+      "en": "English"
+    }
   },
   "cta": {
     "line1": "Todo tu dinero.",
@@ -117,32 +127,46 @@
     "terms": "Términos de uso"
   },
   "home": {
-    "eyebrow": "TODAS TUS CUENTAS — UN SOLO BALANCE",
-    "title": "Todo tu dinero, en un único sitio.",
-    "lead": "Conecta tus bancos, añade tu efectivo y mira cuánto tienes de verdad. Un balance total, sin perder de vista de dónde viene cada euro.",
-    "createAccount": "Crear cuenta",
+    "badge": "Nuevo · Inversiones y simuladores",
+    "title1": "Todo tu dinero,",
+    "title2": "en un único sitio.",
+    "lead": "Suma tus cuentas, tu efectivo y tus inversiones, y mira cuánto tienes de verdad, sin perder de vista de dónde viene cada euro.",
+    "createAccount": "Crear cuenta gratis",
     "seeHow": "Ver cómo funciona",
-    "sample": {
-      "label": "Ejemplo de balance",
-      "total": "BALANCE TOTAL",
+    "discover": "Descubre más",
+    "trust": {
+      "psd2": "Conexión PSD2 de solo lectura",
+      "free": "Gratis con 2 cuentas y tu efectivo"
+    },
+    "preview": {
+      "hello": "Hola, Luis",
+      "current": "SALDO ACTUAL",
       "thisMonth": "+312,40 € este mes",
-      "accounts": "3 CUENTAS",
-      "tradeRepublic": "Cuenta e inversión",
-      "bbva": "Cuenta corriente",
+      "endOfMonth": "A fin de mes",
+      "afterDebts": "Tras deudas",
       "cash": "Efectivo",
-      "manual": "Manual",
-      "connectAnother": "Conectar otro banco"
+      "investments": "Inversiones",
+      "plan": "Plan Gratis",
+      "menu": {
+        "profile": "Perfil",
+        "settings": "Ajustes",
+        "updates": "Novedades",
+        "support": "Soporte",
+        "appearance": "Apariencia",
+        "logout": "Cerrar sesión"
+      }
     },
     "how": {
+      "eyebrow": "Cómo funciona",
       "title": "Juntas, pero no revueltas.",
-      "lead": "Suma todas tus cuentas en un balance conjunto y entra en cada una cuando quieras saber de dónde sale qué.",
-      "connect": {
-        "title": "Conecta tus bancos",
-        "text": "Tantos como uses, vía PSD2. Acceso de solo lectura: mypocket nunca puede mover tu dinero."
+      "lead": "Suma todas tus cuentas en un saldo conjunto y entra en cada una cuando quieras saber de dónde sale qué.",
+      "accounts": {
+        "title": "Añade tus cuentas",
+        "text": "Escribe su saldo o, con Pro, conecta tu banco vía PSD2 en solo lectura: mypocket nunca puede mover tu dinero."
       },
       "cash": {
-        "title": "Añade tu efectivo",
-        "text": "Lleva un balance de cash y registra ingresos y salidas manuales. Lo que no pasa por el banco también cuenta."
+        "title": "Suma tu efectivo",
+        "text": "Lleva un saldo de cash con ingresos y salidas manuales. Lo que no pasa por el banco también cuenta."
       },
       "total": {
         "title": "Mira el total",
@@ -150,47 +174,54 @@
       }
     },
     "features": {
+      "eyebrow": "Funciones",
       "title": "Entiende tu dinero. Adelántate a él.",
-      "count": "04 HERRAMIENTAS",
+      "lead": "Con todas tus cuentas en un sitio, las cifras por fin cuentan la historia completa.",
+      "new": "Nuevo",
+      "investments": {
+        "title": "Inversiones",
+        "text": "Busca tus ETF, acciones y fondos por ISIN, o tu cripto por nombre, y míralos sumados a tu patrimonio."
+      },
+      "simulations": {
+        "title": "Simuladores",
+        "text": "Hipoteca, préstamo, coche, jubilación o invertir cada mes: prueba cifras y guarda el resultado."
+      },
       "analytics": {
-        "title": "Analíticas",
-        "text": "Gasto por categoría, por cuenta o de todo junto. Filtra como quieras y compara periodos."
+        "title": "Análisis y predicciones",
+        "text": "Gasto por categoría, mes y cuenta, y cómo acabarás el mes según tus ingresos y pagos."
+      },
+      "recurring": {
+        "title": "Suscripciones y deudas",
+        "text": "Tus pagos periódicos en una lista, con su coste al mes y cuándo terminas de pagar cada deuda."
+      },
+      "accounts": {
+        "title": "Cuentas y efectivo",
+        "text": "Todas tus cuentas y tu cartera en un saldo conjunto, sin perder el saldo de cada una."
       },
       "summary": {
         "title": "Resumen del mes",
         "text": "Cada mes, lo que entró, lo que salió y en qué se fue, sin tener que buscarlo."
-      },
-      "predictions": {
-        "title": "Predicciones",
-        "text": "Una estimación de cómo acabarás el mes según tus ingresos, gastos y pagos recurrentes."
-      },
-      "subscriptions": {
-        "title": "Suscripciones",
-        "text": "Todos tus pagos recurrentes en una lista, con lo que te cuestan al mes y cuándo se renuevan."
       }
     },
     "tickets": {
-      "eyebrow": "LECTOR DE TICKETS · OCR",
+      "eyebrow": "Lector de tickets",
       "title": "Haz una foto. Nosotros lo cuadramos.",
-      "lead": "El OCR lee el comercio, la fecha y el importe del ticket y busca la transacción que le corresponde en tus bancos.",
-      "a": "Si la encuentra, lo vincula a esa transacción",
-      "b": "Si pagaste en efectivo, crea la salida de cash por ti",
+      "lead": "El OCR lee el comercio, la fecha y el importe, y busca la transacción que le corresponde en tus bancos. Si pagaste en efectivo, crea la salida de cash.",
       "items": {
         "milk": "Leche",
-        "bread": "Pan",
         "fruit": "Fruta",
-        "pasta": "Pasta",
-        "coffee": "Café"
+        "coffee": "Café",
+        "other": "Otros"
       },
-      "match": "COINCIDENCIA ENCONTRADA",
+      "match": "Coincidencia encontrada",
       "link": "Vincular ticket",
       "paidCash": "¿Pagaste en efectivo?",
-      "createCash": "Crear salida de efectivo",
-      "date": "22 sep"
+      "createCash": "Crear salida"
     },
     "pricing": {
-      "title": "Precios claros",
-      "tagline": "EMPIEZA GRATIS · CAMBIA CUANDO QUIERAS"
+      "eyebrow": "Precios",
+      "title": "Dos planes. Sin letra pequeña.",
+      "compare": "Ver la comparativa completa →"
     }
   },
   "plans": {
@@ -213,7 +244,10 @@
       "investments": "Inversiones: ETF, acciones, fondos y cripto",
       "analytics": "Análisis y predicciones",
       "ocr": "Lector de tickets con OCR"
-    }
+    },
+    "recommended": "Recomendado",
+    "freeTagline": "Para ordenar tu dinero a mano.",
+    "proTagline": "Todo lo de Gratis, y además:"
   },
   "pricing": {
     "eyebrow": "PRECIOS",

@@ -1,210 +1,196 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { CtaBand, GreenHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
+import {
+  ArrowRight, Banknote, Calculator, CalendarDays, ChartColumn, Check, ChevronDown, LifeBuoy, Lock, LogOut, Megaphone, Moon, Repeat,
+  Settings, TrendingUp, UserRound, type LucideIcon,
+} from "lucide-react";
+import { CtaBand, PageHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
 import { PlanCards } from "@/components/site/plans";
 
 // Sample figures from the design, not real data.
 const ACCOUNTS = [
-  { color: "bg-s1", name: "Trade Republic", meta: "tradeRepublic", amount: "15.072,18 €", share: "62 %" },
-  { color: "bg-s2", name: "BBVA", meta: "bbva", amount: "8.566,24 €", share: "35 %" },
-  { color: "bg-s3", name: "cash", meta: "manual", amount: "680,00 €", share: "3 %" },
+  { name: "Trade Republic", amount: "15.072,18 €", dot: "bg-s1" },
+  { name: "BBVA", amount: "8.566,24 €", dot: "bg-s2" },
+  { name: "cash", amount: "680,00 €", dot: "bg-s3" },
+  { name: "investments", amount: "12.480,00 €", dot: "bg-leaf" },
 ] as const;
 
-const STEPS = ["connect", "cash", "total"] as const;
+const MENU: ["profile" | "settings" | "updates" | "support" | "appearance" | "logout", LucideIcon][] = [["profile", UserRound], ["settings", Settings], ["updates", Megaphone], ["support", LifeBuoy], ["appearance", Moon], ["logout", LogOut]];
+const STEPS = ["accounts", "cash", "total"] as const;
+const FEATURES: { key: "investments" | "simulations" | "analytics" | "recurring" | "accounts" | "summary"; Icon: LucideIcon; isNew?: boolean; pro?: boolean }[] = [
+  { key: "investments", Icon: TrendingUp, isNew: true, pro: true },
+  { key: "simulations", Icon: Calculator, isNew: true },
+  { key: "analytics", Icon: ChartColumn, pro: true },
+  { key: "recurring", Icon: Repeat },
+  { key: "accounts", Icon: Banknote },
+  { key: "summary", Icon: CalendarDays },
+];
+const TICKET = [["milk", "3,48"], ["fruit", "6,85"], ["coffee", "9,77"], ["other", "3,30"]] as const;
 
-const icon = { width: 30, height: 30, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "square" as const, "aria-hidden": true };
-
-const FEATURES = [
-  {
-    key: "analytics",
-    icon: <svg {...icon}><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg>,
-  },
-  {
-    key: "summary",
-    icon: <svg {...icon}><rect x="3" y="5" width="18" height="16" /><path d="M3 10h18M8 3v4M16 3v4" /></svg>,
-  },
-  {
-    key: "predictions",
-    icon: <svg {...icon}><path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" /></svg>,
-  },
-  {
-    key: "subscriptions",
-    icon: <svg {...icon}><path d="M20 12a8 8 0 1 1-2.34-5.66" /><path d="M20 4v4h-4" /><path d="M12 8v4l3 2" /></svg>,
-  },
-] as const;
-
-const TICKET = [["milk", "3,48"], ["bread", "1,20"], ["fruit", "6,85"], ["pasta", "2,10"], ["coffee", "9,77"]] as const;
-
-const arrow = (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M5 12h14M13 6l6 6-6 6" />
-  </svg>
-);
-
-const h2 = "m-0 text-5xl font-extrabold leading-[0.95] tracking-[-0.045em] lg:text-[64px]";
+const h2 = "m-0 text-4xl font-bold leading-[1.05] tracking-[-0.04em] lg:text-[52px]";
+const badge = "inline-flex h-[26px] items-center rounded-full bg-ok-bg px-2.5 text-xs font-semibold text-leaf";
 
 export default function LandingPage() {
   const t = useTranslations("home");
   return (
     <SitePage>
-      <GreenHero className="pb-20 lg:pb-28">
-        <div className="grid grid-cols-1 items-center gap-12 pt-16 lg:grid-cols-12 lg:gap-x-6 lg:pt-24">
-          <div className="flex flex-col gap-8 lg:col-span-7">
-            <div className={eyebrow}>{t("eyebrow")}</div>
-            <h1 className="m-0 text-6xl font-extrabold leading-[0.9] tracking-[-0.055em] sm:text-8xl lg:text-[112px]">
-              {t("title")}
+      {/* The first screen fills the viewport: 100svh minus the 72 px sticky header. */}
+      <PageHero className="min-h-[calc(100svh-72px)] justify-between gap-10 pb-10 pt-12 lg:pt-0">
+        <div className="grid grow grid-cols-1 items-center gap-12 lg:grid-cols-[5fr_6fr] lg:gap-16">
+          <div className="flex flex-col gap-7">
+            <span className="inline-flex h-8 items-center gap-2 self-start rounded-full bg-ok-bg px-3.5 text-[13px] font-semibold text-leaf">
+              <span className="block size-1.5 rounded-full bg-leaf" />
+              {t("badge")}
+            </span>
+            <h1 className="m-0 text-5xl font-bold leading-none tracking-[-0.045em] sm:text-6xl xl:text-[76px]">
+              {t("title1")}
+              <br />
+              <span className="text-leaf">{t("title2")}</span>
             </h1>
-            <p className="m-0 max-w-[520px] text-xl leading-normal text-mist">
-              {t("lead")}
-            </p>
-            <div className="flex flex-wrap items-center gap-4 pt-1">
-              <Link href="/register" className="btn inline-flex h-14 items-center gap-2.5 bg-mint px-7 text-base font-semibold text-on-mint hover:no-underline">
-                {t("createAccount")} {arrow}
+            <p className="m-0 max-w-[480px] text-[19px] leading-[1.55] text-ink-muted">{t("lead")}</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/register" className="btn inline-flex h-[54px] items-center gap-2.5 rounded-[14px] bg-leaf px-6 text-base font-semibold text-on-leaf hover:no-underline">
+                {t("createAccount")} <ArrowRight size={16} aria-hidden />
               </Link>
-              <Link href="#how-it-works" className="btn inline-flex h-14 items-center border border-cream/50 px-7 text-base font-medium hover:no-underline">
+              <Link href="#how-it-works" className="btn inline-flex h-[54px] items-center rounded-[14px] bg-band px-6 text-base font-semibold text-ink hover:no-underline">
                 {t("seeHow")}
               </Link>
             </div>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-sm text-ink-muted">
+              <span className="flex items-center gap-2"><Lock size={16} className="text-leaf" aria-hidden />{t("trust.psd2")}</span>
+              <span className="flex items-center gap-2"><Check size={16} className="text-leaf" aria-hidden />{t("trust.free")}</span>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-6 bg-paper p-6 text-ink sm:p-8 lg:col-span-5 lg:col-start-8" aria-label={t("sample.label")}>
-            <div className="flex items-start justify-between">
-              <div className="flex flex-col gap-2">
-                <div className="font-mono text-xs tracking-[0.06em] text-ink-muted">{t("sample.total")}</div>
-                <div className="font-mono text-4xl font-medium leading-none tracking-[-0.04em] sm:text-[44px]">24.318,42 €</div>
-                <div className="font-mono text-[13px] text-leaf">{t("sample.thisMonth")}</div>
+          {/* Product preview (decorative): the dashboard with the avatar menu open. */}
+          <div aria-hidden="true" className="relative hidden h-[600px] flex-col gap-4 rounded-block border border-rule bg-band p-5 sm:flex">
+            <div className="flex items-center justify-between px-2 py-1">
+              <span className="text-[17px] font-bold tracking-[-0.02em]">{t("preview.hello")}</span>
+              <span className="flex items-center gap-2.5">
+                <span className="flex h-8 items-center gap-1.5 rounded-full border border-rule bg-field px-2.5 text-xs">ES</span>
+                <span className="flex size-[34px] items-center justify-center rounded-full bg-leaf text-xs font-bold text-on-leaf">LU</span>
+              </span>
+            </div>
+            <div className="flex flex-col gap-3.5 rounded-card bg-field p-6 shadow-soft">
+              <span className="font-mono text-[11px] tracking-[0.06em] text-ink-muted">{t("preview.current")}</span>
+              <span className="font-mono text-5xl font-medium leading-none tracking-[-0.04em]">36.798,42 €</span>
+              <span className="font-mono text-[13px] text-leaf">{t("preview.thisMonth")}</span>
+              <div className="grid grid-cols-2 gap-3 pt-1.5">
+                <div className="flex flex-col gap-0.5 rounded-control bg-band px-3.5 py-3"><span className="text-xs text-ink-muted">{t("preview.endOfMonth")}</span><span className="font-mono text-[17px]">36.518,52 €</span></div>
+                <div className="flex flex-col gap-0.5 rounded-control bg-band px-3.5 py-3"><span className="text-xs text-ink-muted">{t("preview.afterDebts")}</span><span className="font-mono text-[17px]">27.748,42 €</span></div>
               </div>
-              <div className="border border-ink px-2.5 py-1.5 font-mono text-xs">{t("sample.accounts")}</div>
             </div>
-            <div className="flex h-3 gap-[3px]" aria-hidden="true">
-              <div className="grow-[62] bg-s1" />
-              <div className="grow-[35] bg-s2" />
-              <div className="grow-[3] bg-s3" />
-            </div>
-            <div className="flex flex-col">
-              {ACCOUNTS.map((a) => (
-                <div key={a.name} className="flex items-center gap-3.5 border-t border-ink py-4">
-                  <div className={`size-2.5 shrink-0 ${a.color}`} />
-                  <div className="flex grow flex-col gap-0.5">
-                    <div className="text-[17px] font-semibold">{a.name === "cash" ? t("sample.cash") : a.name}</div>
-                    <div className="text-[13px] text-ink-muted">{t(`sample.${a.meta}`)}</div>
-                  </div>
-                  <div className="flex flex-col items-end gap-0.5 font-mono">
-                    <div className="text-base">{a.amount}</div>
-                    <div className="text-xs text-ink-muted">{a.share}</div>
-                  </div>
+            <div className="flex flex-col rounded-card bg-field px-5 py-2 shadow-soft">
+              {ACCOUNTS.map((a, i) => (
+                <div key={a.name} className={`flex h-[52px] items-center gap-3 ${i < ACCOUNTS.length - 1 ? "border-b border-rule" : ""}`}>
+                  <span className="flex size-8 items-center justify-center rounded-[10px] bg-band"><span className={`block size-2.5 rounded-full ${a.dot}`} /></span>
+                  <span className="grow text-sm font-semibold">{a.name === "cash" || a.name === "investments" ? t(`preview.${a.name}`) : a.name}</span>
+                  <span className="font-mono text-sm">{a.amount}</span>
                 </div>
               ))}
             </div>
-            <Link href="/register" className="btn flex h-12 items-center justify-center gap-2 border border-dashed border-dash text-sm font-medium text-ink-muted hover:no-underline">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              {t("sample.connectAnother")}
-            </Link>
+            <div className="absolute right-5 top-16 flex w-[220px] flex-col rounded-2xl border border-rule bg-field p-2 shadow-float">
+              <div className="flex flex-col gap-0.5 border-b border-rule px-3 pb-3 pt-2.5"><span className="text-sm font-semibold">Luis</span><span className="text-xs text-ink-muted">{t("preview.plan")}</span></div>
+              {MENU.map(([key, Icon], i) => (
+                <span key={key} className={`flex h-[38px] items-center gap-2.5 rounded-[10px] px-3 text-sm ${i === 0 ? "bg-band" : ""} ${key === "logout" ? "text-ink-muted" : ""}`}>
+                  <Icon size={16} />
+                  {t(`preview.menu.${key}`)}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-      </GreenHero>
+        <Link href="#how-it-works" className="flex flex-col items-center gap-1.5 self-center text-[13px] text-ink-muted hover:no-underline">
+          {t("discover")}
+          <ChevronDown size={16} aria-hidden />
+        </Link>
+      </PageHero>
 
-      <section id="how-it-works" className="flex scroll-mt-4 flex-col gap-16 band py-20 lg:py-28">
-        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
-          <h2 className={`${h2} lg:col-span-7`}>{t("how.title")}</h2>
-          <p className="m-0 text-[17px] leading-[1.55] text-ink-muted lg:col-span-5 lg:col-start-8">
-            {t("how.lead")}
-          </p>
+      <section id="how-it-works" className="flex scroll-mt-[72px] flex-col items-center gap-14 bg-band band py-24 lg:py-[120px]">
+        <div className="flex max-w-[720px] flex-col items-center gap-4 text-center">
+          <span className={eyebrow}>{t("how.eyebrow")}</span>
+          <h2 className={h2}>{t("how.title")}</h2>
+          <p className="m-0 text-lg leading-[1.55] text-ink-muted">{t("how.lead")}</p>
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-3">
           {STEPS.map((step, i) => (
-            <div key={step} className="flex flex-col gap-4 border-t-[3px] border-ink pt-6">
-              <div className="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-ink">{String(i + 1).padStart(2, "0")}</div>
-              <h3 className="m-0 text-2xl font-semibold tracking-[-0.02em]">{t(`how.${step}.title`)}</h3>
+            <div key={step} className="flex flex-col gap-4 rounded-[24px] bg-field p-8">
+              <span className="flex size-11 items-center justify-center rounded-[14px] bg-ok-bg font-mono text-[15px] font-medium text-leaf">{String(i + 1).padStart(2, "0")}</span>
+              <h3 className="m-0 text-[22px] font-bold tracking-[-0.02em]">{t(`how.${step}.title`)}</h3>
               <p className="m-0 text-base leading-[1.55] text-ink-muted">{t(`how.${step}.text`)}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="features" className="flex scroll-mt-4 flex-col gap-12 band pb-20 lg:pb-28">
-        <div className="flex flex-col justify-between gap-6 border-b-[3px] border-ink pb-6 lg:flex-row lg:items-end lg:gap-20">
-          <h2 className={`${h2} max-w-[760px]`}>{t("features.title")}</h2>
-          <div className="font-mono text-[13px] text-ink-muted">{t("features.count")}</div>
+      <section id="features" className="flex scroll-mt-[72px] flex-col gap-12 band py-24 lg:py-[120px]">
+        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end lg:gap-16">
+          <div className="flex flex-col gap-4">
+            <span className={eyebrow}>{t("features.eyebrow")}</span>
+            <h2 className={`${h2} max-w-[620px]`}>{t("features.title")}</h2>
+          </div>
+          <p className="m-0 max-w-[360px] text-[17px] leading-[1.55] text-ink-muted">{t("features.lead")}</p>
         </div>
-        <div className="grid grid-cols-1 border border-ink sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURES.map((f, i) => (
-            <article
-              key={f.key}
-              className={`flex flex-col gap-5 px-7 py-8 text-ink ${i < FEATURES.length - 1 ? "border-b border-ink lg:border-b-0 lg:border-r" : ""} ${i % 2 === 0 ? "sm:border-r" : ""}`}
-            >
-              {f.icon}
-              <h3 className="m-0 text-[22px] font-semibold tracking-[-0.02em] text-ink">{t(`features.${f.key}.title`)}</h3>
-              <p className="m-0 text-[15px] leading-[1.55] text-ink-muted">{t(`features.${f.key}.text`)}</p>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map(({ key, Icon, isNew, pro }) => (
+            <article key={key} className="flex flex-col gap-4 rounded-[24px] bg-band p-7">
+              <div className="flex items-center justify-between">
+                <span className="flex size-12 items-center justify-center rounded-[14px] bg-field"><Icon size={22} strokeWidth={1.8} aria-hidden /></span>
+                <span className="flex gap-1.5">
+                  {isNew && <span className={badge}>{t("features.new")}</span>}
+                  {pro && <span className={badge}>Pro</span>}
+                </span>
+              </div>
+              <h3 className="m-0 text-[21px] font-bold tracking-[-0.02em]">{t(`features.${key}.title`)}</h3>
+              <p className="m-0 text-[15px] leading-[1.55] text-ink-muted">{t(`features.${key}.text`)}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section id="tickets" className="grid scroll-mt-4 grid-cols-1 items-center gap-12 bg-band band py-20 lg:grid-cols-12 lg:gap-x-6 lg:py-28">
-        <div className="flex flex-col gap-7 lg:col-span-5">
-          <div className={`${eyebrow} text-ink-muted`}>{t("tickets.eyebrow")}</div>
-          <h2 className={h2}>{t("tickets.title")}</h2>
-          <p className="m-0 text-[17px] leading-[1.55] text-ink-muted">
-            {t("tickets.lead")}
-          </p>
-          <ul className="m-0 flex list-none flex-col p-0 text-base">
-            <li className="flex items-center gap-3.5 border-t border-ink py-3.5">
-              <span className="font-mono text-xs text-ink">A.</span>{t("tickets.a")}
-            </li>
-            <li className="flex items-center gap-3.5 border-y border-ink py-3.5">
-              <span className="font-mono text-xs text-ink">B.</span>{t("tickets.b")}
-            </li>
-          </ul>
-        </div>
-
-        <div className="flex flex-col items-center gap-7 sm:flex-row sm:justify-end lg:col-span-6 lg:col-start-7" aria-hidden="true">
-          <div className="flex w-[200px] -rotate-3 flex-col gap-2.5 border border-rule bg-white px-5 py-7 font-mono text-xs text-night">
-            <div className="text-center text-[13px] font-medium">MERCADONA</div>
-            <div className="text-center text-night-muted">22/09/2026 · 18:42</div>
-            <div className="my-1.5 border-t border-dashed border-dash" />
-            {TICKET.map(([item, price]) => (
-              <div key={item} className="flex justify-between"><span>{t(`tickets.items.${item}`)}</span><span>{price}</span></div>
-            ))}
-            <div className="my-1.5 border-t border-dashed border-dash" />
-            <div className="flex justify-between text-sm font-medium"><span>TOTAL</span><span>23,40</span></div>
+      <section id="tickets" className="scroll-mt-[72px] band pb-24 lg:pb-[120px]">
+        <div className="grid grid-cols-1 items-center gap-14 rounded-[32px] bg-band p-8 lg:grid-cols-[5fr_6fr] lg:p-16">
+          <div className="flex flex-col gap-5">
+            <span className={`${eyebrow} flex items-center gap-2`}>{t("tickets.eyebrow")} <span className={badge}>Pro</span></span>
+            <h2 className="m-0 text-4xl font-bold leading-[1.05] tracking-[-0.04em] lg:text-[44px]">{t("tickets.title")}</h2>
+            <p className="m-0 text-[17px] leading-[1.55] text-ink-muted">{t("tickets.lead")}</p>
           </div>
-
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" className="shrink-0 rotate-90 sm:rotate-0">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-
-          <div className="flex w-full max-w-[260px] flex-col gap-4">
-            <div className="flex flex-col gap-3.5 bg-strip p-[22px] text-on-strip">
-              <div className="font-mono text-[11px] tracking-[0.06em]">{t("tickets.match")}</div>
-              <div className="flex items-baseline gap-3">
-                <div className="flex grow flex-col gap-0.5">
-                  <div className="text-[17px] font-semibold">Mercadona</div>
-                  <div className="text-[13px] text-mist">BBVA · {t("tickets.date")}</div>
-                </div>
-                <div className="font-mono text-[15px]">−23,40 €</div>
-              </div>
-              <div className="flex h-11 items-center justify-center bg-mint text-sm font-semibold text-on-mint">{t("tickets.link")}</div>
+          <div aria-hidden="true" className="flex flex-col items-center gap-5 sm:flex-row">
+            <div className="flex w-[200px] shrink-0 -rotate-3 flex-col gap-2 rounded-2xl bg-white px-5 py-[22px] font-mono text-xs text-night shadow-soft">
+              <span className="text-center font-medium">MERCADONA</span>
+              <span className="text-center text-night-muted">22/09/2026</span>
+              <span className="my-1 border-t border-dashed border-[#C9C2B4]" />
+              {TICKET.map(([item, price]) => (
+                <span key={item} className="flex justify-between"><span>{t(`tickets.items.${item}`)}</span><span>{price}</span></span>
+              ))}
+              <span className="my-1 border-t border-dashed border-[#C9C2B4]" />
+              <span className="flex justify-between text-sm font-medium"><span>TOTAL</span><span>23,40</span></span>
             </div>
-            <div className="flex flex-col gap-3.5 border border-ink bg-paper p-[22px]">
-              <div className="text-[15px] text-ink-muted">{t("tickets.paidCash")}</div>
-              <div className="flex h-11 items-center justify-center border border-ink text-sm font-semibold">{t("tickets.createCash")}</div>
+            <div className="flex w-full grow flex-col gap-3">
+              <div className="flex flex-col gap-3 rounded-[18px] border-2 border-leaf bg-field p-[18px]">
+                <span className="flex items-center gap-2 text-[13px] font-semibold text-leaf"><Check size={14} strokeWidth={2.4} />{t("tickets.match")}</span>
+                <span className="flex justify-between text-[15px]"><span className="font-semibold">Mercadona · BBVA</span><span className="font-mono">−23,40 €</span></span>
+                <span className="flex h-[42px] items-center justify-center rounded-control bg-leaf text-sm font-semibold text-on-leaf">{t("tickets.link")}</span>
+              </div>
+              <div className="flex items-center justify-between gap-3 rounded-[18px] bg-field p-[18px]">
+                <span className="text-sm text-ink-muted">{t("tickets.paidCash")}</span>
+                <span className="inline-flex h-[38px] items-center rounded-[10px] border border-rule px-3.5 text-sm font-semibold">{t("tickets.createCash")}</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="pricing" className="flex flex-col gap-12 band py-20 lg:py-28">
-        <div className="flex flex-col justify-between gap-4 border-b-[3px] border-ink pb-6 lg:flex-row lg:items-end">
+      <section id="pricing" className="flex scroll-mt-[72px] flex-col items-center gap-12 bg-band band py-24 lg:py-[120px]">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <span className={eyebrow}>{t("pricing.eyebrow")}</span>
           <h2 className={h2}>{t("pricing.title")}</h2>
-          <div className="font-mono text-[13px] text-ink-muted">{t("pricing.tagline")}</div>
         </div>
         <PlanCards />
+        <Link href="/pricing" className="text-[15px] font-semibold text-ink underline">{t("pricing.compare")}</Link>
       </section>
 
-      <CtaBand centered />
+      <CtaBand />
       <SiteFooter />
     </SitePage>
   );

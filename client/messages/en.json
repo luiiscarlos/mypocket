@@ -6,7 +6,10 @@
     "pricing": "Pricing",
     "faq": "FAQ",
     "login": "Log in",
-    "signUp": "Start for free"
+    "signUp": "Start for free",
+    "features": "Features",
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
   },
   "footer": {
     "copyright": "© {year} mypocket",
@@ -14,7 +17,14 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "contact": "Contact",
-    "language": "Language"
+    "language": "Language",
+    "product": "Product",
+    "help": "Help",
+    "tagline": "All your money, in one place.",
+    "languages": {
+      "es": "Español",
+      "en": "English"
+    }
   },
   "cta": {
     "line1": "All your money.",
@@ -117,32 +127,46 @@
     "terms": "Terms of use"
   },
   "home": {
-    "eyebrow": "ALL YOUR ACCOUNTS — ONE BALANCE",
-    "title": "All your money, in one place.",
-    "lead": "Connect your banks, add your cash and see how much you really have. One total balance, without losing track of where each euro comes from.",
-    "createAccount": "Create account",
+    "badge": "New · Investments and calculators",
+    "title1": "All your money,",
+    "title2": "in one place.",
+    "lead": "Add up your accounts, your cash and your investments, and see how much you really have, without losing track of where each euro comes from.",
+    "createAccount": "Create a free account",
     "seeHow": "See how it works",
-    "sample": {
-      "label": "Sample balance",
-      "total": "TOTAL BALANCE",
+    "discover": "Discover more",
+    "trust": {
+      "psd2": "Read-only PSD2 connection",
+      "free": "Free with 2 accounts and your cash"
+    },
+    "preview": {
+      "hello": "Hi, Luis",
+      "current": "CURRENT BALANCE",
       "thisMonth": "+€312.40 this month",
-      "accounts": "3 ACCOUNTS",
-      "tradeRepublic": "Account & investing",
-      "bbva": "Current account",
+      "endOfMonth": "At month end",
+      "afterDebts": "After debts",
       "cash": "Cash",
-      "manual": "Manual",
-      "connectAnother": "Connect another bank"
+      "investments": "Investments",
+      "plan": "Free plan",
+      "menu": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "updates": "What's new",
+        "support": "Support",
+        "appearance": "Appearance",
+        "logout": "Log out"
+      }
     },
     "how": {
+      "eyebrow": "How it works",
       "title": "Together, not mixed up.",
       "lead": "Add up all your accounts in one combined balance and open any of them whenever you want to know where money comes from.",
-      "connect": {
-        "title": "Connect your banks",
-        "text": "As many as you use, via PSD2. Read-only access: mypocket can never move your money."
+      "accounts": {
+        "title": "Add your accounts",
+        "text": "Type their balance or, with Pro, connect your bank via read-only PSD2: mypocket can never move your money."
       },
       "cash": {
         "title": "Add your cash",
-        "text": "Keep a cash balance and log manual income and expenses. What doesn't go through the bank counts too."
+        "text": "Keep a cash balance with manual income and expenses. What doesn't go through the bank counts too."
       },
       "total": {
         "title": "See the total",
@@ -150,47 +174,54 @@
       }
     },
     "features": {
+      "eyebrow": "Features",
       "title": "Understand your money. Get ahead of it.",
-      "count": "04 TOOLS",
+      "lead": "With all your accounts in one place, the numbers finally tell the whole story.",
+      "new": "New",
+      "investments": {
+        "title": "Investments",
+        "text": "Find your ETFs, stocks and funds by ISIN, or your crypto by name, and see them added to your net worth."
+      },
+      "simulations": {
+        "title": "Calculators",
+        "text": "Mortgage, loan, car, retirement or investing every month: try numbers and save the result."
+      },
       "analytics": {
-        "title": "Analytics",
-        "text": "Spending by category, by account or all together. Filter however you like and compare periods."
+        "title": "Analytics and predictions",
+        "text": "Spending by category, month and account, and how you'll end the month based on your income and payments."
+      },
+      "recurring": {
+        "title": "Subscriptions and debts",
+        "text": "Your recurring payments in one list, with their monthly cost and when you finish paying each debt."
+      },
+      "accounts": {
+        "title": "Accounts and cash",
+        "text": "All your accounts and your wallet in one combined balance, without losing each one's balance."
       },
       "summary": {
         "title": "Monthly summary",
         "text": "Every month, what came in, what went out and where it went, without digging for it."
-      },
-      "predictions": {
-        "title": "Predictions",
-        "text": "An estimate of how you'll end the month based on your income, expenses and recurring payments."
-      },
-      "subscriptions": {
-        "title": "Subscriptions",
-        "text": "All your recurring payments in one list, with what they cost per month and when they renew."
       }
     },
     "tickets": {
-      "eyebrow": "RECEIPT SCANNER · OCR",
+      "eyebrow": "Receipt scanner",
       "title": "Take a photo. We'll match it.",
-      "lead": "OCR reads the store, date and amount from the receipt and finds the matching transaction in your banks.",
-      "a": "If it finds it, it links the receipt to that transaction",
-      "b": "If you paid cash, it creates the cash expense for you",
+      "lead": "OCR reads the store, date and amount, and finds the matching transaction in your banks. If you paid cash, it creates the cash expense.",
       "items": {
         "milk": "Milk",
-        "bread": "Bread",
         "fruit": "Fruit",
-        "pasta": "Pasta",
-        "coffee": "Coffee"
+        "coffee": "Coffee",
+        "other": "Other"
       },
-      "match": "MATCH FOUND",
+      "match": "Match found",
       "link": "Link receipt",
       "paidCash": "Paid in cash?",
-      "createCash": "Create cash expense",
-      "date": "22 Sep"
+      "createCash": "Create expense"
     },
     "pricing": {
-      "title": "Clear pricing",
-      "tagline": "START FREE · SWITCH ANYTIME"
+      "eyebrow": "Pricing",
+      "title": "Two plans. No fine print.",
+      "compare": "See the full comparison →"
     }
   },
   "plans": {
@@ -213,7 +244,10 @@
       "investments": "Investments: ETFs, stocks, funds and crypto",
       "analytics": "Analytics and predictions",
       "ocr": "Receipt scanner with OCR"
-    }
+    },
+    "recommended": "Recommended",
+    "freeTagline": "To manage your money by hand.",
+    "proTagline": "Everything in Free, plus:"
   },
   "pricing": {
     "eyebrow": "PRICING",

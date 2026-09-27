@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { CtaBand, GreenHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
+import { CtaBand, PageHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getTranslations("meta"))("pricing") };
@@ -54,7 +54,7 @@ export default function PricingPage() {
   const cell = (c: string) => (c === "unlimited" ? t("unlimited") : c);
   return (
     <SitePage>
-      <GreenHero current="pricing" className="pb-16 lg:pb-20">
+      <PageHero current="pricing" className="pb-16 lg:pb-20">
         <div className="grid grid-cols-1 items-end gap-8 pt-16 lg:grid-cols-12 lg:gap-x-6 lg:pt-20">
           <div className="flex flex-col gap-7 lg:col-span-8">
             <div className={eyebrow}>{t("eyebrow")}</div>
@@ -64,11 +64,11 @@ export default function PricingPage() {
               {t("title2")}
             </h1>
           </div>
-          <p className="m-0 text-[19px] leading-normal text-mist lg:col-span-4 lg:col-start-9">
+          <p className="m-0 text-[19px] leading-normal text-ink-muted lg:col-span-4 lg:col-start-9">
             {t("lead")}
           </p>
         </div>
-      </GreenHero>
+      </PageHero>
 
       <section className="band py-20 lg:py-28">
         <div className="overflow-x-auto">
@@ -96,9 +96,9 @@ export default function PricingPage() {
                   <div className="border border-cream/60 px-2 py-[5px] font-mono text-[11px] tracking-[0.06em]">{t("recommended")}</div>
                 </div>
                 <div className="font-mono text-5xl font-medium leading-none tracking-[-0.05em]">
-                  {plans("price")} €<span className="text-sm tracking-normal text-mist"> {plans("perMonth")}</span>
+                  {plans("price")} €<span className="text-sm tracking-normal text-ink-muted"> {plans("perMonth")}</span>
                 </div>
-                <div className="text-[15px] text-mist">{t("proTagline")}</div>
+                <div className="text-[15px] text-ink-muted">{t("proTagline")}</div>
                 <Link href="/register" className="btn flex h-[52px] items-center justify-center bg-mint text-[15px] font-semibold text-on-mint hover:no-underline">
                   {plans("tryPro")}
                 </Link>

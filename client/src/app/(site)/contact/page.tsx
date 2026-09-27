@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { GreenHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
+import { PageHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
 import { ContactForm } from "./contact-form";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -12,12 +12,12 @@ export default function ContactPage() {
   const t = useTranslations("contact");
   return (
     <SitePage>
-      <GreenHero className="pb-20 lg:pb-[88px]">
+      <PageHero className="pb-20 lg:pb-[88px]">
         <div className="flex flex-col gap-6 pt-16 lg:pt-[88px]">
           <div className={eyebrow}>{t("eyebrow")}</div>
           <h1 className="m-0 text-6xl font-extrabold leading-[0.9] tracking-[-0.055em] sm:text-8xl lg:text-[112px]">{t("title")}</h1>
         </div>
-      </GreenHero>
+      </PageHero>
 
       <section className="grid grow grid-cols-1 items-start gap-12 band py-20 lg:grid-cols-12 lg:gap-x-6 lg:py-24">
         <div className="flex flex-col gap-8 lg:col-span-4">
