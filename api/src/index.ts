@@ -34,6 +34,19 @@ function fromBff(request: Request) {
   return received.length === internalSecret.length && timingSafeEqual(received, internalSecret);
 }
 
+/**
+ * Right after login PostgREST can reject a brand-new token as "issued at future" (PGRST303): clock skew
+ * between Supabase services. Retry a few times, one second apart; any other response goes through as is.
+ */
+async function fetchWithSkewRetry(input: RequestInfo | URL, init?: RequestInit, attempt = 0): Promise<Response> {
+  const res = await fetch(input, init);
+  if (res.status !== 401 || attempt >= 3) return res;
+  const body = await res.clone().text();
+  if (!body.includes("PGRST303")) return res;
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return fetchWithSkewRetry(input, init, attempt + 1);
+}
+
 const httpError = (message: string, code: string, status: number, headers?: Record<string, string>) =>
   new GraphQLError(message, { extensions: { code, http: { status, headers } } });
 
@@ -66,7 +79,7 @@ const yoga = createYoga<{}, Context>({
         token,
         db: createClient(url, publishableKey, {
           auth: noSession,
-          global: { headers: { Authorization: `Bearer ${token}` } },
+          global: { headers: { Authorization: `Bearer ${token}` }, fetch: fetchWithSkewRetry },
         }),
       };
     }
