@@ -23,6 +23,8 @@ const typeDefs = /* GraphQL */ `
     MANUAL
     OCR
     BANK
+    "Posted automatically from a recurring item."
+    RECURRING
   }
 
   enum ContactTopic {
@@ -105,6 +107,8 @@ const typeDefs = /* GraphQL */ `
     currency: String!
     category: Category
     accountId: ID
+    "Recurring item that posted it (source RECURRING)."
+    recurringId: ID
     "YYYY-MM-DD"
     occurredOn: String!
     note: String
@@ -252,6 +256,7 @@ type TransactionRow = {
   source: string;
   created_at: string;
   account_id: number | null;
+  recurring_id: number | null;
   category: CategoryRow | null;
 };
 
@@ -265,7 +270,7 @@ type SummaryRow = {
 };
 
 const CATEGORY_COLUMNS = "id, name, icon, color";
-const TRANSACTION_COLUMNS = `id, type, amount, currency, occurred_on, note, source, created_at, account_id, category:categories(${CATEGORY_COLUMNS})`;
+const TRANSACTION_COLUMNS = `id, type, amount, currency, occurred_on, note, source, created_at, account_id, recurring_id, category:categories(${CATEGORY_COLUMNS})`;
 
 const toTransaction = (t: TransactionRow) => ({
   id: t.id,
@@ -277,6 +282,7 @@ const toTransaction = (t: TransactionRow) => ({
   source: t.source,
   createdAt: t.created_at,
   accountId: t.account_id,
+  recurringId: t.recurring_id,
   category: t.category,
 });
 
@@ -314,7 +320,7 @@ const toRow = (input: Record<string, unknown>) => toColumns(input, COLUMNS);
 const base: ResolverMap = {
     JSON: JSONScalar,
     TransactionType: { INCOME: "income", EXPENSE: "expense" },
-    TransactionSource: { MANUAL: "manual", OCR: "ocr", BANK: "bank" },
+    TransactionSource: { MANUAL: "manual", OCR: "ocr", BANK: "bank", RECURRING: "recurring" },
     AccountType: { REAL: "real", DEMO: "demo" },
     Plan: { FREE: "free", PRO: "pro" },
     Theme: { LIGHT: "light", DARK: "dark", SYSTEM: "system" },

@@ -314,6 +314,24 @@ async function listExpenses(user: AuthedUser) {
 }
 
 /** Stored cache of the next charge (kept for SQL-side reads); null schedules keep the start date. */
+/**
+ * An item that starts today posts today's charge right away; later charges are posted by the daily
+ * job (private.post_recurring). Charges before today are never backfilled.
+ */
+async function postTodayCharge(user: AuthedUser, e: ExpenseRow) {
+  const on = today();
+  if (e.start_date !== on || e.status !== "active") return;
+  const amount = e.kind === "debt" && e.initial_amount !== null ? Math.min(Number(e.amount), Number(e.initial_amount)) : Number(e.amount);
+  const { error } = await user.db.from("transactions").upsert(
+    {
+      user_id: user.userId, type: e.direction, amount, currency: e.currency, category_id: e.category_id, account_id: e.account_id,
+      occurred_on: on, note: e.name, source: "recurring", recurring_id: e.id,
+    },
+    { onConflict: "recurring_id,occurred_on", ignoreDuplicates: true },
+  );
+  if (error) fail(error);
+}
+
 async function refreshNextCache(user: AuthedUser, e: ExpenseRow) {
   const next = toExpense(e).nextChargeDate ?? e.start_date;
   const { error } = await user.db.from("recurring_expenses").update({ next_charge_date: next }).eq("id", e.id).eq("user_id", user.userId);
@@ -448,6 +466,7 @@ export const finance: Module = {
           .single<ExpenseRow>();
         if (error) fail(error);
         await refreshNextCache(user, data);
+        await postTodayCharge(user, data);
         return toExpense(data);
       },
 
