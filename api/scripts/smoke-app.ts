@@ -63,6 +63,15 @@ try {
   const loan = ok(await gql(`mutation { createRecurringExpense(input: { name: "Smoke loan", kind: DEBT, amount: 240, intervalUnit: YEAR, nextChargeDate: "${later}", outstandingAmount: 5000 }) { id monthlyAmount } }`)).createRecurringExpense;
   cleanup.push(`mutation { deleteRecurringExpense(id: "${loan.id}") }`);
   assert.equal(loan.monthlyAmount, 20);
+  // Debt that started in the past: paid and remaining come from the schedule.
+  const started = new Date(Date.now() - 200 * 86_400_000).toISOString().slice(0, 10);
+  const study = ok(await gql(`mutation { createRecurringExpense(input: { name: "Smoke study loan", kind: DEBT, amount: 250, startDate: "${started}", initialAmount: 6000 }) { id outstandingAmount paidAmount progress endsOn nextChargeDate } }`)).createRecurringExpense;
+  cleanup.push(`mutation { deleteRecurringExpense(id: "${study.id}") }`);
+  assert(study.paidAmount >= 1500 && study.paidAmount <= 1750 && study.outstandingAmount === 6000 - study.paidAmount && study.endsOn && study.nextChargeDate, JSON.stringify(study));
+  const salary = ok(await gql(`mutation { createRecurringExpense(input: { name: "Smoke salary", direction: INCOME, kind: SALARY, amount: 2000, startDate: "${soon}" }) { id direction } }`)).createRecurringExpense;
+  cleanup.push(`mutation { deleteRecurringExpense(id: "${salary.id}") }`);
+  assert.equal(salary.direction, "INCOME");
+  assert.equal(code(await gql(`mutation { createRecurringExpense(input: { name: "Bad", direction: INCOME, kind: DEBT, amount: 1, startDate: "${soon}" }) { id } }`)), "BAD_USER_INPUT");
   const upcoming = ok(await gql("{ upcomingPayments(days: 30) { name } }")).upcomingPayments.map((e: any) => e.name);
   assert(upcoming.includes("Smoke Netflix") && !upcoming.includes("Smoke loan"), `upcoming: ${upcoming}`);
 
@@ -80,10 +89,11 @@ try {
   assert.equal(holding.value, Math.round(btc.lastPrice * 0.01 * 100) / 100);
 
   // --- net worth ---
-  const nw = ok(await gql("{ netWorth { totals { currency accounts investments debts total } debts { name } } }")).netWorth;
+  const nw = ok(await gql("{ netWorth { totals { currency accounts investments debts current endOfMonth total } debts { name } } }")).netWorth;
   const eur = nw.totals.find((t: any) => t.currency === "EUR");
   assert(eur.accounts >= 4700.5 && eur.investments >= holding.value && eur.debts >= 5000, JSON.stringify(eur));
   assert.equal(eur.total, Math.round((eur.accounts + eur.investments - eur.debts) * 100) / 100);
+  assert.equal(eur.current, Math.round((eur.accounts + eur.investments) * 100) / 100);
 
   // --- simulations ---
   const mortgage = ok(await gql(`{ simulate(kind: MORTGAGE, params: { price: 250000, downPayment: 50000, annualRate: 3, years: 30 }) { metrics { key value } series { period value } } }`)).simulate;
