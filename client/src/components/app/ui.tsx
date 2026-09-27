@@ -5,7 +5,7 @@ import { Notice } from "@/components/forms";
 
 // --- buttons (PATTERNS §6) ----------------------------------------------------------------------
 
-const base = "btn inline-flex cursor-pointer items-center justify-center gap-2 font-sans text-[15px] font-semibold hover:no-underline disabled:cursor-not-allowed";
+const base = "btn inline-flex cursor-pointer items-center rounded-control justify-center gap-2 font-sans text-[15px] font-semibold hover:no-underline disabled:cursor-not-allowed";
 export const primaryBtn = `${base} h-12 border-0 bg-leaf px-6 text-on-leaf disabled:bg-rule disabled:text-ink-muted`;
 export const secondaryBtn = `${base} h-12 border border-ink bg-transparent px-6 text-ink disabled:opacity-50`;
 export const smallButton = `${base} h-11 border border-ink bg-transparent px-4 text-ink disabled:opacity-50`;
@@ -20,7 +20,7 @@ export function PageHeader({ title, meta, children }: { title: string; meta?: st
   return (
     <header className="flex min-h-[88px] flex-wrap items-center justify-between gap-4 border-b border-rule py-4">
       <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-        <h1 className="m-0 text-[32px] font-extrabold leading-none tracking-[-0.04em]">{title}</h1>
+        <h1 className="m-0 text-[32px] font-bold leading-none tracking-[-0.04em]">{title}</h1>
         {meta && <span className="font-mono text-[13px] uppercase tracking-[0.06em] text-ink-muted">{meta}</span>}
       </div>
       {children}
@@ -32,8 +32,8 @@ export function PageHeader({ title, meta, children }: { title: string; meta?: st
 export function Section({ id, title, aside, children }: { id?: string; title: string; aside?: ReactNode; children: ReactNode }) {
   return (
     <section id={id} className="flex scroll-mt-6 flex-col gap-4">
-      <div className="flex items-baseline justify-between gap-4 border-b-[3px] border-ink pb-3">
-        <h2 className="m-0 text-[22px] font-extrabold tracking-[-0.03em]">{title}</h2>
+      <div className="flex items-baseline justify-between gap-4 border-b border-rule pb-3">
+        <h2 className="m-0 text-[22px] font-bold tracking-[-0.03em]">{title}</h2>
         {aside}
       </div>
       {children}
@@ -68,15 +68,15 @@ export function Row({ title, meta, value, sub, children }: { title: ReactNode; m
 
 /** Small inline empty state inside a block (a list with nothing yet). */
 export function Empty({ children }: { children: ReactNode }) {
-  return <p className="m-0 border border-dashed border-dash px-5 py-6 text-[15px] text-ink-muted">{children}</p>;
+  return <p className="m-0 rounded-card border border-dashed border-dash px-5 py-6 text-[15px] text-ink-muted">{children}</p>;
 }
 
 /** Full empty state of a page: dashed border, zero figure, 44 px title, one sentence and the first action. */
 export function EmptyState({ figure, title, text, actions }: { figure?: string; title: string; text: string; actions?: ReactNode }) {
   return (
-    <div className="flex flex-col items-start gap-5 border border-dashed border-dash p-8 sm:p-16">
+    <div className="flex flex-col items-start gap-5 rounded-block border border-dashed border-dash p-8 sm:p-16">
       {figure && <div className="font-mono text-[13px] tracking-[0.06em] text-ink-muted">{figure}</div>}
-      <h2 className="m-0 text-[32px] font-extrabold leading-[0.95] tracking-[-0.045em] sm:text-[44px]">{title}</h2>
+      <h2 className="m-0 text-[32px] font-bold leading-[1] tracking-[-0.045em] sm:text-[44px]">{title}</h2>
       <p className="m-0 max-w-[560px] text-[17px] leading-[1.55] text-ink-muted">{text}</p>
       {actions && <div className="flex flex-wrap gap-3">{actions}</div>}
     </div>
@@ -89,7 +89,7 @@ export function EmptyAction({ href, children, secondary = false }: { href: strin
 
 /** Loading block with the shape of the content. */
 export function Skel({ className = "" }: { className?: string }) {
-  return <div className={`bg-skeleton ${className}`} />;
+  return <div className={`rounded-control bg-skeleton ${className}`} />;
 }
 
 /** Container for a loading view: announced once, blocks hidden from assistive tech. */
@@ -125,7 +125,7 @@ export function Bar({ value, max, tone = "s1" }: { value: number; max: number; t
   const width = max > 0 ? Math.max(1, Math.round((Math.abs(value) / max) * 100)) : 0;
   const color = { s1: "bg-s1", s2: "bg-s2", s3: "bg-s3", debt: "bg-debt" }[tone];
   return (
-    <div className="h-2.5 w-full bg-band" aria-hidden="true">
+    <div className="h-2.5 w-full overflow-hidden rounded-full bg-band" aria-hidden="true">
       <div className={`h-full ${color}`} style={{ width: `${width}%` }} />
     </div>
   );
@@ -142,7 +142,7 @@ export type Control = { name: string; label: string; value?: string; options: { 
  * `keep` carries other query params of the page (e.g. an open search).
  */
 export function ListControls({ action, controls, keep = {}, apply, reset }: { action: string; controls: Control[]; keep?: Record<string, string>; apply: string; reset: string }) {
-  const field = "h-11 border border-ink bg-field px-3 font-sans text-sm text-ink";
+  const field = "h-11 rounded-control border border-control bg-field px-3 font-sans text-sm text-ink";
   const active = controls.some((c) => c.value);
   return (
     <form action={action} className="flex flex-wrap items-end gap-3">
@@ -173,9 +173,9 @@ export function pick<T extends string>(value: string | string[] | undefined, all
 /** Pro feature seen from the Free plan: what it does and the way to upgrade (Settings → Plan). */
 export function ProUpsell({ title, text, cta, href = "/dashboard/settings?tab=plan" }: { title: string; text: string; cta: string; href?: string }) {
   return (
-    <div className="flex flex-col items-start gap-4 border border-leaf bg-ok-bg p-6 sm:p-8">
-      <span className="border border-leaf px-2 py-0.5 font-mono text-[11px] tracking-[0.06em] text-leaf">PRO</span>
-      <h2 className="m-0 text-2xl font-extrabold tracking-[-0.03em]">{title}</h2>
+    <div className="flex flex-col items-start gap-4 rounded-block border border-leaf bg-ok-bg p-6 sm:p-8">
+      <span className="rounded-full bg-field px-2.5 py-0.5 text-xs font-semibold text-leaf">Pro</span>
+      <h2 className="m-0 text-2xl font-bold tracking-[-0.03em]">{title}</h2>
       <p className="m-0 max-w-[560px] text-[15px] leading-[1.55] text-ink-muted">{text}</p>
       <Link href={href} className={primaryBtn}>{cta}</Link>
     </div>

@@ -37,7 +37,7 @@ const EXPENSE_ICONS: Record<ExpenseKind, LucideIcon> = {
   SUBSCRIPTION: Repeat, OTHER: CalendarClock, DEBT: Landmark, SALARY: Wallet, INVESTMENT: TrendingUp, OTHER_INCOME: HandCoins,
 };
 const rowIcon = (Icon: LucideIcon) => (
-  <span className="flex size-10 shrink-0 items-center justify-center border border-rule text-ink-muted" aria-hidden="true">
+  <span className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-band text-ink-muted" aria-hidden="true">
     <Icon size={18} strokeWidth={1.9} />
   </span>
 );
@@ -227,7 +227,7 @@ export async function InvestmentSearch({
 }) {
   const { t, money } = await tools();
   return (
-    <div className="flex flex-col gap-4 border border-ink p-5">
+    <div className="flex flex-col gap-4 rounded-card border border-rule bg-field p-5">
       <form action={action} className="flex flex-col gap-3 sm:flex-row sm:items-end">
         {Object.entries(hidden).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
         <label className={`${labelClass} grow`}>
@@ -304,7 +304,7 @@ export async function ExpenseList({
             {e.kind === "DEBT" && e.outstandingAmount != null && (
               <div className="flex flex-col gap-1.5 pl-[56px]">
                 {e.progress != null && (
-                  <div className="flex h-2.5 w-full bg-debt" aria-hidden="true">
+                  <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-debt" aria-hidden="true">
                     <div className="h-full bg-leaf" style={{ width: `${Math.round(e.progress * 100)}%` }} />
                   </div>
                 )}

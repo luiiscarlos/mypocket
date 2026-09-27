@@ -19,7 +19,7 @@ type Me = {
 };
 
 const THEME_ICONS = { light: Sun, dark: Moon, system: Monitor } as const;
-const menuItem = "flex h-11 w-full cursor-pointer items-center gap-3 border-0 bg-transparent px-4 font-sans text-[15px] text-ink hover:bg-active hover:no-underline";
+const menuItem = "flex h-10 w-full cursor-pointer items-center gap-3 rounded-[10px] border-0 bg-transparent px-3 font-sans text-[15px] text-ink hover:bg-active hover:no-underline";
 const summaryReset = "list-none [&::-webkit-details-marker]:hidden";
 
 function initials(name: string) {
@@ -47,7 +47,7 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
     // Sidebar and header share the `side` surface with no line between them; content sits on `paper`.
     <div className="flex min-h-screen bg-side text-ink">
       <aside className={`sticky top-0 hidden h-screen shrink-0 flex-col py-5 lg:flex ${collapsed ? "w-[72px] px-3" : "w-[256px] px-5"}`}>
-        <Link href="/dashboard" aria-label="mypocket" className={`flex h-12 items-center text-[22px] font-extrabold tracking-[-0.04em] text-ink hover:no-underline ${collapsed ? "justify-center" : "px-3"}`}>
+        <Link href="/dashboard" aria-label="mypocket" className={`flex h-12 items-center text-[21px] font-bold tracking-[-0.03em] text-ink hover:no-underline ${collapsed ? "justify-center" : "px-3"}`}>
           {collapsed ? <>m<span className="text-leaf">.</span></> : <>mypocket<span className="text-leaf">.</span></>}
         </Link>
         {!me.readOnly && (
@@ -68,7 +68,7 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
             aria-label={collapsed ? t("nav.expand") : t("nav.collapse")}
             aria-expanded={!collapsed}
             title={collapsed ? t("nav.expand") : t("nav.collapse")}
-            className={`flex h-11 w-full cursor-pointer items-center gap-3 border-0 bg-transparent font-sans text-sm text-ink-muted hover:bg-active hover:text-ink ${collapsed ? "justify-center" : "px-3"}`}
+            className={`flex h-11 w-full cursor-pointer items-center gap-3 rounded-control border-0 bg-transparent font-sans text-sm text-ink-muted hover:bg-active hover:text-ink ${collapsed ? "justify-center" : "px-3"}`}
           >
             {collapsed ? <PanelLeftOpen size={20} aria-hidden /> : <PanelLeftClose size={20} aria-hidden />}
             {!collapsed && t("nav.collapse")}
@@ -78,18 +78,18 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
 
       <div className="flex min-w-0 grow flex-col">
         <header className="sticky top-0 z-10 flex h-[72px] shrink-0 items-center justify-between gap-3 bg-side px-5 lg:px-10">
-          <Link href="/dashboard" className="text-xl font-extrabold tracking-[-0.04em] text-ink hover:no-underline lg:invisible">
+          <Link href="/dashboard" className="text-xl font-bold tracking-[-0.03em] text-ink hover:no-underline lg:invisible">
             mypocket<span className="text-leaf">.</span>
           </Link>
           <div className="flex items-center gap-2">
             {/* Language: flag + code; the list shows every language with its flag. */}
             <details className="relative">
-              <summary className={`${summaryReset} flex h-11 cursor-pointer items-center gap-2 border border-transparent px-3 text-sm font-semibold uppercase hover:border-ink`} aria-label={t("header.language")}>
+              <summary className={`${summaryReset} flex h-10 cursor-pointer items-center gap-2 rounded-full border border-rule px-3 text-sm font-semibold uppercase hover:border-control`} aria-label={t("header.language")}>
                 <Flag className="h-3.5 w-5" />
                 {locale}
                 <ChevronDown size={14} aria-hidden />
               </summary>
-              <form action={setLocale} className="absolute right-0 top-12 z-20 flex w-48 flex-col border border-ink bg-field py-1">
+              <form action={setLocale} className="absolute right-0 top-12 z-20 flex w-48 flex-col rounded-2xl border border-rule bg-field p-1.5 shadow-float">
                 {locales.map((l) => {
                   const F = FLAGS[l];
                   return (
@@ -103,14 +103,14 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
             </details>
 
             <details className="relative">
-              <summary className={`${summaryReset} flex size-11 cursor-pointer items-center justify-center bg-leaf font-mono text-sm font-medium text-on-leaf`} aria-label={t("header.account")} title={name}>
+              <summary className={`${summaryReset} flex size-10 cursor-pointer items-center justify-center rounded-full bg-leaf text-sm font-bold text-on-leaf`} aria-label={t("header.account")} title={name}>
                 {me.readOnly ? "D" : initials(name)}
               </summary>
-              <div className="absolute right-0 top-12 z-20 flex w-72 flex-col border border-ink bg-field">
+              <div className="absolute right-0 top-12 z-20 flex w-72 flex-col rounded-2xl border border-rule bg-field p-2 shadow-float">
                 <div className="flex flex-col gap-0.5 border-b border-rule p-4">
                   <span className="truncate text-[15px] font-semibold">{name}</span>
                   <span className="truncate text-[13px] text-ink-muted">{me.readOnly ? t("demo.readOnly") : me.email}</span>
-                  <span className="mt-2 self-start border border-rule px-2 py-0.5 font-mono text-[11px] tracking-[0.06em] text-ink-muted">{tag}</span>
+                  <span className="mt-2 self-start rounded-full bg-ok-bg px-2.5 py-0.5 text-xs font-semibold text-leaf">{tag}</span>
                 </div>
                 <nav aria-label={t("header.account")} className="flex flex-col py-1">
                   <Link href="/dashboard/settings?tab=profile" className={menuItem}><UserRound size={18} aria-hidden />{t("header.profile")}</Link>
@@ -121,11 +121,11 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
                 </nav>
                 <div className="flex flex-col gap-2 border-t border-rule p-4">
                   <span className="font-mono text-[11px] tracking-[0.06em] text-ink-muted">{t("header.appearance")}</span>
-                  <form action={setTheme} className="grid grid-cols-3 border border-ink">
+                  <form action={setTheme} className="grid grid-cols-3 gap-0.5 rounded-full border border-rule p-[3px]">
                     {(["light", "dark", "system"] as const).map((th) => {
                       const Icon = THEME_ICONS[th];
                       return (
-                        <button key={th} name="theme" value={th} aria-pressed={th === theme} className="flex h-10 cursor-pointer items-center justify-center gap-1.5 border-0 bg-transparent font-sans text-xs text-ink aria-pressed:bg-leaf aria-pressed:font-semibold aria-pressed:text-on-leaf">
+                        <button key={th} name="theme" value={th} aria-pressed={th === theme} className="flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-full border-0 bg-transparent font-sans text-xs text-ink aria-pressed:bg-band aria-pressed:font-semibold">
                           <Icon size={14} aria-hidden />
                           {t(`header.themes.${th}`)}
                         </button>
@@ -141,10 +141,10 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
           </div>
         </header>
 
-        <main className="flex min-w-0 grow flex-col gap-8 bg-paper px-5 pb-28 sm:px-10 lg:px-16 lg:pb-16 xl:px-24">
+        <main className="flex min-w-0 grow flex-col gap-8 bg-paper lg:rounded-tl-[28px] px-5 pb-28 sm:px-10 lg:px-16 lg:pb-16 xl:px-24">
           <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
             {me.readOnly && (
-              <div role="status" className="mt-6 flex flex-wrap items-center justify-between gap-4 border border-info bg-info-bg px-5 py-4 text-[15px] text-info-ink">
+              <div role="status" className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-card border border-info bg-info-bg px-5 py-4 text-[15px] text-info-ink">
                 <span><strong>{t("demo.title")}</strong> {t("demo.text")}</span>
                 <Link href="/register" className={`${primaryBtn} h-11`}>{t("demo.cta")}</Link>
               </div>
