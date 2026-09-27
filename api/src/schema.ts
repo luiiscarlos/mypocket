@@ -145,6 +145,14 @@ const typeDefs = /* GraphQL */ `
     to: String
     type: TransactionType
     categoryId: ID
+    accountId: ID
+  }
+
+  enum TransactionOrder {
+    DATE_DESC
+    DATE_ASC
+    AMOUNT_DESC
+    AMOUNT_ASC
   }
 
   input CreateTransactionInput {
@@ -204,7 +212,7 @@ const typeDefs = /* GraphQL */ `
     me: Me!
     categories: [Category!]!
     "Newest first. limit max 100."
-    transactions(filter: TransactionFilter, limit: Int = 50, offset: Int = 0): [Transaction!]!
+    transactions(filter: TransactionFilter, orderBy: TransactionOrder = DATE_DESC, limit: Int = 50, offset: Int = 0): [Transaction!]!
     transaction(id: ID!): Transaction
     "month: any YYYY-MM-DD inside the month."
     monthlySummary(month: String!): MonthlySummary!
@@ -328,7 +336,7 @@ const base: ResolverMap = {
         return data;
       },
 
-      transactions: async (_, args: { filter?: unknown; limit: number; offset: number }, ctx) => {
+      transactions: async (_, args: { filter?: unknown; orderBy?: string; limit: number; offset: number }, ctx) => {
         const user = requireUser(ctx);
         const filter = parse(schemas.transactionFilter, args.filter) ?? {};
         const { limit, offset } = parse(schemas.page, { limit: args.limit, offset: args.offset });
@@ -337,13 +345,14 @@ const base: ResolverMap = {
           .from("transactions")
           .select(TRANSACTION_COLUMNS)
           .eq("user_id", user.userId)
-          .order("occurred_on", { ascending: false })
+          .order(args.orderBy?.startsWith("AMOUNT") ? "amount" : "occurred_on", { ascending: args.orderBy?.endsWith("ASC") ?? false })
           .order("id", { ascending: false })
           .range(offset, offset + limit - 1);
         if (filter.from) query = query.gte("occurred_on", filter.from);
         if (filter.to) query = query.lte("occurred_on", filter.to);
         if (filter.type) query = query.eq("type", filter.type);
         if (filter.categoryId) query = query.eq("category_id", filter.categoryId);
+        if (filter.accountId) query = query.eq("account_id", filter.accountId);
 
         const { data, error } = await query.overrideTypes<TransactionRow[], { merge: false }>();
         if (error) fail(error);

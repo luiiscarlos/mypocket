@@ -17,7 +17,7 @@ export const schemas = {
   id,
   month: date,
   transactionFilter: z
-    .object({ from: date, to: date, type, categoryId: id })
+    .object({ from: date, to: date, type, categoryId: id, accountId: id })
     .partial()
     .nullish(),
   page: z.object({ limit: z.number().int().min(1).max(100), offset: z.number().int().min(0) }),
