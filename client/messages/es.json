@@ -617,7 +617,7 @@
       "upcoming": "Próximos pagos",
       "next30": "30 DÍAS · {total}",
       "noUpcoming": "Nada que pagar en los próximos 30 días.",
-      "currentLabel": "SALDO ACTUAL",
+      "currentLabel": "Saldo actual",
       "currentSplit": "Cuentas {accounts} · Inversiones {investments}",
       "endOfMonth": "A fin de mes",
       "afterDebts": "Tras pagar deudas",
@@ -633,7 +633,8 @@
         "title": "Aún no hay nada que sumar",
         "text": "Añade tu primera cuenta o tu efectivo y aquí verás tu saldo, tus movimientos y tus próximos pagos.",
         "cta": "Añadir cuenta"
-      }
+      },
+      "endsOn": "termina en {date}"
     },
     "netWorth": {
       "kicker": "PATRIMONIO",
@@ -666,7 +667,28 @@
           "amount": "Importe",
           "name": "Nombre",
           "next": "Próximo cargo"
-        }
+        },
+        "view": "Qué ver",
+        "desc": "Orden descendente",
+        "asc": "Orden ascendente"
+      },
+      "currentLabel": "Saldo actual",
+      "afterDebtsShort": "Tras deudas",
+      "freeLimit": "Has usado las 2 cuentas del plan Gratis. El efectivo no cuenta.",
+      "upgrade": "Mejorar a Pro",
+      "recurringAll": "Periódicos: suscripciones, gastos e ingresos",
+      "totals": {
+        "accounts": "Cuentas",
+        "investments": "Inversiones",
+        "debts": "Deudas pendientes",
+        "monthlyNet": "Periódicos netos al mes"
+      },
+      "views": {
+        "all": "Todo",
+        "accounts": "Cuentas",
+        "investments": "Inversiones",
+        "debts": "Deudas",
+        "recurring": "Periódicos"
       }
     },
     "transactions": {
@@ -983,7 +1005,7 @@
     "header": {
       "preferences": "Idioma y apariencia",
       "language": "Idioma",
-      "appearance": "APARIENCIA",
+      "appearance": "Apariencia",
       "themes": {
         "light": "Claro",
         "dark": "Oscuro",
@@ -992,7 +1014,8 @@
       "account": "Tu cuenta",
       "profile": "Perfil",
       "support": "Soporte",
-      "admin": "Incidencias (admin)"
+      "admin": "Incidencias (admin)",
+      "tickets": "Incidencias"
     },
     "support": {
       "title": "Soporte",
@@ -1046,7 +1069,8 @@
         "title": "Las inversiones son del plan Pro",
         "text": "Con Pro añades tus ETF, acciones, fondos y cripto por ISIN o nombre, y su valor se suma a tu patrimonio. Pro cuesta 2,99 €/mes.",
         "onboarding": "Con Pro puedes añadir tus ETF, acciones, fondos y cripto. Si sigues en Gratis, sáltate este paso: podrás pasarte a Pro cuando quieras."
-      }
+      },
+      "upgrade": "Mejorar a Pro · 2,99 €/mes"
     }
   }
 }

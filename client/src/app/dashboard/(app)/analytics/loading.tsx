@@ -6,7 +6,7 @@ export default async function AnalyticsLoading() {
   const t = await getTranslations("app");
   return (
     <Loading label={t("loading")}>
-      <div className="mt-[88px] grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <Skel className="h-24" />
         <Skel className="h-24" />
         <Skel className="h-24" />

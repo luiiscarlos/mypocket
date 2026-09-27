@@ -6,7 +6,7 @@ export default async function NetWorthLoading() {
   const t = await getTranslations("app");
   return (
     <Loading label={t("loading")}>
-      <div className="mt-[88px] flex flex-col gap-3.5">
+      <div className="flex flex-col gap-3.5">
         <Skel className="h-3.5 w-1/5" />
         <Skel className="h-20 w-[45%]" />
         <Skel className="h-3.5 w-full" />

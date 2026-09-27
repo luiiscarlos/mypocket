@@ -5,7 +5,7 @@ export default async function SettingsLoading() {
   const t = await getTranslations("app");
   return (
     <Loading label={t("loading")}>
-      <div className="mt-[88px]"><SkelRows count={3} /></div>
+      <div className=""><SkelRows count={3} /></div>
       <SkelRows count={3} />
     </Loading>
   );

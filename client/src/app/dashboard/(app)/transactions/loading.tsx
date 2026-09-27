@@ -6,7 +6,7 @@ export default async function TransactionsLoading() {
   const t = await getTranslations("app");
   return (
     <Loading label={t("loading")}>
-      <Skel className="mt-[88px] h-[320px]" />
+      <Skel className="h-[320px]" />
       <SkelRows count={5} height="h-[60px]" />
     </Loading>
   );

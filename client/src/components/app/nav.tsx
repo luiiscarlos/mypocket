@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
-import {
-  ArrowLeftRight, Calculator, ChartColumn, House, Landmark, Menu, Plus, type LucideIcon,
-} from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
+import { ArrowLeftRight, Calculator, ChartColumn, House, Landmark, Menu, Plus, type LucideIcon } from "lucide-react";
 
-type Entry = { href: string; key: "home" | "netWorth" | "transactions" | "analytics" | "simulations" | "updates" | "settings" | "add" | "more"; Icon: LucideIcon };
+type Key = "home" | "netWorth" | "transactions" | "analytics" | "simulations" | "add" | "more";
+type Entry = { href: string; key: Key; Icon: LucideIcon };
 
+// Design v3 "Sidebar": 5 entries; Analytics carries a "Pro" pill on the Free plan.
 const SIDE: Entry[] = [
   { href: "/dashboard", key: "home", Icon: House },
   { href: "/dashboard/net-worth", key: "netWorth", Icon: Landmark },
@@ -27,10 +27,8 @@ const BOTTOM: Entry[] = [
 ];
 
 const isActive = (pathname: string, href: string) => (href === "/dashboard" ? pathname === href : pathname.startsWith(href));
-const icon = { size: 20, strokeWidth: 1.9, "aria-hidden": true } as const;
 
-/** Sidebar entries. Collapsed: icons only, the label stays as tooltip and accessible name. */
-export function SideNav({ collapsed }: { collapsed: boolean }) {
+export function SideNav({ collapsed, free }: { collapsed: boolean; free: boolean }) {
   const t = useTranslations("app.nav");
   const pathname = usePathname();
   return (
@@ -43,12 +41,15 @@ export function SideNav({ collapsed }: { collapsed: boolean }) {
               title={collapsed ? t(key) : undefined}
               aria-label={collapsed ? t(key) : undefined}
               aria-current={isActive(pathname, href) ? "page" : undefined}
-              className={`flex h-11 items-center gap-3 rounded-control text-[15px] text-ink-muted group hover:bg-active hover:text-ink hover:no-underline aria-[current=page]:bg-active aria-[current=page]:font-semibold aria-[current=page]:text-ink ${
+              className={`group flex h-11 items-center gap-3 rounded-control text-[15px] text-ink-muted hover:bg-field/60 hover:text-ink hover:no-underline aria-[current=page]:bg-field aria-[current=page]:font-semibold aria-[current=page]:text-ink aria-[current=page]:shadow-soft ${
                 collapsed ? "justify-center" : "px-3"
               }`}
             >
-              <Icon {...icon} className="group-aria-[current=page]:text-leaf" />
-              {!collapsed && t(key)}
+              <Icon size={20} strokeWidth={1.9} aria-hidden className="shrink-0 group-aria-[current=page]:text-leaf" />
+              {!collapsed && <span className="grow">{t(key)}</span>}
+              {!collapsed && free && key === "analytics" && (
+                <span className="rounded-full bg-ok-bg px-2 py-0.5 text-[11px] font-semibold text-leaf">Pro</span>
+              )}
             </Link>
           </li>
         ))}
@@ -57,19 +58,45 @@ export function SideNav({ collapsed }: { collapsed: boolean }) {
   );
 }
 
+/** Page title in the top bar, from the current route (it is the page's h1). */
+export function TopbarTitle({ name }: { name: string }) {
+  const t = useTranslations("app");
+  const format = useFormatter();
+  const pathname = usePathname();
+  const section = pathname.split("/")[2] ?? "";
+  const titles: Record<string, string> = {
+    "": name ? t("home.hello", { name }) : t("home.helloAnon"),
+    "net-worth": t("nav.netWorth"),
+    transactions: t("nav.transactions"),
+    analytics: t("nav.analytics"),
+    simulations: t("nav.simulations"),
+    updates: t("nav.updates"),
+    settings: t("nav.settings"),
+    support: pathname.endsWith("/admin") ? t("support.adminTitle") : t("support.title"),
+  };
+  return (
+    <div className="flex min-w-0 items-baseline gap-3">
+      <h1 className="m-0 truncate text-[22px] font-bold tracking-[-0.03em]">{titles[section] ?? t("nav.home")}</h1>
+      {section === "" && (
+        <span className="hidden text-sm text-ink-muted first-letter:uppercase sm:inline">{format.dateTime(new Date(), { weekday: "long", day: "numeric", month: "long" })}</span>
+      )}
+    </div>
+  );
+}
+
 export function BottomNav() {
   const t = useTranslations("app.nav");
   const pathname = usePathname();
   return (
-    <nav aria-label={t("label")} className="fixed inset-x-0 bottom-0 z-10 border-t border-rule bg-paper lg:hidden">
+    <nav aria-label={t("label")} className="fixed inset-x-0 bottom-0 z-10 border-t border-rule bg-side lg:hidden">
       <ul className="m-0 grid h-[72px] list-none grid-cols-5 p-0">
         {BOTTOM.map(({ href, key, Icon }) => (
-          <li key={key} className="flex">
+          <li key={key} className="flex p-1.5">
             <Link
               href={href}
               aria-current={isActive(pathname, href) && key !== "add" ? "page" : undefined}
-              className={`flex grow flex-col items-center justify-center gap-1 text-[11px] hover:no-underline ${
-                key === "add" ? "bg-leaf text-on-leaf" : "text-ink-muted aria-[current=page]:font-semibold aria-[current=page]:text-ink"
+              className={`flex grow flex-col items-center justify-center gap-1 rounded-control text-[11px] hover:no-underline ${
+                key === "add" ? "bg-leaf text-on-leaf" : "text-ink-muted aria-[current=page]:bg-field aria-[current=page]:font-semibold aria-[current=page]:text-ink"
               }`}
             >
               <Icon size={22} strokeWidth={1.9} aria-hidden />

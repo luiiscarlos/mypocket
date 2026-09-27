@@ -7,7 +7,7 @@ import { dangerBtn } from "@/components/app/ui";
 export default function AppError({ unstable_retry }: { error: Error; unstable_retry: () => void }) {
   const t = useTranslations("app.error");
   return (
-    <div role="alert" className="mt-[88px] flex flex-wrap items-center justify-between gap-6 border border-danger bg-danger-bg p-8 text-danger-ink">
+    <div role="alert" className="flex flex-wrap items-center justify-between gap-6 border border-danger bg-danger-bg p-8 text-danger-ink">
       <div className="flex flex-col gap-1.5">
         <span className="text-xl font-bold">{t("title")}</span>
         <span className="text-[15px]">{t("text")}</span>

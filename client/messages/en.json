@@ -617,7 +617,7 @@
       "upcoming": "Upcoming payments",
       "next30": "30 DAYS · {total}",
       "noUpcoming": "Nothing to pay in the next 30 days.",
-      "currentLabel": "CURRENT BALANCE",
+      "currentLabel": "Current balance",
       "currentSplit": "Accounts {accounts} · Investments {investments}",
       "endOfMonth": "At month end",
       "afterDebts": "After paying debts",
@@ -633,7 +633,8 @@
         "title": "Nothing to add up yet",
         "text": "Add your first account or your cash and you'll see your balance, transactions and upcoming payments here.",
         "cta": "Add account"
-      }
+      },
+      "endsOn": "ends {date}"
     },
     "netWorth": {
       "kicker": "NET WORTH",
@@ -666,7 +667,28 @@
           "amount": "Amount",
           "name": "Name",
           "next": "Next charge"
-        }
+        },
+        "view": "What to show",
+        "desc": "Descending order",
+        "asc": "Ascending order"
+      },
+      "currentLabel": "Current balance",
+      "afterDebtsShort": "After debts",
+      "freeLimit": "You've used the 2 accounts of the Free plan. Cash doesn't count.",
+      "upgrade": "Upgrade to Pro",
+      "recurringAll": "Recurring: subscriptions, expenses and income",
+      "totals": {
+        "accounts": "Accounts",
+        "investments": "Investments",
+        "debts": "Debts outstanding",
+        "monthlyNet": "Net recurring per month"
+      },
+      "views": {
+        "all": "All",
+        "accounts": "Accounts",
+        "investments": "Investments",
+        "debts": "Debts",
+        "recurring": "Recurring"
       }
     },
     "transactions": {
@@ -983,7 +1005,7 @@
     "header": {
       "preferences": "Language and appearance",
       "language": "Language",
-      "appearance": "APPEARANCE",
+      "appearance": "Appearance",
       "themes": {
         "light": "Light",
         "dark": "Dark",
@@ -992,7 +1014,8 @@
       "account": "Your account",
       "profile": "Profile",
       "support": "Support",
-      "admin": "Tickets (admin)"
+      "admin": "Tickets (admin)",
+      "tickets": "Tickets"
     },
     "support": {
       "title": "Support",
@@ -1046,7 +1069,8 @@
         "title": "Investments are part of Pro",
         "text": "With Pro you add your ETFs, stocks, funds and crypto by ISIN or name, and their value adds to your net worth. Pro costs €2.99/month.",
         "onboarding": "With Pro you can add your ETFs, stocks, funds and crypto. If you stay on Free, skip this step: you can go Pro whenever you like."
-      }
+      },
+      "upgrade": "Upgrade to Pro · €2.99/month"
     }
   }
 }

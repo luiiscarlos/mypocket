@@ -15,25 +15,26 @@ export const textLink = "text-[14px] font-semibold text-ink underline";
 
 // --- layout ---------------------------------------------------------------------------------------
 
-/** App page header: 88 px, 32 px title, optional mono meta and actions, 1 px rule below. */
-export function PageHeader({ title, meta, children }: { title: string; meta?: string; children?: ReactNode }) {
+/**
+ * Page toolbar. The page title itself is the h1 in the top bar (design v3), so this only shows the
+ * page's meta line and actions; `title` stays for callers that need it elsewhere.
+ */
+export function PageHeader({ meta, children }: { title?: string; meta?: string; children?: ReactNode }) {
+  if (!meta && !children) return null;
   return (
-    <header className="flex min-h-[88px] flex-wrap items-center justify-between gap-4 border-b border-rule py-4">
-      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-        <h1 className="m-0 text-[32px] font-bold leading-none tracking-[-0.04em]">{title}</h1>
-        {meta && <span className="font-mono text-[13px] uppercase tracking-[0.06em] text-ink-muted">{meta}</span>}
-      </div>
-      {children}
-    </header>
+    <div className="flex flex-wrap items-center justify-between gap-4">
+      {meta ? <span className="text-sm text-ink-muted">{meta}</span> : <span />}
+      {children && <div className="flex flex-wrap items-center gap-2">{children}</div>}
+    </div>
   );
 }
 
-/** Block with a 22 px title over a 3 px rule. */
+/** Block card: title row (with an optional aside) over the content. Radius 20, 1 px border. */
 export function Section({ id, title, aside, children }: { id?: string; title: string; aside?: ReactNode; children: ReactNode }) {
   return (
-    <section id={id} className="flex scroll-mt-6 flex-col gap-4">
-      <div className="flex items-baseline justify-between gap-4 border-b border-rule pb-3">
-        <h2 className="m-0 text-[22px] font-bold tracking-[-0.03em]">{title}</h2>
+    <section id={id} className="flex scroll-mt-24 flex-col gap-4 rounded-card border border-rule bg-field p-5 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="m-0 text-lg font-bold tracking-[-0.02em]">{title}</h2>
         {aside}
       </div>
       {children}
@@ -48,7 +49,7 @@ export function List({ children }: { children: ReactNode }) {
 /** List row: name and meta on the left, mono figures on the right, actions last. */
 export function Row({ title, meta, value, sub, children }: { title: ReactNode; meta?: ReactNode; value?: ReactNode; sub?: ReactNode; children?: ReactNode }) {
   return (
-    <li className="flex min-h-16 flex-wrap items-center gap-x-4 gap-y-2 border-b border-rule py-3">
+    <li className="flex min-h-16 flex-wrap items-center gap-x-4 gap-y-2 border-b border-rule py-3 last:border-b-0">
       <div className="flex min-w-0 grow basis-48 flex-col gap-[3px]">
         <div className="text-base font-semibold">{title}</div>
         {meta && <div className="text-[13px] text-ink-muted">{meta}</div>}
