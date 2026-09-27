@@ -13,3 +13,13 @@ export async function authNotice(params: { error?: string; message?: string }) {
   };
   return { error: pick("errors", params.error), message: pick("messages", params.message) };
 }
+
+/** Same as authNotice for dashboard pages (messages app.errors / app.messages). */
+export async function appNotice(params: { error?: string; message?: string }) {
+  const t = await getTranslations("app");
+  const pick = (group: "errors" | "messages", code?: string) => {
+    const key = `${group}.${code}` as Parameters<typeof t>[0];
+    return code && t.has(key) ? t(key) : undefined;
+  };
+  return { error: pick("errors", params.error), message: pick("messages", params.message) };
+}

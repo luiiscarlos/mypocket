@@ -97,7 +97,8 @@
     "messages": {
       "verify_email_sent": "Te hemos enviado un email para verificar la cuenta",
       "reset_link_sent": "Si el email existe, recibirás un enlace para cambiar la contraseña",
-      "password_updated": "Contraseña actualizada"
+      "password_updated": "Contraseña actualizada",
+      "account_deleted": "Tu cuenta y todos tus datos se han borrado."
     }
   },
   "theme": {
@@ -406,6 +407,381 @@
           "liability": "Responsabilidad",
           "termination": "Baja y cancelación",
           "law": "Ley aplicable"
+        }
+      }
+    }
+  },
+  "app": {
+    "nav": {
+      "label": "Secciones",
+      "home": "Inicio",
+      "netWorth": "Patrimonio",
+      "transactions": "Movimientos",
+      "analytics": "Análisis",
+      "simulations": "Simulaciones",
+      "updates": "Novedades",
+      "settings": "Ajustes",
+      "logout": "Cerrar sesión"
+    },
+    "plans": {
+      "FREE": "Gratis",
+      "PRO": "Pro"
+    },
+    "demoBanner": "Estás en la cuenta demo: puedes mirarlo todo, pero no cambiar nada.",
+    "errors": {
+      "invalid": "Revisa los datos del formulario.",
+      "notFound": "Eso ya no existe.",
+      "readOnly": "La cuenta demo es de solo lectura.",
+      "conflict": "Ya existe algo con esos datos.",
+      "planLimit": "Tu plan Gratis permite 1 cuenta bancaria (el efectivo no cuenta). Pasa a Pro para añadir más.",
+      "rateLimited": "Demasiadas peticiones seguidas. Espera un momento.",
+      "generic": "Algo ha fallado. Inténtalo de nuevo.",
+      "passwordShort": "La nueva contraseña debe tener al menos 8 caracteres.",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "passwordWrong": "La contraseña actual no es correcta.",
+      "confirmDelete": "Escribe la palabra de confirmación exactamente."
+    },
+    "messages": {
+      "saved": "Guardado.",
+      "deleted": "Eliminado.",
+      "planChanged": "Plan actualizado.",
+      "passwordChanged": "Contraseña actualizada.",
+      "welcome": "¡Todo listo! Este es tu dinero."
+    },
+    "finance": {
+      "delete": "Eliminar",
+      "currency": "Moneda",
+      "none": "Ninguna",
+      "accountKinds": {
+        "CHECKING": "Cuenta corriente",
+        "SAVINGS": "Ahorro",
+        "CASH": "Efectivo"
+      },
+      "expenseKinds": {
+        "SUBSCRIPTION": "Suscripción",
+        "DEBT": "Deuda",
+        "OTHER": "Otro gasto fijo"
+      },
+      "instrumentKinds": {
+        "ETF": "ETF",
+        "STOCK": "Acción",
+        "FUND": "Fondo",
+        "CRYPTO": "Cripto",
+        "OTHER": "Otro"
+      },
+      "intervals": {
+        "WEEK": "Semanal",
+        "MONTH": "Mensual",
+        "YEAR": "Anual"
+      },
+      "per": {
+        "WEEK": "/sem",
+        "MONTH": "/mes",
+        "YEAR": "/año"
+      },
+      "accounts": {
+        "empty": "Aún no has añadido cuentas.",
+        "name": "Nombre",
+        "namePlaceholder": "Nómina, Ahorro, Cartera…",
+        "institution": "Entidad",
+        "kind": "Tipo",
+        "balance": "Saldo actual",
+        "update": "Actualizar",
+        "add": "Añadir cuenta",
+        "bankSoon": "Por ahora el saldo lo pones tú. La conexión automática con tu banco llegará más adelante."
+      },
+      "investments": {
+        "empty": "Aún no has añadido inversiones.",
+        "search": "Buscar por ISIN o nombre (cripto)",
+        "searchPlaceholder": "IE00B4L5Y983 o bitcoin",
+        "find": "Buscar",
+        "searchError": "No se pudo buscar ahora mismo. Inténtalo en un minuto.",
+        "noResults": "Sin resultados. Revisa el ISIN.",
+        "noPrice": "Sin precio",
+        "quantity": "Participaciones",
+        "add": "Añadir",
+        "units": "{quantity} participaciones"
+      },
+      "expenses": {
+        "empty": "Aún no has añadido gastos fijos.",
+        "name": "Nombre",
+        "namePlaceholder": "Netflix, hipoteca, gimnasio…",
+        "kind": "Tipo",
+        "amount": "Importe",
+        "interval": "Cada",
+        "nextCharge": "Próximo cargo",
+        "outstandingLabel": "Pendiente total",
+        "debtsOnly": "Solo deudas",
+        "account": "Se cobra de",
+        "add": "Añadir gasto fijo",
+        "next": "próximo {date}",
+        "outstanding": "quedan {amount}"
+      }
+    },
+    "home": {
+      "kicker": "INICIO",
+      "hello": "Hola, {name}.",
+      "helloAnon": "Hola.",
+      "newTransaction": "Nuevo movimiento",
+      "totalLabel": "PATRIMONIO NETO",
+      "accounts": "Cuentas",
+      "investments": "Inversiones",
+      "debts": "Deudas",
+      "seeNetWorth": "Ver desglose",
+      "latest": "Últimos movimientos",
+      "seeAll": "Ver todos",
+      "noTransactions": "Aún no hay movimientos. Añade el primero desde «Nuevo movimiento».",
+      "income": "Ingreso",
+      "expense": "Gasto",
+      "upcoming": "Próximos pagos",
+      "next30": "30 DÍAS",
+      "noUpcoming": "Nada que pagar en los próximos 30 días."
+    },
+    "netWorth": {
+      "kicker": "PATRIMONIO",
+      "title": "Todo lo que tienes y debes",
+      "total": "TOTAL · {currency}",
+      "accounts": "Cuentas",
+      "investments": "Inversiones",
+      "debts": "Deudas",
+      "recurring": "Suscripciones y gastos fijos",
+      "addAccount": "Añadir cuenta",
+      "addExpense": "Añadir gasto fijo o deuda"
+    },
+    "transactions": {
+      "kicker": "MOVIMIENTOS",
+      "title": "Nuevo movimiento",
+      "type": "Tipo",
+      "EXPENSE": "Gasto",
+      "INCOME": "Ingreso",
+      "amount": "Importe",
+      "currency": "Moneda",
+      "date": "Fecha",
+      "category": "Categoría",
+      "account": "Cuenta",
+      "none": "Ninguna",
+      "note": "Concepto",
+      "notePlaceholder": "Opcional",
+      "save": "Guardar movimiento",
+      "balanceHint": "Si eliges una cuenta en la misma moneda, su saldo se actualiza solo.",
+      "history": "Historial",
+      "empty": "Aún no hay movimientos.",
+      "delete": "Eliminar"
+    },
+    "analytics": {
+      "kicker": "ANÁLISIS",
+      "title": "En qué se va tu dinero",
+      "byMonth": "Últimos 6 meses · {currency}",
+      "income": "Ingresos",
+      "expense": "Gastos",
+      "balance": "Balance",
+      "byCategory": "Gasto por categoría",
+      "empty": "Sin gastos este mes.",
+      "uncategorized": "Sin categoría",
+      "count": "{count, plural, one {# movimiento} other {# movimientos}}",
+      "monthAria": "{month}: ingresos {income}, gastos {expense}"
+    },
+    "simulations": {
+      "kicker": "SIMULACIONES",
+      "title": "¿Y si…?",
+      "calculators": "Calculadoras",
+      "calculate": "Calcular",
+      "result": "Resultado",
+      "invalid": "Revisa los datos: alguno no es válido (por ejemplo, la entrada no puede superar el precio).",
+      "save": "Guardar",
+      "saveName": "Nombre para guardarla",
+      "saved": "Guardadas",
+      "noSaved": "Aún no has guardado simulaciones.",
+      "delete": "Eliminar",
+      "yearN": "año {n}",
+      "kinds": {
+        "MORTGAGE": "Hipoteca",
+        "LOAN": "Préstamo",
+        "MONTHLY_INVESTMENT": "Inversión mensual",
+        "INFLATION": "Inflación",
+        "CAR": "Coche",
+        "RETIREMENT": "Jubilación"
+      },
+      "descriptions": {
+        "MORTGAGE": "Cuota mensual e intereses de una hipoteca a tipo fijo.",
+        "LOAN": "Cuota e intereses de un préstamo personal.",
+        "MONTHLY_INVESTMENT": "Cuánto tendrás invirtiendo cada mes con interés compuesto.",
+        "INFLATION": "Cuánto valdrá tu dinero dentro de unos años.",
+        "CAR": "Coste real de un coche: financiación más gastos anuales.",
+        "RETIREMENT": "Tu hucha al jubilarte y la renta mensual que daría."
+      },
+      "seriesLabel": {
+        "MORTGAGE": "deuda pendiente",
+        "LOAN": "deuda pendiente",
+        "MONTHLY_INVESTMENT": "valor acumulado",
+        "INFLATION": "poder adquisitivo",
+        "CAR": "coste acumulado",
+        "RETIREMENT": "hucha acumulada"
+      },
+      "params": {
+        "price": "Precio",
+        "downPayment": "Entrada",
+        "annualRate": "Interés anual (%)",
+        "years": "Años",
+        "amount": "Importe",
+        "initial": "Aportación inicial",
+        "monthly": "Aportación mensual",
+        "annualReturn": "Rentabilidad anual (%)",
+        "annualInflation": "Inflación anual (%)",
+        "yearlyCosts": "Gastos al año (seguro, mantenimiento…)",
+        "currentAge": "Edad actual",
+        "retirementAge": "Edad de jubilación",
+        "currentSavings": "Ahorros actuales",
+        "monthlyContribution": "Aportación mensual",
+        "withdrawalRate": "Retirada anual (%)"
+      },
+      "metrics": {
+        "principal": "Capital",
+        "monthlyPayment": "Cuota mensual",
+        "totalPaid": "Total pagado",
+        "totalInterest": "Intereses",
+        "finalValue": "Valor final",
+        "contributed": "Aportado",
+        "gains": "Ganancia",
+        "futureCost": "Coste futuro",
+        "purchasingPower": "Poder adquisitivo",
+        "lossPercent": "Pérdida",
+        "monthlyTotal": "Coste mensual total",
+        "interest": "Intereses",
+        "totalCost": "Coste total",
+        "yearsToRetirement": "Años hasta jubilarte",
+        "potAtRetirement": "Hucha al jubilarte",
+        "monthlyIncome": "Renta mensual"
+      }
+    },
+    "settings": {
+      "kicker": "AJUSTES",
+      "title": "Tu cuenta",
+      "save": "Guardar",
+      "logout": "Cerrar sesión",
+      "profile": {
+        "title": "Perfil",
+        "fullName": "Nombre completo",
+        "displayName": "Cómo te llamamos",
+        "phone": "Teléfono",
+        "addressLine": "Dirección",
+        "postalCode": "Código postal",
+        "city": "Ciudad",
+        "country": "País (código)",
+        "birthDate": "Fecha de nacimiento",
+        "currency": "Moneda principal"
+      },
+      "preferences": {
+        "title": "Preferencias",
+        "language": "Idioma",
+        "appearance": "Apariencia",
+        "notifications": "Notificaciones",
+        "notificationsHint": "Avisos de próximos pagos (llegarán pronto).",
+        "on": "Activadas",
+        "off": "Desactivadas",
+        "locales": {
+          "es": "Español",
+          "en": "English"
+        }
+      },
+      "plan": {
+        "title": "Plan",
+        "current": "Tu plan: {plan}.",
+        "FREE": "Gratis",
+        "PRO": "Pro",
+        "noPayments": "Por ahora no se cobra nada: solo guardamos tu elección.",
+        "toPro": "Pasar a Pro",
+        "toFree": "Volver a Gratis",
+        "compare": "Comparar planes"
+      },
+      "password": {
+        "title": "Contraseña",
+        "current": "Contraseña actual",
+        "new": "Nueva contraseña",
+        "confirm": "Repítela",
+        "submit": "Cambiar contraseña"
+      },
+      "help": {
+        "title": "Ayuda y legal",
+        "contact": "Contacto y soporte",
+        "faq": "Preguntas frecuentes",
+        "updates": "Novedades",
+        "privacy": "Política de privacidad",
+        "terms": "Términos de uso"
+      },
+      "data": {
+        "title": "Tus datos",
+        "exportHint": "Descarga todo lo que guardamos de ti en un archivo JSON.",
+        "export": "Descargar mis datos"
+      },
+      "delete": {
+        "warning": "Borrar la cuenta elimina todos tus datos de forma permanente. No se puede deshacer.",
+        "confirm": "Escribe {word} para confirmar",
+        "word": "BORRAR",
+        "submit": "Borrar mi cuenta"
+      }
+    },
+    "updates": {
+      "kicker": "NOVEDADES",
+      "title": "Qué hay de nuevo",
+      "empty": "Todavía no hay novedades."
+    },
+    "onboarding": {
+      "title": "Configura tu cuenta",
+      "logout": "Cerrar sesión",
+      "progress": "Paso {step} de {total}",
+      "stepOf": "PASO {step} DE {total}",
+      "back": "Atrás",
+      "continue": "Continuar",
+      "finish": "Terminar y entrar",
+      "steps": {
+        "personal": {
+          "short": "Tus datos",
+          "title": "Cuéntanos quién eres",
+          "intro": "Lo justo para personalizar mypocket. Solo el nombre es obligatorio."
+        },
+        "accounts": {
+          "short": "Cuentas",
+          "title": "Tus cuentas",
+          "intro": "Añade tus cuentas y tu efectivo con el saldo que tienen hoy. Puedes cambiarlo cuando quieras.",
+          "yours": "Cuentas añadidas"
+        },
+        "investments": {
+          "short": "Inversiones",
+          "title": "Tus inversiones",
+          "intro": "Busca tus fondos, ETF o acciones por ISIN, o tus cripto por nombre, e indica cuántas participaciones tienes. Puedes saltarte este paso.",
+          "yours": "Inversiones añadidas"
+        },
+        "expenses": {
+          "short": "Gastos fijos",
+          "title": "Tus gastos fijos",
+          "intro": "Suscripciones, préstamos, hipoteca… Así sabrás qué se cobra y cuándo. Puedes saltarte este paso.",
+          "yours": "Gastos fijos añadidos"
+        }
+      },
+      "fields": {
+        "fullName": "Nombre completo",
+        "phone": "Teléfono",
+        "birthDate": "Fecha de nacimiento",
+        "addressLine": "Dirección",
+        "postalCode": "Código postal",
+        "city": "Ciudad",
+        "country": "País (código, p. ej. ES)",
+        "currency": "Moneda principal",
+        "why": "La fecha de nacimiento ayuda con la simulación de jubilación. Nunca compartimos tus datos."
+      },
+      "plan": {
+        "title": "Elige tu plan",
+        "selected": "PLAN ELEGIDO",
+        "choose": "Elegir",
+        "noPayments": "Por ahora no se cobra nada: solo guardamos tu elección y puedes cambiarla en Ajustes.",
+        "FREE": {
+          "name": "Gratis",
+          "text": "1 cuenta bancaria y todo tu efectivo, inversiones, gastos fijos y simulaciones."
+        },
+        "PRO": {
+          "name": "Pro",
+          "text": "Cuentas ilimitadas en un balance conjunto, analíticas y predicciones."
         }
       }
     }

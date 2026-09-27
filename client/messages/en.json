@@ -97,7 +97,8 @@
     "messages": {
       "verify_email_sent": "We've sent you an email to verify your account",
       "reset_link_sent": "If the email exists, you'll receive a link to change your password",
-      "password_updated": "Password updated"
+      "password_updated": "Password updated",
+      "account_deleted": "Your account and all your data have been deleted."
     }
   },
   "theme": {
@@ -406,6 +407,381 @@
           "liability": "Liability",
           "termination": "Cancellation and closure",
           "law": "Governing law"
+        }
+      }
+    }
+  },
+  "app": {
+    "nav": {
+      "label": "Sections",
+      "home": "Home",
+      "netWorth": "Net worth",
+      "transactions": "Transactions",
+      "analytics": "Analytics",
+      "simulations": "Simulations",
+      "updates": "What's new",
+      "settings": "Settings",
+      "logout": "Log out"
+    },
+    "plans": {
+      "FREE": "Free",
+      "PRO": "Pro"
+    },
+    "demoBanner": "You're in the demo account: you can look at everything, but not change anything.",
+    "errors": {
+      "invalid": "Check the form details.",
+      "notFound": "That no longer exists.",
+      "readOnly": "The demo account is read-only.",
+      "conflict": "Something with those details already exists.",
+      "planLimit": "Your Free plan allows 1 bank account (cash doesn't count). Go Pro to add more.",
+      "rateLimited": "Too many requests in a row. Wait a moment.",
+      "generic": "Something went wrong. Try again.",
+      "passwordShort": "The new password must be at least 8 characters.",
+      "passwordMismatch": "The passwords don't match.",
+      "passwordWrong": "The current password is not correct.",
+      "confirmDelete": "Type the confirmation word exactly."
+    },
+    "messages": {
+      "saved": "Saved.",
+      "deleted": "Deleted.",
+      "planChanged": "Plan updated.",
+      "passwordChanged": "Password updated.",
+      "welcome": "All set! This is your money."
+    },
+    "finance": {
+      "delete": "Delete",
+      "currency": "Currency",
+      "none": "None",
+      "accountKinds": {
+        "CHECKING": "Current account",
+        "SAVINGS": "Savings",
+        "CASH": "Cash"
+      },
+      "expenseKinds": {
+        "SUBSCRIPTION": "Subscription",
+        "DEBT": "Debt",
+        "OTHER": "Other fixed expense"
+      },
+      "instrumentKinds": {
+        "ETF": "ETF",
+        "STOCK": "Stock",
+        "FUND": "Fund",
+        "CRYPTO": "Crypto",
+        "OTHER": "Other"
+      },
+      "intervals": {
+        "WEEK": "Weekly",
+        "MONTH": "Monthly",
+        "YEAR": "Yearly"
+      },
+      "per": {
+        "WEEK": "/wk",
+        "MONTH": "/mo",
+        "YEAR": "/yr"
+      },
+      "accounts": {
+        "empty": "You haven't added any accounts yet.",
+        "name": "Name",
+        "namePlaceholder": "Salary, Savings, Wallet…",
+        "institution": "Bank",
+        "kind": "Type",
+        "balance": "Current balance",
+        "update": "Update",
+        "add": "Add account",
+        "bankSoon": "For now you set the balance yourself. Automatic bank connection is coming later."
+      },
+      "investments": {
+        "empty": "You haven't added any investments yet.",
+        "search": "Search by ISIN or name (crypto)",
+        "searchPlaceholder": "IE00B4L5Y983 or bitcoin",
+        "find": "Search",
+        "searchError": "Search isn't available right now. Try again in a minute.",
+        "noResults": "No results. Check the ISIN.",
+        "noPrice": "No price",
+        "quantity": "Units",
+        "add": "Add",
+        "units": "{quantity} units"
+      },
+      "expenses": {
+        "empty": "You haven't added any fixed expenses yet.",
+        "name": "Name",
+        "namePlaceholder": "Netflix, mortgage, gym…",
+        "kind": "Type",
+        "amount": "Amount",
+        "interval": "Every",
+        "nextCharge": "Next charge",
+        "outstandingLabel": "Total outstanding",
+        "debtsOnly": "Debts only",
+        "account": "Charged to",
+        "add": "Add fixed expense",
+        "next": "next {date}",
+        "outstanding": "{amount} left"
+      }
+    },
+    "home": {
+      "kicker": "HOME",
+      "hello": "Hi, {name}.",
+      "helloAnon": "Hi.",
+      "newTransaction": "New transaction",
+      "totalLabel": "NET WORTH",
+      "accounts": "Accounts",
+      "investments": "Investments",
+      "debts": "Debts",
+      "seeNetWorth": "See breakdown",
+      "latest": "Latest transactions",
+      "seeAll": "See all",
+      "noTransactions": "No transactions yet. Add the first one from “New transaction”.",
+      "income": "Income",
+      "expense": "Expense",
+      "upcoming": "Upcoming payments",
+      "next30": "30 DAYS",
+      "noUpcoming": "Nothing to pay in the next 30 days."
+    },
+    "netWorth": {
+      "kicker": "NET WORTH",
+      "title": "Everything you own and owe",
+      "total": "TOTAL · {currency}",
+      "accounts": "Accounts",
+      "investments": "Investments",
+      "debts": "Debts",
+      "recurring": "Subscriptions and fixed expenses",
+      "addAccount": "Add account",
+      "addExpense": "Add fixed expense or debt"
+    },
+    "transactions": {
+      "kicker": "TRANSACTIONS",
+      "title": "New transaction",
+      "type": "Type",
+      "EXPENSE": "Expense",
+      "INCOME": "Income",
+      "amount": "Amount",
+      "currency": "Currency",
+      "date": "Date",
+      "category": "Category",
+      "account": "Account",
+      "none": "None",
+      "note": "Description",
+      "notePlaceholder": "Optional",
+      "save": "Save transaction",
+      "balanceHint": "If you pick an account in the same currency, its balance updates automatically.",
+      "history": "History",
+      "empty": "No transactions yet.",
+      "delete": "Delete"
+    },
+    "analytics": {
+      "kicker": "ANALYTICS",
+      "title": "Where your money goes",
+      "byMonth": "Last 6 months · {currency}",
+      "income": "Income",
+      "expense": "Expenses",
+      "balance": "Balance",
+      "byCategory": "Spending by category",
+      "empty": "No spending this month.",
+      "uncategorized": "Uncategorized",
+      "count": "{count, plural, one {# transaction} other {# transactions}}",
+      "monthAria": "{month}: income {income}, expenses {expense}"
+    },
+    "simulations": {
+      "kicker": "SIMULATIONS",
+      "title": "What if…?",
+      "calculators": "Calculators",
+      "calculate": "Calculate",
+      "result": "Result",
+      "invalid": "Check the details: something isn't valid (for example, the down payment can't exceed the price).",
+      "save": "Save",
+      "saveName": "Name to save it",
+      "saved": "Saved",
+      "noSaved": "You haven't saved any simulations yet.",
+      "delete": "Delete",
+      "yearN": "year {n}",
+      "kinds": {
+        "MORTGAGE": "Mortgage",
+        "LOAN": "Loan",
+        "MONTHLY_INVESTMENT": "Monthly investing",
+        "INFLATION": "Inflation",
+        "CAR": "Car",
+        "RETIREMENT": "Retirement"
+      },
+      "descriptions": {
+        "MORTGAGE": "Monthly payment and interest of a fixed-rate mortgage.",
+        "LOAN": "Payment and interest of a personal loan.",
+        "MONTHLY_INVESTMENT": "How much you'll have investing every month with compound interest.",
+        "INFLATION": "What your money will be worth in a few years.",
+        "CAR": "The real cost of a car: financing plus yearly costs.",
+        "RETIREMENT": "Your pot at retirement and the monthly income it would give."
+      },
+      "seriesLabel": {
+        "MORTGAGE": "balance owed",
+        "LOAN": "balance owed",
+        "MONTHLY_INVESTMENT": "accumulated value",
+        "INFLATION": "purchasing power",
+        "CAR": "accumulated cost",
+        "RETIREMENT": "accumulated pot"
+      },
+      "params": {
+        "price": "Price",
+        "downPayment": "Down payment",
+        "annualRate": "Annual interest (%)",
+        "years": "Years",
+        "amount": "Amount",
+        "initial": "Initial amount",
+        "monthly": "Monthly contribution",
+        "annualReturn": "Annual return (%)",
+        "annualInflation": "Annual inflation (%)",
+        "yearlyCosts": "Yearly costs (insurance, upkeep…)",
+        "currentAge": "Current age",
+        "retirementAge": "Retirement age",
+        "currentSavings": "Current savings",
+        "monthlyContribution": "Monthly contribution",
+        "withdrawalRate": "Yearly withdrawal (%)"
+      },
+      "metrics": {
+        "principal": "Principal",
+        "monthlyPayment": "Monthly payment",
+        "totalPaid": "Total paid",
+        "totalInterest": "Interest",
+        "finalValue": "Final value",
+        "contributed": "Contributed",
+        "gains": "Gains",
+        "futureCost": "Future cost",
+        "purchasingPower": "Purchasing power",
+        "lossPercent": "Loss",
+        "monthlyTotal": "Total monthly cost",
+        "interest": "Interest",
+        "totalCost": "Total cost",
+        "yearsToRetirement": "Years to retirement",
+        "potAtRetirement": "Pot at retirement",
+        "monthlyIncome": "Monthly income"
+      }
+    },
+    "settings": {
+      "kicker": "SETTINGS",
+      "title": "Your account",
+      "save": "Save",
+      "logout": "Log out",
+      "profile": {
+        "title": "Profile",
+        "fullName": "Full name",
+        "displayName": "What we call you",
+        "phone": "Phone",
+        "addressLine": "Address",
+        "postalCode": "Postal code",
+        "city": "City",
+        "country": "Country (code)",
+        "birthDate": "Date of birth",
+        "currency": "Main currency"
+      },
+      "preferences": {
+        "title": "Preferences",
+        "language": "Language",
+        "appearance": "Appearance",
+        "notifications": "Notifications",
+        "notificationsHint": "Alerts for upcoming payments (coming soon).",
+        "on": "On",
+        "off": "Off",
+        "locales": {
+          "es": "Español",
+          "en": "English"
+        }
+      },
+      "plan": {
+        "title": "Plan",
+        "current": "Your plan: {plan}.",
+        "FREE": "Free",
+        "PRO": "Pro",
+        "noPayments": "Nothing is charged for now: we only store your choice.",
+        "toPro": "Go Pro",
+        "toFree": "Back to Free",
+        "compare": "Compare plans"
+      },
+      "password": {
+        "title": "Password",
+        "current": "Current password",
+        "new": "New password",
+        "confirm": "Repeat it",
+        "submit": "Change password"
+      },
+      "help": {
+        "title": "Help and legal",
+        "contact": "Contact and support",
+        "faq": "FAQ",
+        "updates": "What's new",
+        "privacy": "Privacy policy",
+        "terms": "Terms of use"
+      },
+      "data": {
+        "title": "Your data",
+        "exportHint": "Download everything we store about you as a JSON file.",
+        "export": "Download my data"
+      },
+      "delete": {
+        "warning": "Deleting the account permanently removes all your data. This can't be undone.",
+        "confirm": "Type {word} to confirm",
+        "word": "DELETE",
+        "submit": "Delete my account"
+      }
+    },
+    "updates": {
+      "kicker": "WHAT'S NEW",
+      "title": "What's new",
+      "empty": "No updates yet."
+    },
+    "onboarding": {
+      "title": "Set up your account",
+      "logout": "Log out",
+      "progress": "Step {step} of {total}",
+      "stepOf": "STEP {step} OF {total}",
+      "back": "Back",
+      "continue": "Continue",
+      "finish": "Finish and go in",
+      "steps": {
+        "personal": {
+          "short": "About you",
+          "title": "Tell us who you are",
+          "intro": "Just enough to personalise mypocket. Only your name is required."
+        },
+        "accounts": {
+          "short": "Accounts",
+          "title": "Your accounts",
+          "intro": "Add your accounts and your cash with today's balance. You can change it anytime.",
+          "yours": "Accounts added"
+        },
+        "investments": {
+          "short": "Investments",
+          "title": "Your investments",
+          "intro": "Find your funds, ETFs or stocks by ISIN, or your crypto by name, and enter how many units you hold. You can skip this step.",
+          "yours": "Investments added"
+        },
+        "expenses": {
+          "short": "Fixed expenses",
+          "title": "Your fixed expenses",
+          "intro": "Subscriptions, loans, mortgage… So you know what gets charged and when. You can skip this step.",
+          "yours": "Fixed expenses added"
+        }
+      },
+      "fields": {
+        "fullName": "Full name",
+        "phone": "Phone",
+        "birthDate": "Date of birth",
+        "addressLine": "Address",
+        "postalCode": "Postal code",
+        "city": "City",
+        "country": "Country (code, e.g. ES)",
+        "currency": "Main currency",
+        "why": "Your date of birth helps with the retirement simulation. We never share your data."
+      },
+      "plan": {
+        "title": "Choose your plan",
+        "selected": "SELECTED PLAN",
+        "choose": "Choose",
+        "noPayments": "Nothing is charged for now: we only store your choice, and you can change it in Settings.",
+        "FREE": {
+          "name": "Free",
+          "text": "1 bank account plus all your cash, investments, fixed expenses and simulations."
+        },
+        "PRO": {
+          "name": "Pro",
+          "text": "Unlimited accounts in one combined balance, analytics and predictions."
         }
       }
     }
