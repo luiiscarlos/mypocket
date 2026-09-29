@@ -107,7 +107,7 @@ export default function PricingPage() {
 
             {ROWS.map((row) =>
               "group" in row ? (
-                <div key={row.group} className={grid} role="row">
+                <div key={`group-${row.group}`} className={grid} role="row">
                   <div role="rowheader" className="pb-3.5 pt-9 font-mono text-xs tracking-[0.06em] text-ink-muted">{t(`groups.${row.group}`)}</div>
                   <div role="cell" />
                   <div role="cell" className="bg-strip" />

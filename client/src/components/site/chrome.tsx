@@ -1,12 +1,13 @@
-// Public site chrome, design v3 (Claude Design "LHeader" / "LFooter"): sticky translucent header,
-// white + beige surfaces, soft radii and the brand green as accent.
+// Public site chrome, design v3 (Claude Design "LHeader" / "LFooter") on shadcn/ui: sticky translucent
+// header, white + beige surfaces, soft radii and the brand green as accent.
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ChevronDown, Menu as MenuIcon, Monitor, Moon, Sun } from "lucide-react";
-import { FLAGS } from "@/components/app/flags";
-import { locales } from "@/i18n/config";
-import { setLocale, setTheme } from "@/i18n/actions";
+import { Monitor, Moon, Sun } from "lucide-react";
+import { cn } from "cn";
+import { LanguageMenu, SiteMenu } from "@/components/app/menus";
+import { buttonVariants } from "@/components/ui/button";
+import { setTheme } from "@/i18n/actions";
 import { getTheme } from "@/lib/preferences";
 
 type Page = "pricing" | "faq" | "contact" | undefined;
@@ -19,8 +20,8 @@ const NAV = [
 ] as const;
 
 export const eyebrow = "text-sm font-semibold text-leaf";
-const pill = "flex h-10 cursor-pointer items-center gap-2 rounded-full border border-rule bg-transparent px-3 font-sans text-sm text-ink hover:border-control";
-const summaryReset = "list-none [&::-webkit-details-marker]:hidden";
+const ghost = cn(buttonVariants({ variant: "ghost" }), "h-auto rounded-[10px] px-3.5 py-2.5 text-[15px] hover:bg-band hover:no-underline");
+const iconPill = cn(buttonVariants({ variant: "outline", size: "icon" }), "size-10 rounded-full border-rule bg-transparent hover:border-control dark:bg-transparent");
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
@@ -30,46 +31,28 @@ export function Logo({ className = "" }: { className?: string }) {
   );
 }
 
-/** Language pill with flags (dropdown). */
-export async function LanguagePill({ up = false }: { up?: boolean }) {
+/** Language pill with flags (shadcn DropdownMenu). */
+export async function LanguagePill() {
   const [t, locale] = await Promise.all([getTranslations("footer"), getLocale()]);
-  const Flag = FLAGS[locale as keyof typeof FLAGS] ?? FLAGS.es;
-  return (
-    <details className="relative">
-      <summary className={`${summaryReset} ${pill}`} aria-label={t("language")}>
-        <Flag className="h-3.5 w-5 rounded-[3px]" />
-        <span className="uppercase">{locale}</span>
-        <ChevronDown size={14} aria-hidden />
-      </summary>
-      <form action={setLocale} className={`absolute right-0 z-30 flex w-44 flex-col rounded-2xl border border-rule bg-field p-1.5 shadow-float ${up ? "bottom-12" : "top-12"}`}>
-        {locales.map((l) => {
-          const F = FLAGS[l];
-          return (
-            <button key={l} name="locale" value={l} aria-pressed={l === locale} className="flex h-10 cursor-pointer items-center gap-3 rounded-xl border-0 bg-transparent px-3 font-sans text-sm text-ink hover:bg-band aria-pressed:font-semibold">
-              <F className="h-3.5 w-5 rounded-[3px]" />
-              {t(`languages.${l}`)}
-            </button>
-          );
-        })}
-      </form>
-    </details>
-  );
+  return <LanguageMenu locale={locale as "es" | "en"} label={t("language")} names={{ es: t("languages.es"), en: t("languages.en") }} />;
 }
 
 async function SiteHeader({ current }: { current: Page }) {
-  const [t, theme] = await Promise.all([getTranslations("nav"), getTheme()]);
+  const [t, footer, themeT, theme, locale] = await Promise.all([
+    getTranslations("nav"), getTranslations("footer"), getTranslations("theme"), getTheme(), getLocale(),
+  ]);
   // One round button toggles light/dark; "system" lives in the footer selector.
   const next = theme === "dark" ? "light" : "dark";
   return (
     <header className="sticky top-0 z-20 flex h-[72px] shrink-0 items-center justify-between gap-4 border-b border-rule bg-header px-5 backdrop-blur-md lg:px-16">
       <Logo />
-      <nav aria-label={t("label")} className="hidden items-center gap-1 text-[15px] lg:flex">
+      <nav aria-label={t("label")} className="hidden items-center gap-1 lg:flex">
         {NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             aria-current={"page" in item && item.page === current ? "page" : undefined}
-            className="rounded-[10px] px-3.5 py-2.5 text-ink-muted hover:bg-band hover:text-ink hover:no-underline aria-[current=page]:bg-band aria-[current=page]:font-semibold aria-[current=page]:text-ink"
+            className={cn(ghost, "font-normal text-ink-muted hover:text-ink aria-[current=page]:bg-band aria-[current=page]:font-semibold aria-[current=page]:text-ink")}
           >
             {t(item.key)}
           </Link>
@@ -78,37 +61,26 @@ async function SiteHeader({ current }: { current: Page }) {
       <div className="flex items-center gap-2">
         <div className="hidden sm:block"><LanguagePill /></div>
         <form action={setTheme} className="hidden sm:block">
-          <button name="theme" value={next} aria-label={t(next === "dark" ? "toDark" : "toLight")} title={t(next === "dark" ? "toDark" : "toLight")} className={`${pill} w-10 justify-center px-0`}>
+          <button name="theme" value={next} aria-label={t(next === "dark" ? "toDark" : "toLight")} title={t(next === "dark" ? "toDark" : "toLight")} className={iconPill}>
             {next === "dark" ? <Moon size={17} aria-hidden /> : <Sun size={17} aria-hidden />}
           </button>
         </form>
-        <Link href="/login" className="hidden rounded-[10px] px-3.5 py-2.5 text-[15px] font-medium text-ink hover:bg-band hover:no-underline sm:inline-flex">{t("login")}</Link>
-        <Link href="/register" className="btn inline-flex h-[42px] items-center rounded-control bg-leaf px-4 text-[15px] font-semibold text-on-leaf hover:no-underline sm:px-[18px]">
+        <Link href="/login" className={cn(ghost, "hidden font-medium text-ink sm:inline-flex")}>{t("login")}</Link>
+        <Link href="/register" className={cn(buttonVariants({ size: "lg" }), "btn h-[42px] rounded-control px-4 text-[15px] font-semibold hover:no-underline sm:px-[18px]")}>
           {t("signUp")}
         </Link>
-        {/* Below lg: the navigation, language, theme and log in move into a menu (<details>, no JS). */}
-        <details className="relative lg:hidden">
-          <summary className={`${summaryReset} ${pill} w-10 justify-center px-0`} aria-label={t("menu")}>
-            <MenuIcon size={18} aria-hidden />
-          </summary>
-          <div className="absolute right-0 top-12 z-30 flex w-[min(280px,calc(100vw-24px))] flex-col gap-1 rounded-2xl border border-rule bg-field p-2 shadow-float">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={"page" in item && item.page === current ? "page" : undefined}
-                className="flex h-11 items-center rounded-[10px] px-3 text-[15px] text-ink hover:bg-band hover:no-underline aria-[current=page]:bg-band aria-[current=page]:font-semibold"
-              >
-                {t(item.key)}
-              </Link>
-            ))}
-            <Link href="/login" className="flex h-11 items-center rounded-[10px] px-3 text-[15px] font-semibold text-ink hover:bg-band hover:no-underline sm:hidden">{t("login")}</Link>
-            <div className="mt-1 flex items-center justify-between gap-2 border-t border-rule px-1 pt-3 sm:hidden">
-              <LanguagePill />
-              <ThemeSwitcher />
-            </div>
-          </div>
-        </details>
+        {/* Below lg: the navigation, log in, language and theme move into a menu. */}
+        <SiteMenu
+          label={t("menu")}
+          links={NAV.map((item) => ({ href: item.href, label: t(item.key), current: "page" in item && item.page === current }))}
+          login={t("login")}
+          locale={locale as "es" | "en"}
+          theme={theme}
+          languageLabel={footer("language")}
+          themeLabel={themeT("label")}
+          names={{ es: footer("languages.es"), en: footer("languages.en") }}
+          themes={{ light: themeT("light"), dark: themeT("dark"), system: themeT("system") }}
+        />
       </div>
     </header>
   );
@@ -141,7 +113,7 @@ export async function ThemeSwitcher({ className = "" }: { className?: string }) 
             aria-pressed={theme === current}
             aria-label={t(theme)}
             title={t(theme)}
-            className="inline-flex size-[30px] cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-ink-muted aria-pressed:bg-band aria-pressed:text-ink"
+            className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-[30px] rounded-full text-ink-muted aria-pressed:bg-band aria-pressed:text-ink")}
           >
             <Icon size={14} aria-hidden />
           </button>
@@ -177,7 +149,7 @@ export async function SiteFooter() {
       <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-rule pt-6 text-[13px] text-ink-muted sm:flex-row sm:items-center">
         <span>{t("copyright", { year: new Date().getFullYear() })}</span>
         <span className="flex items-center gap-2">
-          <LanguagePill up />
+          <LanguagePill />
           <ThemeSwitcher />
         </span>
       </div>
@@ -196,7 +168,7 @@ export async function CtaBand() {
           <br />
           {t("line2")}
         </h2>
-        <Link href="/register" className="btn inline-flex h-14 shrink-0 items-center self-start rounded-[14px] bg-cta-btn px-7 text-base font-semibold text-on-cta-btn hover:no-underline lg:self-auto">
+        <Link href="/register" className={cn(buttonVariants({ size: "lg" }), "btn h-14 shrink-0 self-start rounded-[14px] bg-cta-btn px-7 text-base font-semibold text-on-cta-btn hover:bg-cta-btn/90 hover:no-underline lg:self-auto")}>
           {t("button")}
         </Link>
       </div>
