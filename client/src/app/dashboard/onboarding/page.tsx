@@ -7,7 +7,7 @@ import {
   InvestmentSearch, searchInstruments, type Account, type Category, type Expense, type Investment,
 } from "@/components/app/finance";
 import { PageNotice, ProUpsell, Section, smallButton } from "@/components/app/ui";
-import { inputClass, labelClass, primaryButton } from "@/components/forms";
+import { Input, Label, inputClass, labelClass, primaryButton } from "@/components/forms";
 import { Logo, eyebrow } from "@/components/site/chrome";
 import { gql } from "@/lib/api";
 import { requireUser } from "@/lib/auth";
@@ -101,38 +101,38 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
             {hiddenBack}
             <input type="hidden" name="next" value={nextStep} />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <label className={`${labelClass} sm:col-span-2`}>
+              <Label className={`${labelClass} sm:col-span-2`}>
                 {t("fields.fullName")}
-                <input name="fullName" required maxLength={100} autoComplete="name" defaultValue={me.fullName ?? ""} className={inputClass} />
-              </label>
-              <label className={labelClass}>
+                <Input name="fullName" required maxLength={100} autoComplete="name" defaultValue={me.fullName ?? ""} className={inputClass} />
+              </Label>
+              <Label className={labelClass}>
                 {t("fields.phone")}
-                <input name="phone" type="tel" maxLength={30} autoComplete="tel" defaultValue={me.phone ?? ""} className={inputClass} />
-              </label>
-              <label className={labelClass}>
+                <Input name="phone" type="tel" maxLength={30} autoComplete="tel" defaultValue={me.phone ?? ""} className={inputClass} />
+              </Label>
+              <Label className={labelClass}>
                 {t("fields.birthDate")}
-                <input name="birthDate" type="date" defaultValue={me.birthDate ?? ""} className={`${inputClass} font-mono`} />
-              </label>
-              <label className={`${labelClass} sm:col-span-2`}>
+                <Input name="birthDate" type="date" defaultValue={me.birthDate ?? ""} className={`${inputClass} font-mono`} />
+              </Label>
+              <Label className={`${labelClass} sm:col-span-2`}>
                 {t("fields.addressLine")}
-                <input name="addressLine" maxLength={200} autoComplete="street-address" defaultValue={me.addressLine ?? ""} className={inputClass} />
-              </label>
-              <label className={labelClass}>
+                <Input name="addressLine" maxLength={200} autoComplete="street-address" defaultValue={me.addressLine ?? ""} className={inputClass} />
+              </Label>
+              <Label className={labelClass}>
                 {t("fields.postalCode")}
-                <input name="postalCode" maxLength={12} autoComplete="postal-code" defaultValue={me.postalCode ?? ""} className={inputClass} />
-              </label>
-              <label className={labelClass}>
+                <Input name="postalCode" maxLength={12} autoComplete="postal-code" defaultValue={me.postalCode ?? ""} className={inputClass} />
+              </Label>
+              <Label className={labelClass}>
                 {t("fields.city")}
-                <input name="city" maxLength={100} autoComplete="address-level2" defaultValue={me.city ?? ""} className={inputClass} />
-              </label>
-              <label className={labelClass}>
+                <Input name="city" maxLength={100} autoComplete="address-level2" defaultValue={me.city ?? ""} className={inputClass} />
+              </Label>
+              <Label className={labelClass}>
                 {t("fields.country")}
-                <input name="country" maxLength={2} pattern="[A-Za-z]{2}" placeholder="ES" defaultValue={me.country ?? ""} className={`${inputClass} font-mono uppercase`} />
-              </label>
-              <label className={labelClass}>
+                <Input name="country" maxLength={2} pattern="[A-Za-z]{2}" placeholder="ES" defaultValue={me.country ?? ""} className={`${inputClass} font-mono uppercase`} />
+              </Label>
+              <Label className={labelClass}>
                 {t("fields.currency")}
-                <input name="currency" required maxLength={3} pattern="[A-Za-z]{3}" defaultValue={me.currency} className={`${inputClass} font-mono uppercase`} />
-              </label>
+                <Input name="currency" required maxLength={3} pattern="[A-Za-z]{3}" defaultValue={me.currency} className={`${inputClass} font-mono uppercase`} />
+              </Label>
             </div>
             <p className="m-0 text-[13px] text-ink-muted">{t("fields.why")}</p>
             <div className="flex justify-end border-t-[3px] border-ink pt-6">

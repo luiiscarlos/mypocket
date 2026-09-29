@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AuthShell } from "@/components/site/auth";
-import { Notice, TextLink, inputClass, labelClass, primaryButton } from "@/components/forms";
+import { Input, Label, Notice, TextLink, inputClass, labelClass, primaryButton } from "@/components/forms";
 import { signup } from "@/lib/auth-actions";
 import { authNotice } from "@/lib/auth-codes";
 
@@ -24,13 +24,13 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
     >
       {error && <Notice kind="error">{error}</Notice>}
       <form action={signup} className="flex flex-col gap-5">
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("fields.email")}
-          <input name="email" type="email" autoComplete="email" required className={inputClass} />
-        </label>
-        <label className={labelClass}>
+          <Input name="email" type="email" autoComplete="email" required className={inputClass} />
+        </Label>
+        <Label className={labelClass}>
           {t("fields.password")}
-          <input
+          <Input
             name="password"
             type="password"
             autoComplete="new-password"
@@ -40,7 +40,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
             className={inputClass}
           />
           <span id="pw-hint" className="text-[13px] font-normal text-ink-muted">{t("fields.passwordHint")}</span>
-        </label>
+        </Label>
         <div className="flex items-start gap-3 text-sm leading-normal text-ink-muted">
           <input id="terms" type="checkbox" name="terms" required className="size-5 shrink-0 accent-leaf" />
           <label htmlFor="terms">

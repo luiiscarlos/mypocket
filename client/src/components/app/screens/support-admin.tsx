@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { answerSupportTicket } from "@/app/dashboard/actions";
 import { Empty, ListControls, PageHeader, PageNotice, pick, secondaryBtn } from "@/components/app/ui";
-import { inputClass, labelClass } from "@/components/forms";
+import { Label, NativeSelect, NativeSelectOption, Textarea, labelClass, selectClass, textareaClass } from "@/components/forms";
 import { gql } from "@/lib/api";
 import { appNotice } from "@/lib/auth-codes";
 import { STATUSES, TICKET_FIELDS, TicketCard, type Ticket } from "@/components/app/tickets";
@@ -45,17 +45,17 @@ export async function SupportAdminScreen({ base, searchParams }: { base: string;
                 <form action={answerSupportTicket} className="mt-3 flex flex-col gap-3">
                   <input type="hidden" name="back" value={back} />
                   <input type="hidden" name="id" value={ticket.id} />
-                  <label className={labelClass}>
+                  <Label className={labelClass}>
                     {t("reply")}
-                    <textarea name="reply" rows={4} maxLength={5000} defaultValue={ticket.adminReply ?? ""} className={`${inputClass} h-auto resize-y py-3`} />
-                  </label>
+                    <Textarea name="reply" rows={4} maxLength={5000} defaultValue={ticket.adminReply ?? ""} className={textareaClass} />
+                  </Label>
                   <div className="flex flex-wrap items-end gap-3">
-                    <label className={labelClass}>
+                    <Label className={labelClass}>
                       {t("filters.status")}
-                      <select name="status" defaultValue={ticket.status} className={`${inputClass} w-56 px-3`}>
-                        {STATUSES.map((s) => <option key={s} value={s}>{t(`statuses.${s}`)}</option>)}
-                      </select>
-                    </label>
+                      <NativeSelect name="status" defaultValue={ticket.status} className={`${selectClass} w-56 px-3`}>
+                        {STATUSES.map((s) => <NativeSelectOption key={s} value={s}>{t(`statuses.${s}`)}</NativeSelectOption>)}
+                      </NativeSelect>
+                    </Label>
                     <button className={`${secondaryBtn} h-[52px]`}>{t("saveAnswer")}</button>
                   </div>
                 </form>

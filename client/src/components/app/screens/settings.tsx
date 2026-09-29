@@ -6,7 +6,7 @@ import { changePassword, deleteMyAccount, setNotifications, setPlan, updateProfi
 import { FLAGS } from "@/components/app/flags";
 import { Modal } from "@/components/app/modal";
 import { PageHeader, PageNotice, Section, dangerBtn, pick, primaryBtn, secondaryBtn } from "@/components/app/ui";
-import { inputClass, labelClass } from "@/components/forms";
+import { Input, Label, inputClass, labelClass } from "@/components/forms";
 import { setLocale, setTheme } from "@/i18n/actions";
 import { locales } from "@/i18n/config";
 import { getSettingsMe } from "@/lib/queries";
@@ -41,10 +41,10 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
   ]);
   const hiddenBack = <input type="hidden" name="back" value={back} />;
   const field = (name: Field, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
-    <label className={labelClass}>
+    <Label className={labelClass}>
       {t(`profile.${name}`)}
-      <input name={name} defaultValue={me[name] ?? ""} disabled={me.readOnly} className={inputClass} {...props} />
-    </label>
+      <Input name={name} defaultValue={me[name] ?? ""} disabled={me.readOnly} className={inputClass} {...props} />
+    </Label>
   );
 
   return (
@@ -96,18 +96,18 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
                 <Section title={t("password.title")}>
                   <form action={changePassword} className="grid grid-cols-1 items-end gap-4 sm:grid-cols-3">
                     {hiddenBack}
-                    <label className={labelClass}>
+                    <Label className={labelClass}>
                       {t("password.current")}
-                      <input name="current" type="password" autoComplete="current-password" required className={inputClass} />
-                    </label>
-                    <label className={labelClass}>
+                      <Input name="current" type="password" autoComplete="current-password" required className={inputClass} />
+                    </Label>
+                    <Label className={labelClass}>
                       {t("password.new")}
-                      <input name="password" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
-                    </label>
-                    <label className={labelClass}>
+                      <Input name="password" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
+                    </Label>
+                    <Label className={labelClass}>
                       {t("password.confirm")}
-                      <input name="confirm" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
-                    </label>
+                      <Input name="confirm" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
+                    </Label>
                     <button className={`${secondaryBtn} self-start`}>{t("password.submit")}</button>
                   </form>
                 </Section>
@@ -128,10 +128,10 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
                       <form action={deleteMyAccount} className="flex flex-col gap-5">
                         {hiddenBack}
                         <p role="alert" className="m-0 border border-danger bg-danger-bg px-4 py-3 text-[15px] text-danger-ink">{t("delete.warning")}</p>
-                        <label className={labelClass}>
+                        <Label className={labelClass}>
                           {t("delete.confirm", { word: t("delete.word") })}
-                          <input name="confirm" required autoComplete="off" placeholder={t("delete.word")} className={inputClass} />
-                        </label>
+                          <Input name="confirm" required autoComplete="off" placeholder={t("delete.word")} className={inputClass} />
+                        </Label>
                         <button className={`${dangerBtn} self-start`}>{t("delete.submit")}</button>
                       </form>
                     </Modal>

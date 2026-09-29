@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import { createSupportTicket } from "@/app/dashboard/actions";
 import { Modal } from "@/components/app/modal";
 import { EmptyState, PageHeader, PageNotice, Section, primaryBtn } from "@/components/app/ui";
-import { inputClass, labelClass } from "@/components/forms";
+import { Input, Label, NativeSelect, NativeSelectOption, Textarea, inputClass, labelClass, selectClass, textareaClass } from "@/components/forms";
 import { gql } from "@/lib/api";
 import { appNotice } from "@/lib/auth-codes";
 import { CATEGORIES, TICKET_FIELDS, TicketCard, type Ticket } from "@/components/app/tickets";
@@ -22,21 +22,21 @@ export async function SupportScreen({ base, searchParams }: { base: string; sear
       <form action={createSupportTicket} className="flex flex-col gap-4">
         <input type="hidden" name="back" value={PAGE} />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_200px]">
-          <label className={labelClass}>
+          <Label className={labelClass}>
             {t("subject")}
-            <input name="subject" required minLength={3} maxLength={120} className={inputClass} />
-          </label>
-          <label className={labelClass}>
+            <Input name="subject" required minLength={3} maxLength={120} className={inputClass} />
+          </Label>
+          <Label className={labelClass}>
             {t("category")}
-            <select name="category" defaultValue="OTHER" className={`${inputClass} px-3`}>
-              {CATEGORIES.map((c) => <option key={c} value={c}>{t(`categories.${c}`)}</option>)}
-            </select>
-          </label>
+            <NativeSelect name="category" defaultValue="OTHER" className={selectClass}>
+              {CATEGORIES.map((c) => <NativeSelectOption key={c} value={c}>{t(`categories.${c}`)}</NativeSelectOption>)}
+            </NativeSelect>
+          </Label>
         </div>
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("message")}
-          <textarea name="message" required minLength={10} maxLength={5000} rows={7} placeholder={t("messageHint")} className={`${inputClass} h-auto resize-y py-3`} />
-        </label>
+          <Textarea name="message" required minLength={10} maxLength={5000} rows={7} placeholder={t("messageHint")} className={textareaClass} />
+        </Label>
         <button className={`${primaryBtn} self-start`}>{t("send")}</button>
       </form>
     </Modal>

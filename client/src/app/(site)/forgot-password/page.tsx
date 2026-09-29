@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AuthShell } from "@/components/site/auth";
-import { Notice, inputClass, labelClass, primaryButton } from "@/components/forms";
+import { Input, Label, Notice, inputClass, labelClass, primaryButton } from "@/components/forms";
 import { requestPasswordReset } from "@/lib/auth-actions";
 import { authNotice } from "@/lib/auth-codes";
 
@@ -19,10 +19,10 @@ export default async function ForgotPasswordPage({ searchParams }: { searchParam
     <AuthShell kicker={t("forgot.kicker")} title={t("forgot.title")} intro={t("forgot.intro")} tagline={t("forgot.tagline")}>
       {message && <Notice kind="status">{message}</Notice>}
       <form action={requestPasswordReset} className="flex flex-col gap-5">
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("fields.email")}
-          <input name="email" type="email" autoComplete="email" required className={inputClass} />
-        </label>
+          <Input name="email" type="email" autoComplete="email" required className={inputClass} />
+        </Label>
         <button className={primaryButton}>{t("forgot.submit")}</button>
       </form>
       <Link href="/login" className="text-[15px] font-semibold underline">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AuthShell } from "@/components/site/auth";
-import { Notice, inputClass, labelClass, primaryButton } from "@/components/forms";
+import { Input, Label, Notice, inputClass, labelClass, primaryButton } from "@/components/forms";
 import { requireUser } from "@/lib/auth";
 import { updatePassword } from "@/lib/auth-actions";
 import { authNotice } from "@/lib/auth-codes";
@@ -21,14 +21,14 @@ export default async function ResetPasswordPage({ searchParams }: { searchParams
     <AuthShell kicker={t("reset.kicker")} title={t("reset.title")} intro={t("reset.intro")} tagline={t("reset.tagline")}>
       {error && <Notice kind="error">{error}</Notice>}
       <form action={updatePassword} className="flex flex-col gap-5">
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("fields.newPassword")}
-          <input name="password" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
-        </label>
-        <label className={labelClass}>
+          <Input name="password" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
+        </Label>
+        <Label className={labelClass}>
           {t("fields.repeatPassword")}
-          <input name="confirm" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
-        </label>
+          <Input name="confirm" type="password" autoComplete="new-password" minLength={8} required className={inputClass} />
+        </Label>
         <button className={primaryButton}>{t("reset.submit")}</button>
       </form>
     </AuthShell>

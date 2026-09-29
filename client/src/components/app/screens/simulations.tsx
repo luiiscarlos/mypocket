@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { deleteSimulation, saveSimulation } from "@/app/dashboard/actions";
 import { Empty, List, PageHeader, PageNotice, Row, Section, dangerLink, smallButton } from "@/components/app/ui";
-import { inputClass, labelClass } from "@/components/forms";
+import { Input, Label, inputClass, labelClass } from "@/components/forms";
 import { ApiError, gql } from "@/lib/api";
 import { appNotice } from "@/lib/auth-codes";
 
@@ -87,10 +87,10 @@ export async function SimulationsScreen({ base, searchParams }: { base: string; 
           <p className="m-0 text-[15px] text-ink-muted">{t(`descriptions.${kind}`)}</p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {Object.keys(defaults).map((k) => (
-              <label key={k} className={labelClass}>
+              <Label key={k} className={labelClass}>
                 {t(`params.${k}` as "params.price")}
-                <input name={k} inputMode="decimal" defaultValue={params[k]} required className={`${inputClass} font-mono`} />
-              </label>
+                <Input name={k} inputMode="decimal" defaultValue={params[k]} required className={`${inputClass} font-mono`} />
+              </Label>
             ))}
           </div>
           <button className={`${smallButton} self-start`}>{t("calculate")}</button>
@@ -126,10 +126,10 @@ export async function SimulationsScreen({ base, searchParams }: { base: string; 
                 <input type="hidden" name="back" value={back} />
                 <input type="hidden" name="kind" value={kind} />
                 <input type="hidden" name="params" value={JSON.stringify(params)} />
-                <label className={`${labelClass} grow`}>
+                <Label className={`${labelClass} grow`}>
                   {t("saveName")}
-                  <input name="name" required maxLength={80} placeholder={t(`kinds.${kind}`)} className={inputClass} />
-                </label>
+                  <Input name="name" required maxLength={80} placeholder={t(`kinds.${kind}`)} className={inputClass} />
+                </Label>
                 <button className={`${smallButton} h-[52px]`}>{t("save")}</button>
               </form>}
             </>

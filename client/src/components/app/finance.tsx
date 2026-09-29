@@ -4,7 +4,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import {
   Banknote, CalendarClock, CreditCard, HandCoins, Landmark, Pencil, PiggyBank, Plus, Repeat, TrendingUp, Trash2, Wallet, type LucideIcon,
 } from "lucide-react";
-import { inputClass, labelClass } from "@/components/forms";
+import { Input, Label, NativeSelect, NativeSelectOption, inputClass, labelClass, selectClass } from "@/components/forms";
 import { Modal } from "@/components/app/modal";
 import { ApiError, gql } from "@/lib/api";
 import { Empty, List, Row, dangerLink, primaryBtn, secondaryBtn, smallButton } from "@/components/app/ui";
@@ -130,31 +130,31 @@ export async function AccountForm({ back, currency, account }: { back: string; c
     <form action={account ? updateAccount : createAccount} className="flex flex-col gap-4">
       <Hidden back={back} id={account?.id} />
       <div className={grid}>
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("accounts.name")}
-          <input name="name" required maxLength={60} defaultValue={account?.name} placeholder={t("accounts.namePlaceholder")} className={inputClass} />
-        </label>
-        <label className={labelClass}>
+          <Input name="name" required maxLength={60} defaultValue={account?.name} placeholder={t("accounts.namePlaceholder")} className={inputClass} />
+        </Label>
+        <Label className={labelClass}>
           {t("accounts.institution")}
-          <input name="institution" maxLength={60} defaultValue={account?.institution ?? ""} className={inputClass} />
-        </label>
-        <label className={labelClass}>
+          <Input name="institution" maxLength={60} defaultValue={account?.institution ?? ""} className={inputClass} />
+        </Label>
+        <Label className={labelClass}>
           {t("accounts.kind")}
-          <select name="kind" defaultValue={account?.kind ?? "CHECKING"} className={`${inputClass} px-3`}>
+          <NativeSelect name="kind" defaultValue={account?.kind ?? "CHECKING"} className={selectClass}>
             {(["CHECKING", "SAVINGS", "CASH"] as const).map((k) => (
-              <option key={k} value={k}>{t(`accountKinds.${k}`)}</option>
+              <NativeSelectOption key={k} value={k}>{t(`accountKinds.${k}`)}</NativeSelectOption>
             ))}
-          </select>
-        </label>
+          </NativeSelect>
+        </Label>
         <div className="grid grid-cols-[1fr_96px] gap-3">
-          <label className={labelClass}>
+          <Label className={labelClass}>
             {t("accounts.balance")}
-            <input name="balance" inputMode="decimal" required defaultValue={account?.balance} placeholder="0,00" className={`${inputClass} font-mono`} />
-          </label>
-          <label className={labelClass}>
+            <Input name="balance" inputMode="decimal" required defaultValue={account?.balance} placeholder="0,00" className={`${inputClass} font-mono`} />
+          </Label>
+          <Label className={labelClass}>
             {t("currency")}
-            <input name="currency" defaultValue={account?.currency ?? currency} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
-          </label>
+            <Input name="currency" defaultValue={account?.currency ?? currency} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
+          </Label>
         </div>
       </div>
       {!account && <p className="m-0 text-[13px] text-ink-muted">{t("accounts.bankSoon")}</p>}
@@ -199,14 +199,14 @@ export async function InvestmentList({ investments, back, readOnly }: { investme
                 <form action={updateInvestment} className="flex flex-col gap-4">
                   <Hidden back={back} id={i.id} />
                   <div className={grid}>
-                    <label className={labelClass}>
+                    <Label className={labelClass}>
                       {t("investments.quantity")}
-                      <input name="quantity" inputMode="decimal" required defaultValue={i.quantity} className={`${inputClass} font-mono`} />
-                    </label>
-                    <label className={labelClass}>
+                      <Input name="quantity" inputMode="decimal" required defaultValue={i.quantity} className={`${inputClass} font-mono`} />
+                    </Label>
+                    <Label className={labelClass}>
                       <span>{t("investments.costBasis")} <span className="font-normal text-ink-muted">({t("optional")})</span></span>
-                      <input name="costBasis" inputMode="decimal" defaultValue={i.costBasis ?? ""} className={`${inputClass} font-mono`} />
-                    </label>
+                      <Input name="costBasis" inputMode="decimal" defaultValue={i.costBasis ?? ""} className={`${inputClass} font-mono`} />
+                    </Label>
                   </div>
                   <button className={`${primaryBtn} self-start`}>{t("save")}</button>
                 </form>
@@ -230,10 +230,10 @@ export async function InvestmentSearch({
     <div className="flex flex-col gap-4 rounded-card border border-rule bg-field p-5">
       <form action={action} className="flex flex-col gap-3 sm:flex-row sm:items-end">
         {Object.entries(hidden).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
-        <label className={`${labelClass} grow`}>
+        <Label className={`${labelClass} grow`}>
           {t("investments.search")}
-          <input name="q" defaultValue={query} required minLength={2} maxLength={60} placeholder={t("investments.searchPlaceholder")} className={inputClass} />
-        </label>
+          <Input name="q" defaultValue={query} required minLength={2} maxLength={60} placeholder={t("investments.searchPlaceholder")} className={inputClass} />
+        </Label>
         <button className={`${smallButton} h-[52px]`}>{t("investments.find")}</button>
       </form>
       {error && <p role="alert" className="m-0 border border-danger bg-danger-bg px-4 py-3 text-[15px] text-danger-ink">{t("investments.searchError")}</p>}
@@ -254,7 +254,7 @@ export async function InvestmentSearch({
                   <Hidden back={back} />
                   <input type="hidden" name="instrumentId" value={r.id} />
                   <label className="sr-only" htmlFor={`qty-${r.id}`}>{t("investments.quantity")}</label>
-                  <input id={`qty-${r.id}`} name="quantity" inputMode="decimal" required placeholder={t("investments.quantity")} className={`${inputClass} h-11 w-32 font-mono`} />
+                  <Input id={`qty-${r.id}`} name="quantity" inputMode="decimal" required placeholder={t("investments.quantity")} className={`${inputClass} h-11 w-32 font-mono`} />
                   <button className={smallButton}>{t("investments.add")}</button>
                 </form>
               )}
@@ -336,31 +336,31 @@ export async function RecurringFields({
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {kinds === "both" && (
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("expenses.kind")}
-          <select name="kind" defaultValue="" className={`${inputClass} px-3`}>
-            <option value="">{t("expenses.kindAuto")}</option>
+          <NativeSelect name="kind" defaultValue="" className={selectClass}>
+            <NativeSelectOption value="">{t("expenses.kindAuto")}</NativeSelectOption>
             <KindOptions t={t} />
-          </select>
-        </label>
+          </NativeSelect>
+        </Label>
       )}
       <div className="grid grid-cols-[88px_1fr] gap-3">
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("expenses.every")}
-          <input name="intervalCount" type="number" min={1} max={36} defaultValue={expense?.intervalCount ?? 1} className={`${inputClass} font-mono`} />
-        </label>
-        <label className={labelClass}>
+          <Input name="intervalCount" type="number" min={1} max={36} defaultValue={expense?.intervalCount ?? 1} className={`${inputClass} font-mono`} />
+        </Label>
+        <Label className={labelClass}>
           {t("expenses.interval")}
-          <select name="intervalUnit" defaultValue={expense?.intervalUnit ?? "MONTH"} className={`${inputClass} px-3`}>
-            {(["WEEK", "MONTH", "YEAR"] as const).map((u) => <option key={u} value={u}>{t(`units.${u}`)}</option>)}
-          </select>
-        </label>
+          <NativeSelect name="intervalUnit" defaultValue={expense?.intervalUnit ?? "MONTH"} className={selectClass}>
+            {(["WEEK", "MONTH", "YEAR"] as const).map((u) => <NativeSelectOption key={u} value={u}>{t(`units.${u}`)}</NativeSelectOption>)}
+          </NativeSelect>
+        </Label>
       </div>
       {startName === "startDate" && (
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("expenses.start")}
-          <input name="startDate" type="date" required defaultValue={expense?.startDate} className={`${inputClass} font-mono`} />
-        </label>
+          <Input name="startDate" type="date" required defaultValue={expense?.startDate} className={`${inputClass} font-mono`} />
+        </Label>
       )}
       <fieldset className="m-0 flex flex-col gap-2 border-0 p-0 sm:col-span-2">
         <legend className="mb-2 text-sm font-semibold">{t("expenses.duration")}</legend>
@@ -368,29 +368,29 @@ export async function RecurringFields({
           <label className="flex items-center gap-2"><input type="radio" name="duration" value="open" defaultChecked={duration === "open"} className="size-5 accent-leaf" />{t("expenses.durationOpen")}</label>
           <label className="flex items-center gap-2">
             <input type="radio" name="duration" value="until" defaultChecked={duration === "until"} className="size-5 accent-leaf" />{t("expenses.durationUntil")}
-            <input name="endDate" type="date" defaultValue={expense?.endDate ?? ""} aria-label={t("expenses.endDate")} className={`${inputClass} h-11 w-44 font-mono`} />
+            <Input name="endDate" type="date" defaultValue={expense?.endDate ?? ""} aria-label={t("expenses.endDate")} className={`${inputClass} h-11 w-44 font-mono`} />
           </label>
           <label className="flex items-center gap-2">
             <input type="radio" name="duration" value="count" defaultChecked={duration === "count"} className="size-5 accent-leaf" />
-            <input name="paymentsTotal" type="number" min={1} max={1200} defaultValue={expense?.paymentsTotal ?? ""} aria-label={t("expenses.paymentsTotal")} className={`${inputClass} h-11 w-24 font-mono`} />
+            <Input name="paymentsTotal" type="number" min={1} max={1200} defaultValue={expense?.paymentsTotal ?? ""} aria-label={t("expenses.paymentsTotal")} className={`${inputClass} h-11 w-24 font-mono`} />
             {t("expenses.payments")}
           </label>
         </div>
       </fieldset>
       {withCategory && (
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("expenses.category")}
-          <select name="categoryId" defaultValue={expense?.categoryId ?? ""} className={`${inputClass} px-3`}>
-            <option value="">{t("none")}</option>
-            {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-          </select>
-        </label>
+          <NativeSelect name="categoryId" defaultValue={expense?.categoryId ?? ""} className={selectClass}>
+            <NativeSelectOption value="">{t("none")}</NativeSelectOption>
+            {categories.map((c) => <NativeSelectOption key={c.id} value={c.id}>{c.name}</NativeSelectOption>)}
+          </NativeSelect>
+        </Label>
       )}
-      <label className={labelClass}>
+      <Label className={labelClass}>
         <span>{t("expenses.initialAmount")} <span className="font-normal text-ink-muted">({t("expenses.debtsOnly")})</span></span>
-        <input name="initialAmount" inputMode="decimal" placeholder="0,00" defaultValue={expense?.initialAmount ?? ""} aria-describedby={`initial-hint-${expense?.id ?? startName}`} className={`${inputClass} font-mono`} />
+        <Input name="initialAmount" inputMode="decimal" placeholder="0,00" defaultValue={expense?.initialAmount ?? ""} aria-describedby={`initial-hint-${expense?.id ?? startName}`} className={`${inputClass} font-mono`} />
         <span id={`initial-hint-${expense?.id ?? startName}`} className="text-[13px] font-normal text-ink-muted">{t("expenses.initialHint")}</span>
-      </label>
+      </Label>
     </div>
   );
 }
@@ -415,33 +415,33 @@ export async function ExpenseForm({ back, accounts, categories, expense }: { bac
     <form action={expense ? updateExpense : createExpense} className="flex flex-col gap-4">
       <Hidden back={back} id={expense?.id} />
       <div className={grid}>
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("expenses.name")}
-          <input name="name" required maxLength={60} defaultValue={expense?.name} placeholder={t("expenses.namePlaceholder")} className={inputClass} />
-        </label>
+          <Input name="name" required maxLength={60} defaultValue={expense?.name} placeholder={t("expenses.namePlaceholder")} className={inputClass} />
+        </Label>
         <div className="grid grid-cols-[1fr_96px] gap-3">
-          <label className={labelClass}>
+          <Label className={labelClass}>
             {t("expenses.amount")}
-            <input name="amount" inputMode="decimal" required defaultValue={expense?.amount} placeholder="0,00" className={`${inputClass} font-mono`} />
-          </label>
-          <label className={labelClass}>
+            <Input name="amount" inputMode="decimal" required defaultValue={expense?.amount} placeholder="0,00" className={`${inputClass} font-mono`} />
+          </Label>
+          <Label className={labelClass}>
             {t("currency")}
-            <input name="currency" defaultValue={expense?.currency ?? "EUR"} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
-          </label>
+            <Input name="currency" defaultValue={expense?.currency ?? "EUR"} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
+          </Label>
         </div>
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("expenses.kind")}
-          <select name="kind" defaultValue={expense?.kind ?? "SUBSCRIPTION"} className={`${inputClass} px-3`}>
+          <NativeSelect name="kind" defaultValue={expense?.kind ?? "SUBSCRIPTION"} className={selectClass}>
             <KindOptions t={t} />
-          </select>
-        </label>
-        <label className={labelClass}>
+          </NativeSelect>
+        </Label>
+        <Label className={labelClass}>
           {t("expenses.account")}
-          <select name="accountId" defaultValue={expense?.accountId ?? ""} className={`${inputClass} px-3`}>
-            <option value="">{t("none")}</option>
-            {accounts.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
-          </select>
-        </label>
+          <NativeSelect name="accountId" defaultValue={expense?.accountId ?? ""} className={selectClass}>
+            <NativeSelectOption value="">{t("none")}</NativeSelectOption>
+            {accounts.map((a) => <NativeSelectOption key={a.id} value={a.id}>{a.name}</NativeSelectOption>)}
+          </NativeSelect>
+        </Label>
       </div>
       <RecurringFields categories={categories} kinds="none" expense={expense} />
       <button className={`${primaryBtn} self-start`}>{expense ? t("save") : <><Plus size={16} aria-hidden />{t("expenses.add")}</>}</button>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AuthShell } from "@/components/site/auth";
-import { Notice, TextLink, inputClass, labelClass, primaryButton } from "@/components/forms";
+import { Input, Label, Notice, TextLink, inputClass, labelClass, primaryButton } from "@/components/forms";
 import { login } from "@/lib/auth-actions";
 import { authNotice } from "@/lib/auth-codes";
 
@@ -31,10 +31,10 @@ export default async function LoginPage({
       {message && <Notice kind="status">{message}</Notice>}
       <form action={login} className="flex flex-col gap-5">
         <input type="hidden" name="next" value={params.next ?? ""} />
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("fields.email")}
-          <input name="email" type="email" autoComplete="email" required className={inputClass} />
-        </label>
+          <Input name="email" type="email" autoComplete="email" required className={inputClass} />
+        </Label>
         <div className="flex flex-col gap-2">
           <div className="flex justify-between text-sm font-semibold">
             <label htmlFor="password">{t("fields.password")}</label>
@@ -42,7 +42,7 @@ export default async function LoginPage({
               {t("login.forgot")}
             </Link>
           </div>
-          <input id="password" name="password" type="password" autoComplete="current-password" required className={inputClass} />
+          <Input id="password" name="password" type="password" autoComplete="current-password" required className={inputClass} />
         </div>
         <button className={primaryButton}>{t("login.submit")}</button>
       </form>

@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { createTransaction, updateTransaction } from "@/app/dashboard/actions";
 import { RecurringFields, type Category } from "@/components/app/finance";
 import { primaryBtn } from "@/components/app/ui";
-import { inputClass, labelClass } from "@/components/forms";
+import { Input, Label, NativeSelect, NativeSelectOption, inputClass, labelClass, selectClass } from "@/components/forms";
 
 export type Tx = {
   id: string; source: string; type: "INCOME" | "EXPENSE"; amount: number; currency: string; occurredOn: string;
@@ -33,37 +33,37 @@ export async function TransactionForm({
       </fieldset>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="grid grid-cols-[1fr_88px] gap-3">
-          <label className={labelClass}>
+          <Label className={labelClass}>
             {t("amount")}
-            <input name="amount" inputMode="decimal" required defaultValue={tx?.amount} placeholder="0,00" className={`${inputClass} font-mono`} />
-          </label>
-          <label className={labelClass}>
+            <Input name="amount" inputMode="decimal" required defaultValue={tx?.amount} placeholder="0,00" className={`${inputClass} font-mono`} />
+          </Label>
+          <Label className={labelClass}>
             {t("currency")}
-            <input name="currency" defaultValue={tx?.currency ?? currency} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
-          </label>
+            <Input name="currency" defaultValue={tx?.currency ?? currency} pattern="[A-Za-z]{3}" maxLength={3} required className={`${inputClass} font-mono uppercase`} />
+          </Label>
         </div>
-        <label className={labelClass}>
+        <Label className={labelClass}>
           {t("date")}
-          <input name="occurredOn" type="date" defaultValue={tx?.occurredOn ?? today} required className={`${inputClass} font-mono`} />
-        </label>
-        <label className={labelClass}>
+          <Input name="occurredOn" type="date" defaultValue={tx?.occurredOn ?? today} required className={`${inputClass} font-mono`} />
+        </Label>
+        <Label className={labelClass}>
           {t("account")}
-          <select name="accountId" defaultValue={tx?.accountId ?? ""} className={`${inputClass} px-3`}>
-            <option value="">{t("none")}</option>
-            {accounts.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
-          </select>
-        </label>
-        <label className={labelClass}>
+          <NativeSelect name="accountId" defaultValue={tx?.accountId ?? ""} className={selectClass}>
+            <NativeSelectOption value="">{t("none")}</NativeSelectOption>
+            {accounts.map((a) => <NativeSelectOption key={a.id} value={a.id}>{a.name}</NativeSelectOption>)}
+          </NativeSelect>
+        </Label>
+        <Label className={labelClass}>
           {t("category")}
-          <select name="categoryId" defaultValue={tx?.category?.id ?? ""} className={`${inputClass} px-3`}>
-            <option value="">{t("none")}</option>
-            {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-          </select>
-        </label>
-        <label className={`${labelClass} sm:col-span-2`}>
+          <NativeSelect name="categoryId" defaultValue={tx?.category?.id ?? ""} className={selectClass}>
+            <NativeSelectOption value="">{t("none")}</NativeSelectOption>
+            {categories.map((c) => <NativeSelectOption key={c.id} value={c.id}>{c.name}</NativeSelectOption>)}
+          </NativeSelect>
+        </Label>
+        <Label className={`${labelClass} sm:col-span-2`}>
           {t("note")}
-          <input name="note" maxLength={200} defaultValue={tx?.note ?? ""} placeholder={t("notePlaceholder")} className={inputClass} />
-        </label>
+          <Input name="note" maxLength={200} defaultValue={tx?.note ?? ""} placeholder={t("notePlaceholder")} className={inputClass} />
+        </Label>
       </div>
 
       {!tx && (

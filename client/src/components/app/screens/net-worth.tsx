@@ -4,7 +4,9 @@ import { ArrowDownWideNarrow, ArrowUpNarrowWide, Lock, TriangleAlert } from "luc
 import {
   AccountList, AddAccount, AddExpense, ExpenseList, InvestmentList, InvestmentSearch, searchInstruments,
 } from "@/components/app/finance";
-import { EmptyAction, EmptyState, PageNotice, Section, pick, primaryBtn } from "@/components/app/ui";
+import { cn } from "cn";
+import { Label, NativeSelect, NativeSelectOption, selectClass } from "@/components/forms";
+import { EmptyAction, EmptyState, PageNotice, Section, pick, primaryBtn, smallButton } from "@/components/app/ui";
 import { getNetWorth } from "@/lib/queries";
 import { appNotice } from "@/lib/auth-codes";
 
@@ -143,16 +145,16 @@ export async function NetWorthScreen({ base, searchParams }: { base: string; sea
           {q && <input type="hidden" name="q" value={q} />}
           {view !== "all" && <input type="hidden" name="view" value={view} />}
           <input type="hidden" name="dir" value={dir} />
-          <label className="sr-only" htmlFor="sort">{t("filters.sort")}</label>
-          <select id="sort" name="sort" defaultValue={sort} className="h-10 rounded-[10px] border border-control bg-field px-3 font-sans text-sm text-ink">
-            {SORTS.map((s) => <option key={s} value={s}>{t(`filters.sorts.${s}`)}</option>)}
-          </select>
-          <button className="h-10 cursor-pointer rounded-[10px] border border-control bg-field px-3 font-sans text-sm text-ink">{t("filters.apply")}</button>
+          <Label className="sr-only" htmlFor="sort">{t("filters.sort")}</Label>
+          <NativeSelect id="sort" name="sort" defaultValue={sort} className={cn(selectClass, "w-auto [&>select]:h-10 [&>select]:text-sm")}>
+            {SORTS.map((s) => <NativeSelectOption key={s} value={s}>{t(`filters.sorts.${s}`)}</NativeSelectOption>)}
+          </NativeSelect>
+          <button className={cn(smallButton, "h-10")}>{t("filters.apply")}</button>
           <Link
             href={url({ dir: dir === "desc" ? "asc" : "desc" })}
             aria-label={dir === "desc" ? t("filters.desc") : t("filters.asc")}
             title={dir === "desc" ? t("filters.desc") : t("filters.asc")}
-            className="flex size-10 items-center justify-center rounded-[10px] border border-control bg-field text-ink hover:no-underline"
+            className={cn(smallButton, "size-10 px-0")}
           >
             {dir === "desc" ? <ArrowDownWideNarrow size={18} aria-hidden /> : <ArrowUpNarrowWide size={18} aria-hidden />}
           </Link>
