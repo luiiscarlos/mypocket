@@ -32,9 +32,11 @@ export function Modal({
         onSubmit={() => setTimeout(() => ref.current?.close(), 0)}
         // A click on the backdrop (the dialog element itself, outside the panel) closes it.
         onClick={(e) => e.target === ref.current && ref.current.close()}
-        className="m-auto max-h-[calc(100dvh-32px)] w-[calc(100%-32px)] max-w-[640px] overflow-y-auto rounded-[28px] border border-rule bg-field p-0 text-ink shadow-float backdrop:bg-black/50 backdrop:backdrop-blur-sm"
+        // Phones: bottom sheet (full width, anchored to the bottom, rounded top only, safe-area padding).
+        className="m-auto max-h-[calc(100dvh-32px)] w-[calc(100%-32px)] max-w-[640px] overflow-y-auto rounded-[28px] border border-rule bg-field p-0 text-ink shadow-float backdrop:bg-black/50 backdrop:backdrop-blur-sm max-sm:mb-0 max-sm:max-h-[90dvh] max-sm:w-full max-sm:max-w-none max-sm:rounded-b-none max-sm:border-b-0 max-sm:pb-[env(safe-area-inset-bottom)]"
       >
-        <div className="flex flex-col gap-6 p-6 sm:p-8">
+        <div className="flex flex-col gap-6 p-5 sm:p-8">
+          <span aria-hidden="true" className="mx-auto -mt-2 block h-1 w-10 rounded-full bg-rule sm:hidden" />
           <div className="flex items-start justify-between gap-4">
             <h2 id={titleId} className="m-0 text-2xl font-bold tracking-[-0.03em]">{title}</h2>
             <button type="button" onClick={() => ref.current?.close()} aria-label={closeLabel} className="-m-2 inline-flex size-11 cursor-pointer items-center rounded-full hover:bg-band justify-center border-0 bg-transparent text-ink">

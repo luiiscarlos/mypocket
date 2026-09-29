@@ -16,6 +16,7 @@ async function mutate(back: string, query: string, variables: Record<string, unk
   await requireUser();
   await attempt(back, () => gql(query, variables));
   revalidatePath("/dashboard", "layout");
+  revalidatePath("/mobile", "layout");
 }
 
 const invalidIf = (back: string, bad: boolean) => {

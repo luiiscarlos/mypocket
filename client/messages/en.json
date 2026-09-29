@@ -466,7 +466,9 @@
       "add": "Add",
       "more": "More",
       "expand": "Expand menu",
-      "collapse": "Collapse menu"
+      "collapse": "Collapse menu",
+      "transactionsShort": "Activity",
+      "desktopView": "Use the desktop version"
     },
     "plans": {
       "FREE": "Free",
@@ -730,7 +732,8 @@
           "DATE_ASC": "Oldest",
           "AMOUNT_DESC": "Highest amount",
           "AMOUNT_ASC": "Lowest amount"
-        }
+        },
+        "title": "Filter"
       },
       "recurringTag": "RECURRING",
       "close": "Close",
@@ -902,7 +905,9 @@
         "updates": "What's new",
         "privacy": "Privacy policy",
         "terms": "Terms of use",
-        "support": "Support and tickets"
+        "support": "Support and tickets",
+        "desktopView": "Use the desktop version",
+        "mobileView": "Use the mobile version"
       },
       "data": {
         "title": "Your data",

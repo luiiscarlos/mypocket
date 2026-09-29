@@ -466,7 +466,9 @@
       "add": "Añadir",
       "more": "Más",
       "expand": "Desplegar menú",
-      "collapse": "Plegar menú"
+      "collapse": "Plegar menú",
+      "transactionsShort": "Movim.",
+      "desktopView": "Ver versión de escritorio"
     },
     "plans": {
       "FREE": "Gratis",
@@ -730,7 +732,8 @@
           "DATE_ASC": "Más antiguos",
           "AMOUNT_DESC": "Importe mayor",
           "AMOUNT_ASC": "Importe menor"
-        }
+        },
+        "title": "Filtrar"
       },
       "recurringTag": "PERIÓDICO",
       "close": "Cerrar",
@@ -902,7 +905,9 @@
         "updates": "Novedades",
         "privacy": "Política de privacidad",
         "terms": "Términos de uso",
-        "support": "Soporte e incidencias"
+        "support": "Soporte e incidencias",
+        "desktopView": "Ver versión de escritorio",
+        "mobileView": "Ver versión móvil"
       },
       "data": {
         "title": "Tus datos",

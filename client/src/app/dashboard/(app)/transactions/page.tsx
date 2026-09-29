@@ -3,32 +3,18 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { deleteTransaction } from "@/app/dashboard/actions";
 import { Modal } from "@/components/app/modal";
 import { TransactionForm } from "@/components/app/transaction-form";
-import { Empty, List, ListControls, PageHeader, PageNotice, Row, Section, dangerLink, pick, primaryBtn, smallButton } from "@/components/app/ui";
-import { getTransactions } from "@/lib/queries";
+import { Empty, List, ListControls, PageHeader, PageNotice, Row, Section, dangerLink, primaryBtn, smallButton } from "@/components/app/ui";
+import { getTransactions, parseTxSearch } from "@/lib/queries";
 import { appNotice } from "@/lib/auth-codes";
 
-
 const PAGE = "/dashboard/transactions";
-const ORDERS = ["DATE_DESC", "DATE_ASC", "AMOUNT_DESC", "AMOUNT_ASC"] as const;
-const TYPES = ["INCOME", "EXPENSE"] as const;
-const isDate = (v: unknown) => (typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : undefined);
-const isId = (v: unknown) => (typeof v === "string" && /^\d{1,18}$/.test(v) ? v : undefined);
-
 export async function generateMetadata() {
   return { title: (await getTranslations("app.nav"))("transactions") };
 }
 
 export default async function TransactionsPage({ searchParams }: PageProps<"/dashboard/transactions">) {
   const sp = await searchParams;
-  // Only known values reach the API; anything else in the URL is ignored.
-  const filter = {
-    type: pick(sp.type, TYPES),
-    accountId: isId(sp.account),
-    categoryId: isId(sp.category),
-    from: isDate(sp.from),
-    to: isDate(sp.to),
-  };
-  const orderBy = pick(sp.sort, ORDERS) ?? "DATE_DESC";
+  const { filter, orderBy, orders: ORDERS, types: TYPES } = parseTxSearch(sp);
 
   const [t, format, notice, data] = await Promise.all([
     getTranslations("app.transactions"),

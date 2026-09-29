@@ -72,6 +72,7 @@ export function TopbarTitle({ name }: { name: string }) {
     simulations: t("nav.simulations"),
     updates: t("nav.updates"),
     settings: t("nav.settings"),
+    more: t("nav.more"),
     support: pathname.endsWith("/admin") ? t("support.adminTitle") : t("support.title"),
   };
   return (

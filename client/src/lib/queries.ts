@@ -98,3 +98,21 @@ export type Update = { version: string; publishedAt: string; title: string; body
 export const getUpdates = (locale: string) =>
   gql<{ appUpdates: Update[] }>("query ($l: Locale!) { appUpdates(locale: $l) { version publishedAt title body } }", { l: locale.toUpperCase() })
     .then((d) => d.appUpdates);
+
+const TX_ORDERS = ["DATE_DESC", "DATE_ASC", "AMOUNT_DESC", "AMOUNT_ASC"] as const;
+const TX_TYPES = ["INCOME", "EXPENSE"] as const;
+const isDate = (v: unknown) => (typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : undefined);
+const isId = (v: unknown) => (typeof v === "string" && /^\d{1,18}$/.test(v) ? v : undefined);
+const oneOf = <T extends string>(v: unknown, allowed: readonly T[]) => (typeof v === "string" && (allowed as readonly string[]).includes(v) ? (v as T) : undefined);
+
+/** Transaction filters from the URL. Only known values reach the API; anything else is ignored. */
+export function parseTxSearch(sp: Record<string, string | string[] | undefined>) {
+  const filter: TxFilter = {
+    type: oneOf(sp.type, TX_TYPES),
+    accountId: isId(sp.account),
+    categoryId: isId(sp.category),
+    from: isDate(sp.from),
+    to: isDate(sp.to),
+  };
+  return { filter, orderBy: oneOf(sp.sort, TX_ORDERS) ?? ("DATE_DESC" as TxOrder), orders: TX_ORDERS, types: TX_TYPES };
+}
