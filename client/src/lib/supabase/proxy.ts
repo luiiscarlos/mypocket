@@ -8,6 +8,24 @@ const AUTH_PAGES = ["/login", "/register", "/forgot-password"];
 const matches = (path: string, prefixes: string[]) =>
   prefixes.some((p) => path === p || path.startsWith(`${p}/`));
 
+// Desktop-only routes: onboarding is shared (it adapts to the phone) and the export is a file download.
+const SHARED_DASHBOARD = ["/dashboard/onboarding", "/dashboard/settings/export"];
+const isPhone = (userAgent: string) => /Mobi|Android|iPhone|iPod/i.test(userAgent);
+
+/**
+ * Which app a signed-in request belongs in: phones use /mobile, everything else /dashboard, unless the
+ * user chose one explicitly (cookie "view", set from "Más" / Ajustes). Same sub-path in both apps.
+ */
+function appFor(request: NextRequest, pathname: string): string | null {
+  const view = request.cookies.get("view")?.value;
+  const wantsMobile = view ? view === "mobile" : isPhone(request.headers.get("user-agent") ?? "");
+  if (wantsMobile && matches(pathname, ["/dashboard"]) && !matches(pathname, SHARED_DASHBOARD)) {
+    return pathname.replace(/^\/dashboard/, "/mobile");
+  }
+  if (!wantsMobile && matches(pathname, ["/mobile"])) return pathname.replace(/^\/mobile/, "/dashboard");
+  return null;
+}
+
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -43,7 +61,10 @@ export async function updateSession(request: NextRequest) {
     redirectTo = new URL("/login", request.url);
     redirectTo.searchParams.set("next", pathname + search);
   } else if (signedIn && matches(pathname, AUTH_PAGES)) {
-    redirectTo = new URL("/dashboard", request.url);
+    redirectTo = new URL(appFor(request, "/dashboard") ?? "/dashboard", request.url);
+  } else if (signedIn) {
+    const target = appFor(request, pathname);
+    if (target) redirectTo = new URL(target + search, request.url);
   }
   if (!redirectTo) return response;
 

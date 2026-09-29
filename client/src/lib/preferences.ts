@@ -34,3 +34,10 @@ export async function getSidebarCollapsed() {
 export async function setSidebarCollapsed(collapsed: boolean) {
   await remember(SIDEBAR_COOKIE, collapsed ? "collapsed" : "expanded");
 }
+
+/** "desktop" | "mobile": the user's explicit choice of app; without it the proxy picks by device. */
+export const VIEW_COOKIE = "view";
+
+export async function setViewPreference(view: "desktop" | "mobile") {
+  await remember(VIEW_COOKIE, view);
+}
