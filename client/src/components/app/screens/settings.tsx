@@ -178,7 +178,7 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
                     <form action={setNotifications}>
                       {hiddenBack}
                       <input type="hidden" name="enabled" value={String(!me.notificationsEnabled)} />
-                      <button role="switch" aria-checked={me.notificationsEnabled} aria-label={t("preferences.notifications")} className="relative h-7 w-[52px] cursor-pointer border border-ink bg-transparent p-0 after:absolute after:left-[3px] after:top-[3px] after:size-5 after:bg-ink after:transition-transform aria-checked:border-leaf aria-checked:bg-leaf aria-checked:after:translate-x-6 aria-checked:after:bg-on-leaf" />
+                      <button role="switch" aria-checked={me.notificationsEnabled} aria-label={t("preferences.notifications")} className="relative h-7 w-[52px] cursor-pointer rounded-full border border-control bg-transparent p-0 after:absolute after:left-[3px] after:top-[3px] after:size-5 after:rounded-full after:bg-ink-muted after:transition-transform aria-checked:border-leaf aria-checked:bg-leaf aria-checked:after:translate-x-6 aria-checked:after:bg-on-leaf" />
                     </form>
                   )}
                 </div>

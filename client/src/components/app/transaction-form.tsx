@@ -22,10 +22,10 @@ export async function TransactionForm({
     <form action={tx ? updateTransaction : createTransaction} className="group/tx flex flex-col gap-5">
       <input type="hidden" name="back" value={back} />
       {tx && <input type="hidden" name="id" value={tx.id} />}
-      <fieldset className="m-0 grid max-w-sm grid-cols-2 border border-ink p-0">
+      <fieldset className="m-0 grid max-w-sm grid-cols-2 gap-1 rounded-full bg-band p-1">
         <legend className="sr-only">{t("type")}</legend>
         {(["EXPENSE", "INCOME"] as const).map((type) => (
-          <label key={type} className="flex h-12 cursor-pointer items-center justify-center text-[15px] font-semibold has-[:checked]:bg-leaf has-[:checked]:text-on-leaf has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-focus">
+          <label key={type} className="flex h-11 cursor-pointer items-center justify-center rounded-full text-[15px] font-semibold text-ink-muted has-[:checked]:bg-leaf has-[:checked]:text-on-leaf has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-focus">
             <input type="radio" name="type" value={type} defaultChecked={(tx?.type ?? "EXPENSE") === type} className="sr-only" />
             {t(type)}
           </label>
@@ -74,7 +74,7 @@ export async function TransactionForm({
               <span className="text-[13px] text-ink-muted">{t("periodicHint")}</span>
             </span>
             <input type="checkbox" name="periodic" role="switch" className="peer sr-only" />
-            <span aria-hidden="true" className="relative h-7 w-[52px] shrink-0 border border-ink after:absolute after:left-[3px] after:top-[3px] after:size-5 after:bg-ink after:transition-transform peer-checked:border-leaf peer-checked:bg-leaf peer-checked:after:translate-x-6 peer-checked:after:bg-on-leaf peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-focus" />
+            <span aria-hidden="true" className="relative h-7 w-[52px] shrink-0 rounded-full border border-control after:absolute after:left-[3px] after:top-[3px] after:size-5 after:rounded-full after:bg-ink-muted after:transition-transform peer-checked:border-leaf peer-checked:bg-leaf peer-checked:after:translate-x-6 peer-checked:after:bg-on-leaf peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-focus" />
           </label>
           <div className="hidden bg-band p-4 group-has-[[name=periodic]:checked]/tx:block">
             <RecurringFields categories={categories} startName="occurredOn" withCategory={false} />

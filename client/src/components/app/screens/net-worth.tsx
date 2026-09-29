@@ -118,7 +118,7 @@ export async function NetWorthScreen({ base, searchParams }: { base: string; sea
           ] as const).map(([key, value, dot, tone]) => (
             <div key={key} className="flex flex-col gap-2 rounded-[18px] bg-field p-4">
               <dt className="flex items-center gap-2 text-[13px] text-ink-muted"><span className={`block size-2.5 rounded-full ${dot}`} />{t(`totals.${key}`)}</dt>
-              <dd className={`m-0 font-mono text-xl tabular-nums ${tone}`}>{key === "monthlyNet" && value > 0 ? "+" : ""}{money(value, currency)}</dd>
+              <dd className={`m-0 whitespace-nowrap font-mono text-base tabular-nums sm:text-xl ${tone}`}>{key === "monthlyNet" && value > 0 ? "+" : ""}{money(value, currency)}</dd>
             </div>
           ))}
         </dl>
