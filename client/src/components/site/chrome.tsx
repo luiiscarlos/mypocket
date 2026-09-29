@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ChevronDown, Monitor, Moon, Sun } from "lucide-react";
+import { ChevronDown, Menu as MenuIcon, Monitor, Moon, Sun } from "lucide-react";
 import { FLAGS } from "@/components/app/flags";
 import { locales } from "@/i18n/config";
 import { setLocale, setTheme } from "@/i18n/actions";
@@ -82,10 +82,33 @@ async function SiteHeader({ current }: { current: Page }) {
             {next === "dark" ? <Moon size={17} aria-hidden /> : <Sun size={17} aria-hidden />}
           </button>
         </form>
-        <Link href="/login" className="rounded-[10px] px-3.5 py-2.5 text-[15px] font-medium text-ink hover:bg-band hover:no-underline">{t("login")}</Link>
-        <Link href="/register" className="btn inline-flex h-[42px] items-center rounded-control bg-leaf px-[18px] text-[15px] font-semibold text-on-leaf hover:no-underline">
+        <Link href="/login" className="hidden rounded-[10px] px-3.5 py-2.5 text-[15px] font-medium text-ink hover:bg-band hover:no-underline sm:inline-flex">{t("login")}</Link>
+        <Link href="/register" className="btn inline-flex h-[42px] items-center rounded-control bg-leaf px-4 text-[15px] font-semibold text-on-leaf hover:no-underline sm:px-[18px]">
           {t("signUp")}
         </Link>
+        {/* Below lg: the navigation, language, theme and log in move into a menu (<details>, no JS). */}
+        <details className="relative lg:hidden">
+          <summary className={`${summaryReset} ${pill} w-10 justify-center px-0`} aria-label={t("menu")}>
+            <MenuIcon size={18} aria-hidden />
+          </summary>
+          <div className="absolute right-0 top-12 z-30 flex w-[min(280px,calc(100vw-24px))] flex-col gap-1 rounded-2xl border border-rule bg-field p-2 shadow-float">
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={"page" in item && item.page === current ? "page" : undefined}
+                className="flex h-11 items-center rounded-[10px] px-3 text-[15px] text-ink hover:bg-band hover:no-underline aria-[current=page]:bg-band aria-[current=page]:font-semibold"
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+            <Link href="/login" className="flex h-11 items-center rounded-[10px] px-3 text-[15px] font-semibold text-ink hover:bg-band hover:no-underline sm:hidden">{t("login")}</Link>
+            <div className="mt-1 flex items-center justify-between gap-2 border-t border-rule px-1 pt-3 sm:hidden">
+              <LanguagePill />
+              <ThemeSwitcher />
+            </div>
+          </div>
+        </details>
       </div>
     </header>
   );
@@ -151,7 +174,7 @@ export async function SiteFooter() {
           </nav>
         ))}
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-rule pt-6 text-[13px] text-ink-muted">
+      <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-rule pt-6 text-[13px] text-ink-muted sm:flex-row sm:items-center">
         <span>{t("copyright", { year: new Date().getFullYear() })}</span>
         <span className="flex items-center gap-2">
           <LanguagePill up />

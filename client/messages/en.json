@@ -9,7 +9,8 @@
     "signUp": "Start for free",
     "features": "Features",
     "toDark": "Switch to dark theme",
-    "toLight": "Switch to light theme"
+    "toLight": "Switch to light theme",
+    "menu": "Menu"
   },
   "footer": {
     "copyright": "© {year} mypocket",

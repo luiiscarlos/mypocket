@@ -9,7 +9,8 @@
     "signUp": "Empezar gratis",
     "features": "Funciones",
     "toDark": "Cambiar a tema oscuro",
-    "toLight": "Cambiar a tema claro"
+    "toLight": "Cambiar a tema claro",
+    "menu": "Menú"
   },
   "footer": {
     "copyright": "© {year} mypocket",
