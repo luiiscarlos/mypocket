@@ -19,7 +19,9 @@ export default async function MobileLayout({ children }: LayoutProps<"/mobile">)
 
   return (
     <div className="flex min-h-dvh flex-col bg-side text-ink">
-      <header className="sticky top-0 z-20 flex h-[60px] shrink-0 items-center justify-between bg-side px-4 pt-[env(safe-area-inset-top)] box-content">
+      {/* Behind the iOS status bar / notch (0 px tall elsewhere): a solid strip so the white status text stays readable. */}
+      <div aria-hidden="true" className="fixed inset-x-0 top-0 z-30 h-[env(safe-area-inset-top)] bg-statusbar" />
+      <header className="sticky top-0 z-20 flex h-[60px] shrink-0 items-center justify-between bg-side px-4 pt-[env(safe-area-inset-top)] pl-[max(16px,env(safe-area-inset-left))] pr-[max(16px,env(safe-area-inset-right))] box-content">
         <Link href="/mobile" className="flex items-center gap-2 text-[19px] font-bold tracking-[-0.03em] text-ink hover:no-underline">
           <span aria-hidden="true" className="block size-7 rounded-[9px] bg-leaf" />
           mypocket
@@ -27,7 +29,8 @@ export default async function MobileLayout({ children }: LayoutProps<"/mobile">)
         <AccountMenu me={me} base="/mobile" withLanguage size={36} />
       </header>
 
-      <main className="mx-2 flex min-w-0 grow flex-col gap-5 rounded-t-[20px] border border-b-0 border-rule bg-panel px-4 pt-5 pb-[calc(112px+env(safe-area-inset-bottom))]">
+      {/* Same rule as the tab bar: on phones with a home indicator the panel goes edge to edge. */}
+      <main className="mx-[max(0px,calc(8px-env(safe-area-inset-bottom)*100))] flex min-w-0 grow flex-col gap-5 rounded-t-[20px] border border-b-0 border-rule bg-panel px-4 pt-5 pb-[calc(112px+env(safe-area-inset-bottom))]">
         <TopbarTitle name={firstName} />
         {me.readOnly && (
           <div role="status" className="flex flex-col gap-3 rounded-card border border-info bg-info-bg p-4 text-[15px] text-info-ink">

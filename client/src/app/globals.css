@@ -34,6 +34,7 @@
   --color-band: var(--mp-band);
   --color-side: var(--mp-side);
   --color-panel: var(--mp-panel);
+  --color-statusbar: var(--mp-statusbar);
   --color-active: var(--mp-active);
   --color-ink: var(--mp-ink);
   --color-ink-muted: var(--mp-ink-muted);
@@ -77,6 +78,7 @@
   --mp-band: #F6F2EA;
   --mp-side: #F6F2EA;
   --mp-panel: #FFFFFF;
+  --mp-statusbar: #1B4D3A;
   --mp-active: #ECE6DA;
   --mp-ink: #14170F;
   --mp-ink-muted: #5B6157;
@@ -121,6 +123,7 @@
   --mp-band: #0E0E0E;
   --mp-side: #000000;
   --mp-panel: #0B0B0B;
+  --mp-statusbar: #000000;
   --mp-active: #1C1C1C;
   --mp-ink: #F2F2EF;
   --mp-ink-muted: #A3A39E;
@@ -166,6 +169,7 @@
     --mp-band: #0E0E0E;
     --mp-side: #000000;
     --mp-panel: #0B0B0B;
+  --mp-statusbar: #000000;
     --mp-active: #1C1C1C;
     --mp-ink: #F2F2EF;
     --mp-ink-muted: #A3A39E;

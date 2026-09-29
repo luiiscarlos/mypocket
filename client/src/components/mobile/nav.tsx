@@ -24,7 +24,9 @@ export function MobileTabBar() {
   return (
     <nav
       aria-label={t("label")}
-      className="fixed inset-x-2 bottom-2 z-20 rounded-b-[20px] border border-rule bg-panel px-2 pt-2 pb-[max(12px,env(safe-area-inset-bottom))]"
+      // Phones with a home indicator (inset > 0): flush with the bottom edge, no corners, the indicator's
+      // space as inner padding. Elsewhere: the 8 px shell frame and rounded corners of the design.
+      className="fixed inset-x-[max(0px,calc(8px-env(safe-area-inset-bottom)*100))] bottom-[max(0px,calc(8px-env(safe-area-inset-bottom)*100))] z-20 rounded-b-[max(0px,calc(20px-env(safe-area-inset-bottom)*100))] border border-rule bg-panel px-2 pt-2 pb-[max(12px,env(safe-area-inset-bottom))]"
     >
       <ul className="m-0 grid list-none grid-cols-5 p-0">
         {TABS.map(({ href, key, Icon, match }) => {

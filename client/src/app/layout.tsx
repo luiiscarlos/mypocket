@@ -33,7 +33,8 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: t("title"), template: "%s · mypocket" },
     description: t("description"),
     // Installed from iOS "Add to Home Screen": full screen, app name under the icon.
-    appleWebApp: { capable: true, title: "mypocket", statusBarStyle: "default" },
+    // black-translucent: the installed app draws under the status bar / notch (iOS then shows white status text).
+    appleWebApp: { capable: true, title: "mypocket", statusBarStyle: "black-translucent" },
   };
 }
 
