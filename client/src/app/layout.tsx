@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Schibsted_Grotesk } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -18,9 +18,23 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+// Browser chrome follows the shell colour (beige / black); "cover" lets the mobile app use the safe areas.
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F6F2EA" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+  viewportFit: "cover",
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("meta");
-  return { title: { default: t("title"), template: "%s · mypocket" }, description: t("description") };
+  return {
+    title: { default: t("title"), template: "%s · mypocket" },
+    description: t("description"),
+    // Installed from iOS "Add to Home Screen": full screen, app name under the icon.
+    appleWebApp: { capable: true, title: "mypocket", statusBarStyle: "default" },
+  };
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
