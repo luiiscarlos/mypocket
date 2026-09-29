@@ -71,13 +71,13 @@ export function SideNav({ collapsed, free }: { collapsed: boolean; free: boolean
 }
 
 /** Page title in the top bar, from the current route (it is the page's h1). */
-export function TopbarTitle({ name }: { name: string }) {
+export function TopbarTitle({ name, greeting = true }: { name: string; greeting?: boolean }) {
   const t = useTranslations("app");
   const format = useFormatter();
   const pathname = usePathname();
   const section = pathname.split("/")[2] ?? "";
   const titles: Record<string, string> = {
-    "": name ? t("home.hello", { name }) : t("home.helloAnon"),
+    "": greeting ? (name ? t("home.hello", { name }) : t("home.helloAnon")) : t("nav.home"),
     "net-worth": t("nav.netWorth"),
     transactions: t("nav.transactions"),
     analytics: t("nav.analytics"),
