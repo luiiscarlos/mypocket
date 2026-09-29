@@ -2,14 +2,11 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { ArrowDownWideNarrow, ArrowUpNarrowWide, Lock, TriangleAlert } from "lucide-react";
 import {
-  ACCOUNT_FIELDS, AccountList, AddAccount, AddExpense, EXPENSE_FIELDS, ExpenseList, INVESTMENT_FIELDS,
-  InvestmentList, InvestmentSearch, searchInstruments, type Account, type Category, type Expense, type Investment,
+  AccountList, AddAccount, AddExpense, ExpenseList, InvestmentList, InvestmentSearch, searchInstruments,
 } from "@/components/app/finance";
 import { EmptyAction, EmptyState, PageNotice, Section, pick, primaryBtn } from "@/components/app/ui";
-import { gql } from "@/lib/api";
+import { getNetWorth } from "@/lib/queries";
 import { appNotice } from "@/lib/auth-codes";
-
-type Totals = { currency: string; accounts: number; investments: number; debts: number; current: number; endOfMonth: number; total: number };
 
 const PAGE = "/dashboard/net-worth";
 const VIEWS = ["all", "accounts", "investments", "debts", "recurring"] as const;
@@ -35,14 +32,7 @@ export default async function NetWorthPage({ searchParams }: PageProps<"/dashboa
     getFormatter(),
     appNotice(sp as { error?: string; message?: string }),
     searchInstruments(q),
-    gql<{ me: { currency: string; readOnly: boolean; plan: "FREE" | "PRO" }; netWorth: { totals: Totals[] }; accounts: Account[]; investments: Investment[]; recurringExpenses: Expense[]; categories: Category[] }>(`{
-      me { currency readOnly plan }
-      netWorth { totals { currency accounts investments debts current endOfMonth total } }
-      accounts { ${ACCOUNT_FIELDS} }
-      investments { ${INVESTMENT_FIELDS} }
-      recurringExpenses { ${EXPENSE_FIELDS} }
-      categories { id name }
-    }`),
+    getNetWorth(),
   ]);
   const { me } = data;
   const isPro = me.plan === "PRO";

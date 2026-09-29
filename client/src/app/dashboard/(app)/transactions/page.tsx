@@ -1,11 +1,10 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { deleteTransaction } from "@/app/dashboard/actions";
-import { type Category } from "@/components/app/finance";
 import { Modal } from "@/components/app/modal";
-import { TransactionForm, type Tx } from "@/components/app/transaction-form";
+import { TransactionForm } from "@/components/app/transaction-form";
 import { Empty, List, ListControls, PageHeader, PageNotice, Row, Section, dangerLink, pick, primaryBtn, smallButton } from "@/components/app/ui";
-import { gql } from "@/lib/api";
+import { getTransactions } from "@/lib/queries";
 import { appNotice } from "@/lib/auth-codes";
 
 
@@ -35,15 +34,7 @@ export default async function TransactionsPage({ searchParams }: PageProps<"/das
     getTranslations("app.transactions"),
     getFormatter(),
     appNotice(sp as { error?: string; message?: string }),
-    gql<{ me: { currency: string; readOnly: boolean }; categories: Category[]; accounts: { id: string; name: string; currency: string }[]; transactions: Tx[] }>(
-      `query ($f: TransactionFilter, $o: TransactionOrder) {
-        me { currency readOnly }
-        categories { id name }
-        accounts { id name currency }
-        transactions(filter: $f, orderBy: $o, limit: 100) { id source type amount currency occurredOn note category { id name } accountId }
-      }`,
-      { f: filter, o: orderBy },
-    ),
+    getTransactions(filter, orderBy),
   ]);
   const { me } = data;
   const money = (v: number, currency: string) => format.number(v, { style: "currency", currency });

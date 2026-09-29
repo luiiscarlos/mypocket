@@ -8,15 +8,10 @@ import { BottomNav, SideNav, TopbarTitle } from "@/components/app/nav";
 import { primaryBtn } from "@/components/app/ui";
 import { setLocale, setTheme } from "@/i18n/actions";
 import { locales } from "@/i18n/config";
-import { gql } from "@/lib/api";
+import { getShellMe } from "@/lib/queries";
 import { requireUser } from "@/lib/auth";
 import { logout } from "@/lib/auth-actions";
 import { getSidebarCollapsed, getTheme } from "@/lib/preferences";
-
-type Me = {
-  email: string | null; displayName: string | null; fullName: string | null; readOnly: boolean; onboardingCompleted: boolean;
-  plan: "FREE" | "PRO"; isAdmin: boolean;
-};
 
 const THEME_ICONS = { light: Sun, dark: Moon, system: Monitor } as const;
 const menuItem = "flex h-10 w-full cursor-pointer items-center gap-3 rounded-[10px] border-0 bg-transparent px-3 font-sans text-[15px] text-ink hover:bg-band hover:no-underline";
@@ -33,7 +28,7 @@ function initials(name: string) {
 export default async function AppLayout({ children }: LayoutProps<"/dashboard">) {
   await requireUser();
   const [{ me }, t, locale, theme, collapsed] = await Promise.all([
-    gql<{ me: Me }>("{ me { email displayName fullName readOnly onboardingCompleted plan isAdmin } }"),
+    getShellMe().then((me) => ({ me })),
     getTranslations("app"),
     getLocale(),
     getTheme(),

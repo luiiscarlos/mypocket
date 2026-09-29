@@ -8,16 +8,11 @@ import { PageHeader, PageNotice, Section, dangerBtn, pick, primaryBtn, secondary
 import { inputClass, labelClass } from "@/components/forms";
 import { setLocale, setTheme } from "@/i18n/actions";
 import { locales } from "@/i18n/config";
-import { gql } from "@/lib/api";
+import { getSettingsMe } from "@/lib/queries";
 import { logout } from "@/lib/auth-actions";
 import { appNotice } from "@/lib/auth-codes";
 import { getTheme } from "@/lib/preferences";
 
-type Me = {
-  email: string | null; displayName: string | null; fullName: string | null; phone: string | null; addressLine: string | null;
-  postalCode: string | null; city: string | null; country: string | null; birthDate: string | null; currency: string;
-  plan: "FREE" | "PRO"; notificationsEnabled: boolean; readOnly: boolean;
-};
 type Field = "displayName" | "fullName" | "phone" | "addressLine" | "postalCode" | "city" | "country" | "birthDate" | "currency";
 
 const PAGE = "/dashboard/settings";
@@ -44,7 +39,7 @@ export default async function SettingsPage({ searchParams }: PageProps<"/dashboa
     getLocale(),
     getTheme(),
     appNotice(sp as { error?: string; message?: string }),
-    gql<{ me: Me }>("{ me { email displayName fullName phone addressLine postalCode city country birthDate currency plan notificationsEnabled readOnly } }"),
+    getSettingsMe().then((me) => ({ me })),
   ]);
   const hiddenBack = <input type="hidden" name="back" value={back} />;
   const field = (name: Field, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (

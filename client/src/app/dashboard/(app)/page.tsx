@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { ArrowDownLeft, ArrowRight, ArrowUpRight, Plus } from "lucide-react";
-import { EXPENSE_FIELDS, type Expense } from "@/components/app/finance";
 import { Empty, EmptyAction, EmptyState, PageNotice, Section, secondaryBtn, textLink } from "@/components/app/ui";
-import { gql } from "@/lib/api";
+import type { Tx } from "@/components/app/transaction-form";
+import { getHome } from "@/lib/queries";
 import { appNotice } from "@/lib/auth-codes";
 
-type Totals = { currency: string; accounts: number; investments: number; debts: number; current: number; endOfMonth: number; total: number };
-type Tx = { id: string; type: "INCOME" | "EXPENSE"; amount: number; currency: string; occurredOn: string; note: string | null; category: { name: string } | null; accountId: string | null };
-type Account = { id: string; name: string; balance: number; currency: string };
 
 const SERIES = ["bg-s1", "bg-s2", "bg-s3", "bg-s3"];
 const square = "flex size-11 shrink-0 items-center justify-center rounded-control bg-band";
@@ -20,19 +17,7 @@ export async function generateMetadata() {
 // Design v3 "Inicio": beige balance block, two projection cards, composition bar and two list cards.
 export default async function HomePage({ searchParams }: PageProps<"/dashboard">) {
   const [t, format, notice] = await Promise.all([getTranslations("app.home"), getFormatter(), appNotice(await searchParams)]);
-  const data = await gql<{
-    me: { currency: string; readOnly: boolean; plan: "FREE" | "PRO" };
-    netWorth: { totals: Totals[] };
-    transactions: Tx[];
-    upcomingPayments: Expense[];
-    accounts: Account[];
-  }>(`{
-    me { currency readOnly plan }
-    netWorth { totals { currency accounts investments debts current endOfMonth total } }
-    transactions(limit: 6) { id type amount currency occurredOn note category { name } accountId }
-    upcomingPayments(days: 30) { ${EXPENSE_FIELDS} }
-    accounts { id name balance currency }
-  }`);
+  const data = await getHome();
 
   const money = (v: number, currency: string) => format.number(v, { style: "currency", currency });
   const signed = (tx: Tx) => `${tx.type === "INCOME" ? "+" : "−"}${money(tx.amount, tx.currency)}`;
