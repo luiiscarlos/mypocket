@@ -61,6 +61,12 @@ export const getNetWorth = () =>
     categories { id name }
   }`);
 
+/** Just enough for the "new transaction" form when it's opened from a page that didn't already load this. */
+export const getTxFormData = () =>
+  gql<{ me: { currency: string }; categories: Category[]; accounts: { id: string; name: string; currency: string }[] }>(
+    "{ me { currency } categories { id name } accounts { id name currency } }",
+  );
+
 export const getTransactions = (filter: TxFilter, orderBy: TxOrder, limit = 100) =>
   gql<{ me: { currency: string; readOnly: boolean }; categories: Category[]; accounts: { id: string; name: string; currency: string }[]; transactions: Tx[] }>(
     `query ($f: TransactionFilter, $o: TransactionOrder, $l: Int) {

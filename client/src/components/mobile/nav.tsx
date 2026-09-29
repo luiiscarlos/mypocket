@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ArrowLeftRight, House, Landmark, Menu, Plus, type LucideIcon } from "lucide-react";
+import { useNewTransaction } from "@/components/mobile/new-transaction-context";
 
 type Tab = { href: string; key: "home" | "netWorth" | "add" | "transactions" | "more"; Icon: LucideIcon; match: (path: string) => boolean };
 
@@ -12,15 +13,21 @@ type Tab = { href: string; key: "home" | "netWorth" | "add" | "transactions" | "
 const TABS: Tab[] = [
   { href: "/mobile", key: "home", Icon: House, match: (p) => p === "/mobile" },
   { href: "/mobile/net-worth", key: "netWorth", Icon: Landmark, match: (p) => p.startsWith("/mobile/net-worth") },
-  { href: "/mobile/transactions?new=1", key: "add", Icon: Plus, match: () => false },
+  { href: "/mobile/transactions", key: "add", Icon: Plus, match: () => false },
   { href: "/mobile/transactions", key: "transactions", Icon: ArrowLeftRight, match: (p) => p.startsWith("/mobile/transactions") },
   { href: "/mobile/more", key: "more", Icon: Menu, match: (p) => /^\/mobile\/(more|analytics|simulations|settings|updates|support)/.test(p) },
 ];
 
+const tabClass = "mx-[3px] flex h-[52px] grow flex-col items-center justify-center gap-[3px] rounded-[14px] text-[11px] hover:no-underline";
+const addClass = `${tabClass} cursor-pointer border-0 bg-leaf font-semibold text-on-leaf`;
+const plainClass = `${tabClass} font-medium text-ink-muted aria-[current=page]:bg-active aria-[current=page]:font-semibold aria-[current=page]:text-ink`;
+
 /** Bottom tab bar: the lower edge of the rounded panel (76 px + safe area). */
-export function MobileTabBar() {
+export function MobileTabBar({ readOnly }: { readOnly: boolean }) {
   const t = useTranslations("app.nav");
   const pathname = usePathname();
+  // Demo/read-only sessions have no form to open, so "Add" just goes to the transactions list as before.
+  const { setOpen } = useNewTransaction();
   return (
     <nav
       aria-label={t("label")}
@@ -32,19 +39,25 @@ export function MobileTabBar() {
         {TABS.map(({ href, key, Icon, match }) => {
           const add = key === "add";
           const active = match(pathname);
+          const label = t(key === "transactions" ? "transactionsShort" : key);
           return (
             <li key={key} className="flex">
-              <Link
-                href={href}
-                aria-current={active ? "page" : undefined}
-                aria-label={add ? t("newTransaction") : undefined}
-                className={`mx-[3px] flex h-[52px] grow flex-col items-center justify-center gap-[3px] rounded-[14px] text-[11px] hover:no-underline ${
-                  add ? "bg-leaf font-semibold text-on-leaf" : "font-medium text-ink-muted aria-[current=page]:bg-active aria-[current=page]:font-semibold aria-[current=page]:text-ink"
-                }`}
-              >
-                <Icon size={22} strokeWidth={1.8} aria-hidden />
-                {t(key === "transactions" ? "transactionsShort" : key)}
-              </Link>
+              {add && !readOnly ? (
+                <button type="button" aria-label={t("newTransaction")} className={addClass} onClick={() => setOpen(true)}>
+                  <Icon size={22} strokeWidth={1.8} aria-hidden />
+                  {label}
+                </button>
+              ) : (
+                <Link
+                  href={href}
+                  aria-current={active ? "page" : undefined}
+                  aria-label={add ? t("newTransaction") : undefined}
+                  className={add ? addClass : plainClass}
+                >
+                  <Icon size={22} strokeWidth={1.8} aria-hidden />
+                  {label}
+                </Link>
+              )}
             </li>
           );
         })}
