@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { answerSupportTicket } from "@/app/dashboard/actions";
-import { Empty, ListControls, PageHeader, PageNotice, pick, secondaryBtn } from "@/components/app/ui";
+import { Empty, ListControls, PageHeader, PageNotice, pick, secondaryBtn, textLink } from "@/components/app/ui";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Label, NativeSelect, NativeSelectOption, Textarea, labelClass, selectClass, textareaClass } from "@/components/forms";
 import { gql } from "@/lib/api";
 import { appNotice } from "@/lib/auth-codes";
@@ -40,26 +41,28 @@ export async function SupportAdminScreen({ base, searchParams }: { base: string;
         <ul className="m-0 flex list-none flex-col p-0">
           {tickets.map((ticket) => (
             <TicketCard key={ticket.id} ticket={ticket}>
-              <details>
-                <summary className="cursor-pointer text-sm font-semibold underline">{t("answer")}</summary>
-                <form action={answerSupportTicket} className="mt-3 flex flex-col gap-3">
-                  <input type="hidden" name="back" value={back} />
-                  <input type="hidden" name="id" value={ticket.id} />
-                  <Label className={labelClass}>
-                    {t("reply")}
-                    <Textarea name="reply" rows={4} maxLength={5000} defaultValue={ticket.adminReply ?? ""} className={textareaClass} />
-                  </Label>
-                  <div className="flex flex-wrap items-end gap-3">
+              <Collapsible>
+                <CollapsibleTrigger className={textLink}>{t("answer")}</CollapsibleTrigger>
+                <CollapsibleContent>
+                  <form action={answerSupportTicket} className="mt-3 flex flex-col gap-3">
+                    <input type="hidden" name="back" value={back} />
+                    <input type="hidden" name="id" value={ticket.id} />
                     <Label className={labelClass}>
-                      {t("filters.status")}
-                      <NativeSelect name="status" defaultValue={ticket.status} className={`${selectClass} w-56 px-3`}>
-                        {STATUSES.map((s) => <NativeSelectOption key={s} value={s}>{t(`statuses.${s}`)}</NativeSelectOption>)}
-                      </NativeSelect>
+                      {t("reply")}
+                      <Textarea name="reply" rows={4} maxLength={5000} defaultValue={ticket.adminReply ?? ""} className={textareaClass} />
                     </Label>
-                    <button className={`${secondaryBtn} h-[52px]`}>{t("saveAnswer")}</button>
-                  </div>
-                </form>
-              </details>
+                    <div className="flex flex-wrap items-end gap-3">
+                      <Label className={labelClass}>
+                        {t("filters.status")}
+                        <NativeSelect name="status" defaultValue={ticket.status} className={`${selectClass} w-56 px-3`}>
+                          {STATUSES.map((s) => <NativeSelectOption key={s} value={s}>{t(`statuses.${s}`)}</NativeSelectOption>)}
+                        </NativeSelect>
+                      </Label>
+                      <button className={`${secondaryBtn} h-[52px]`}>{t("saveAnswer")}</button>
+                    </div>
+                  </form>
+                </CollapsibleContent>
+              </Collapsible>
             </TicketCard>
           ))}
         </ul>

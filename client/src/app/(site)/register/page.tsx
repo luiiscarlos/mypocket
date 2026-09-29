@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Checkbox } from "@/components/ui/checkbox";
 import { getTranslations } from "next-intl/server";
 import { AuthShell } from "@/components/site/auth";
 import { Input, Label, Notice, TextLink, inputClass, labelClass, primaryButton } from "@/components/forms";
@@ -42,7 +43,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
           <span id="pw-hint" className="text-[13px] font-normal text-ink-muted">{t("fields.passwordHint")}</span>
         </Label>
         <div className="flex items-start gap-3 text-sm leading-normal text-ink-muted">
-          <input id="terms" type="checkbox" name="terms" required className="size-5 shrink-0 accent-leaf" />
+          <Checkbox id="terms" name="terms" required className="mt-0.5 size-5" />
           <label htmlFor="terms">
             {t.rich("register.terms", {
               terms: (chunks) => <Link href="/terms" className="text-ink underline">{chunks}</Link>,

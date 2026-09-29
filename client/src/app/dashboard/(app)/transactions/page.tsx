@@ -3,6 +3,7 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { deleteTransaction } from "@/app/dashboard/actions";
 import { Modal } from "@/components/app/modal";
 import { TransactionForm } from "@/components/app/transaction-form";
+import { Badge } from "@/components/ui/badge";
 import { Empty, List, ListControls, PageHeader, PageNotice, Row, Section, dangerLink, primaryBtn, smallButton } from "@/components/app/ui";
 import { getTransactions, parseTxSearch } from "@/lib/queries";
 import { appNotice } from "@/lib/auth-codes";
@@ -63,7 +64,7 @@ export default async function TransactionsPage({ searchParams }: PageProps<"/das
                 title={
                   <span className="flex flex-wrap items-center gap-2">
                     {tx.note ?? tx.category?.name ?? t(tx.type)}
-                    {tx.source === "RECURRING" && <span className="border border-rule px-1.5 py-0.5 font-mono text-[10px] tracking-[0.06em] text-ink-muted">{t("recurringTag")}</span>}
+                    {tx.source === "RECURRING" && <Badge variant="outline" className="border-rule font-mono text-[10px] tracking-[0.06em] text-ink-muted">{t("recurringTag")}</Badge>}
                   </span>
                 }
                 meta={[date(tx.occurredOn), tx.category?.name, tx.accountId && accountName.get(tx.accountId)].filter(Boolean).join(" · ")}

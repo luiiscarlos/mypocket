@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useFormatter, useTranslations } from "next-intl";
 import { ArrowLeftRight, Calculator, ChartColumn, House, Landmark, Menu, Plus, type LucideIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Key = "home" | "netWorth" | "transactions" | "analytics" | "simulations" | "add" | "more";
 type Entry = { href: string; key: Key; Icon: LucideIcon };
@@ -34,11 +36,10 @@ export function SideNav({ collapsed, free }: { collapsed: boolean; free: boolean
   return (
     <nav aria-label={t("label")}>
       <ul className="m-0 flex list-none flex-col gap-1 p-0">
-        {SIDE.map(({ href, key, Icon }) => (
-          <li key={href}>
+        {SIDE.map(({ href, key, Icon }) => {
+          const link = (
             <Link
               href={href}
-              title={collapsed ? t(key) : undefined}
               aria-label={collapsed ? t(key) : undefined}
               aria-current={isActive(pathname, href) ? "page" : undefined}
               className={`group flex h-11 items-center gap-3 rounded-control text-[15px] text-ink-muted hover:bg-field/60 hover:text-ink hover:no-underline aria-[current=page]:bg-field aria-[current=page]:font-semibold aria-[current=page]:text-ink aria-[current=page]:shadow-soft ${
@@ -48,11 +49,22 @@ export function SideNav({ collapsed, free }: { collapsed: boolean; free: boolean
               <Icon size={20} strokeWidth={1.9} aria-hidden className="shrink-0 group-aria-[current=page]:text-leaf" />
               {!collapsed && <span className="grow">{t(key)}</span>}
               {!collapsed && free && key === "analytics" && (
-                <span className="rounded-full bg-ok-bg px-2 py-0.5 text-[11px] font-semibold text-leaf">Pro</span>
+                <Badge variant="secondary" className="bg-ok-bg text-[11px] font-semibold text-leaf">Pro</Badge>
               )}
             </Link>
-          </li>
-        ))}
+          );
+          return (
+            <li key={href}>
+              {collapsed ? (
+                // Collapsed rail: the name shows in a shadcn Tooltip on hover/focus.
+                <Tooltip>
+                  <TooltipTrigger render={link} />
+                  <TooltipContent side="right" sideOffset={8}>{t(key)}</TooltipContent>
+                </Tooltip>
+              ) : link}
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

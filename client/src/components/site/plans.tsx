@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
 import { Check } from "lucide-react";
 
@@ -19,7 +20,7 @@ export function PlanCards() {
           <div className="flex flex-col gap-2">
             <span className="flex items-center justify-between">
               <span className="text-xl font-bold">{t(p.key)}</span>
-              {p.pro && <span className="inline-flex h-[26px] items-center rounded-full bg-ok-bg px-2.5 text-xs font-semibold text-leaf">{t("recommended")}</span>}
+              {p.pro && <Badge variant="secondary" className="h-[26px] bg-ok-bg px-2.5 text-xs font-semibold text-leaf">{t("recommended")}</Badge>}
             </span>
             <span className="flex items-baseline gap-1.5">
               <span className="font-mono text-5xl font-medium tracking-[-0.04em]">{p.price}</span>

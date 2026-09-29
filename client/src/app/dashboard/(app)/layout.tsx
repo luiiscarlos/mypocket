@@ -1,3 +1,5 @@
+import { cn } from "cn";
+import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
@@ -45,7 +47,7 @@ export default async function AppLayout({ children }: LayoutProps<"/dashboard">)
               aria-label={collapsed ? t("nav.expand") : t("nav.collapse")}
               aria-expanded={!collapsed}
               title={collapsed ? t("nav.expand") : t("nav.collapse")}
-              className={`flex h-11 w-full cursor-pointer items-center gap-3 rounded-control border-0 bg-transparent font-sans text-sm text-ink-muted hover:bg-field/60 hover:text-ink ${collapsed ? "justify-center" : "px-3"}`}
+              className={cn(buttonVariants({ variant: "ghost" }), "h-11 w-full gap-3 rounded-control text-sm font-normal text-ink-muted hover:bg-field/60 hover:text-ink", collapsed ? "justify-center" : "justify-start px-3")}
             >
               {collapsed ? <PanelLeftOpen size={20} aria-hidden /> : <PanelLeftClose size={20} aria-hidden />}
               {!collapsed && t("nav.collapse")}

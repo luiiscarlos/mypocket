@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
 import {
   ArrowRight, Banknote, Calculator, CalendarDays, ChartColumn, Check, ChevronDown, LifeBuoy, Lock, LogOut, Megaphone, Moon, Repeat,
@@ -28,7 +29,7 @@ const FEATURES: { key: "investments" | "simulations" | "analytics" | "recurring"
 const TICKET = [["milk", "3,48"], ["fruit", "6,85"], ["coffee", "9,77"], ["other", "3,30"]] as const;
 
 const h2 = "m-0 text-4xl font-bold leading-[1.05] tracking-[-0.04em] lg:text-[52px]";
-const badge = "inline-flex h-[26px] items-center rounded-full bg-ok-bg px-2.5 text-xs font-semibold text-leaf";
+const badge = "h-[26px] bg-ok-bg px-2.5 text-xs font-semibold text-leaf";
 
 export default function LandingPage() {
   const t = useTranslations("home");
@@ -137,8 +138,8 @@ export default function LandingPage() {
               <div className="flex items-center justify-between">
                 <span className="flex size-12 items-center justify-center rounded-[14px] bg-field"><Icon size={22} strokeWidth={1.8} aria-hidden /></span>
                 <span className="flex gap-1.5">
-                  {isNew && <span className={badge}>{t("features.new")}</span>}
-                  {pro && <span className={badge}>Pro</span>}
+                  {isNew && <Badge variant="secondary" className={badge}>{t("features.new")}</Badge>}
+                  {pro && <Badge variant="secondary" className={badge}>Pro</Badge>}
                 </span>
               </div>
               <h3 className="m-0 text-[21px] font-bold tracking-[-0.02em]">{t(`features.${key}.title`)}</h3>
@@ -151,7 +152,7 @@ export default function LandingPage() {
       <section id="tickets" className="scroll-mt-[72px] band pb-24 lg:pb-[120px]">
         <div className="grid grid-cols-1 items-center gap-14 rounded-[32px] bg-band p-8 lg:grid-cols-[5fr_6fr] lg:p-16">
           <div className="flex flex-col gap-5">
-            <span className={`${eyebrow} flex items-center gap-2`}>{t("tickets.eyebrow")} <span className={badge}>Pro</span></span>
+            <span className={`${eyebrow} flex items-center gap-2`}>{t("tickets.eyebrow")} <Badge variant="secondary" className={badge}>Pro</Badge></span>
             <h2 className="m-0 text-4xl font-bold leading-[1.05] tracking-[-0.04em] lg:text-[44px]">{t("tickets.title")}</h2>
             <p className="m-0 text-[17px] leading-[1.55] text-ink-muted">{t("tickets.lead")}</p>
           </div>

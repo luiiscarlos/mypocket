@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { getTranslations } from "next-intl/server";
 import { Calculator, ChartColumn, ChevronRight, LifeBuoy, Megaphone, Monitor, Settings, ShieldCheck, UserRound, type LucideIcon } from "lucide-react";
 import { setView } from "@/app/mobile/actions";
@@ -32,7 +33,7 @@ export default async function MorePage() {
               <Link href={href} className={item}>
                 <span className={icon} aria-hidden="true"><Icon size={18} /></span>
                 <span className="grow">{label}</span>
-                {pill && <span className="rounded-full bg-ok-bg px-2 py-0.5 text-[11px] font-semibold text-leaf">{pill}</span>}
+                {pill && <Badge variant="secondary" className="bg-ok-bg text-[11px] font-semibold text-leaf">{pill}</Badge>}
                 <ChevronRight size={18} className="text-ink-muted" aria-hidden />
               </Link>
             </li>

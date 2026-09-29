@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Input, Label, NativeSelect, NativeSelectOption, inputClass, labelClass, selectClass } from "@/components/forms";
 import { Modal } from "@/components/app/modal";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ApiError, gql } from "@/lib/api";
 import { Empty, List, Row, dangerLink, primaryBtn, secondaryBtn, smallButton } from "@/components/app/ui";
 import {
@@ -364,18 +365,18 @@ export async function RecurringFields({
       )}
       <fieldset className="m-0 flex flex-col gap-2 border-0 p-0 sm:col-span-2">
         <legend className="mb-2 text-sm font-semibold">{t("expenses.duration")}</legend>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[15px]">
-          <label className="flex items-center gap-2"><input type="radio" name="duration" value="open" defaultChecked={duration === "open"} className="size-5 accent-leaf" />{t("expenses.durationOpen")}</label>
+        <RadioGroup name="duration" defaultValue={duration} className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[15px]">
+          <label className="flex items-center gap-2"><RadioGroupItem value="open" className="size-5" />{t("expenses.durationOpen")}</label>
           <label className="flex items-center gap-2">
-            <input type="radio" name="duration" value="until" defaultChecked={duration === "until"} className="size-5 accent-leaf" />{t("expenses.durationUntil")}
+            <RadioGroupItem value="until" className="size-5" />{t("expenses.durationUntil")}
             <Input name="endDate" type="date" defaultValue={expense?.endDate ?? ""} aria-label={t("expenses.endDate")} className={`${inputClass} h-11 w-44 font-mono`} />
           </label>
           <label className="flex items-center gap-2">
-            <input type="radio" name="duration" value="count" defaultChecked={duration === "count"} className="size-5 accent-leaf" />
+            <RadioGroupItem value="count" className="size-5" />
             <Input name="paymentsTotal" type="number" min={1} max={1200} defaultValue={expense?.paymentsTotal ?? ""} aria-label={t("expenses.paymentsTotal")} className={`${inputClass} h-11 w-24 font-mono`} />
             {t("expenses.payments")}
           </label>
-        </div>
+        </RadioGroup>
       </fieldset>
       {withCategory && (
         <Label className={labelClass}>

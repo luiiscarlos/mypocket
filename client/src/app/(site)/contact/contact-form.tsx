@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
-import { Input, Label, NativeSelect, NativeSelectOption, Notice, Textarea, inputClass, labelClass, selectClass, textareaClass } from "@/components/forms";
+import { Input, Label, NativeSelect, NativeSelectOption, Notice, Textarea, inputClass, labelClass, primaryButton, selectClass, textareaClass } from "@/components/forms";
 import { sendContact, type ContactState } from "./actions";
 
 export function ContactForm() {
@@ -54,7 +55,7 @@ export function ContactForm() {
       {/* Honeypot for bots: hidden from people and assistive tech. */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] size-px opacity-0" />
       <div className="flex items-center gap-3 text-[15px] text-ink-muted">
-        <input id="privacy" type="checkbox" name="privacy" required className="size-5 shrink-0 accent-leaf" />
+        <Checkbox id="privacy" name="privacy" required className="mt-0.5 size-5" />
         <label htmlFor="privacy">
           {t("privacyPrefix")}{" "}
           <Link href="/privacy" className="text-ink underline">{t("privacyLink")}</Link>
@@ -62,7 +63,7 @@ export function ContactForm() {
       </div>
       <button
         disabled={pending}
-        className="h-14 cursor-pointer self-start border-0 bg-leaf px-8 font-sans text-base font-semibold text-on-leaf hover:opacity-90 disabled:opacity-60"
+        className={`${primaryButton} w-auto self-start`}
       >
         {pending ? t("sending") : t("send")}
       </button>

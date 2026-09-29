@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { Plus } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { PageHero, SiteFooter, SitePage, eyebrow } from "@/components/site/chrome";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -64,17 +66,19 @@ export default function FaqPage() {
                 <span className="font-mono text-sm font-medium tracking-normal text-ink">{g.n}</span>
                 {t(`groups.${g.key}.title`)}
               </h2>
-              {g.items.map((item, qi) => (
-                <details key={item} open={gi === 0 && qi === 0} className="group border-t border-ink">
-                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 py-5 text-xl font-semibold tracking-[-0.01em] [&::-webkit-details-marker]:hidden">
-                    {q(g.key, item, "q")}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" aria-hidden="true" className="shrink-0 text-ink transition-transform group-open:rotate-45">
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </summary>
-                  <p className="mb-6 mt-0 max-w-[720px] text-base leading-[1.65] text-ink-muted">{q(g.key, item, "a")}</p>
-                </details>
-              ))}
+              <Accordion multiple defaultValue={gi === 0 ? [g.items[0]] : []}>
+                {g.items.map((item) => (
+                  <AccordionItem key={item} value={item} className="border-t border-ink not-last:border-b-0">
+                    <AccordionTrigger className="min-h-11 items-center gap-6 rounded-none py-5 text-xl font-semibold tracking-[-0.01em] hover:no-underline **:data-[slot=accordion-trigger-icon]:hidden">
+                      {q(g.key, item, "q")}
+                      <Plus size={18} strokeWidth={2.2} aria-hidden className="shrink-0 text-ink transition-transform group-aria-expanded/accordion-trigger:rotate-45" />
+                    </AccordionTrigger>
+                    <AccordionContent hiddenUntilFound className="pb-6">
+                      <p className="m-0 max-w-[720px] text-base leading-[1.65] text-ink-muted">{q(g.key, item, "a")}</p>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
               <div className="border-t border-ink" />
             </section>
           ))}

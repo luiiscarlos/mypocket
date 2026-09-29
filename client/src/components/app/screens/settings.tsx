@@ -4,7 +4,13 @@ import { Bell, CreditCard, Download, LifeBuoy, SlidersHorizontal, Trash2, UserRo
 import { setView } from "@/app/mobile/actions";
 import { changePassword, deleteMyAccount, setNotifications, setPlan, updateProfile } from "@/app/dashboard/actions";
 import { FLAGS } from "@/components/app/flags";
+import { cn } from "cn";
 import { Modal } from "@/components/app/modal";
+import { SubmitSwitch } from "@/components/app/submit-switch";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageHeader, PageNotice, Section, dangerBtn, pick, primaryBtn, secondaryBtn } from "@/components/app/ui";
 import { Input, Label, inputClass, labelClass } from "@/components/forms";
 import { setLocale, setTheme } from "@/i18n/actions";
@@ -23,8 +29,8 @@ const TABS: { key: "profile" | "preferences" | "plan" | "help"; Icon: LucideIcon
   { key: "help", Icon: LifeBuoy },
 ];
 const TAB_KEYS = TABS.map((x) => x.key);
-const segment = "grid border border-ink";
-const segmentButton = "flex h-11 cursor-pointer items-center justify-center gap-2 border-0 bg-transparent px-3 font-sans text-sm text-ink aria-pressed:bg-leaf aria-pressed:font-semibold aria-pressed:text-on-leaf";
+const segment = "grid gap-1 rounded-full bg-band p-1";
+const segmentButton = cn(buttonVariants({ variant: "ghost" }), "h-10 rounded-full px-4 text-sm font-normal text-ink-muted aria-pressed:bg-leaf aria-pressed:font-semibold aria-pressed:text-on-leaf");
 
 export async function SettingsScreen({ base, searchParams }: { base: string; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const PAGE = `${base}/settings`;
@@ -52,26 +58,24 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
       <PageHeader title={t("title")} meta={me.email ?? undefined} />
       <PageNotice {...notice} />
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
-        {/* Section list: links (?tab=) so each section has its own URL and works without JS. */}
-        <nav aria-label={t("sections")} className="lg:sticky lg:top-24 lg:self-start">
-          <ul className="m-0 flex list-none gap-1 overflow-x-auto p-0 lg:flex-col">
-            {TABS.map(({ key, Icon }) => (
-              <li key={key}>
-                <Link
-                  href={`${PAGE}?tab=${key}`}
-                  aria-current={tab === key ? "page" : undefined}
-                  className="group flex h-11 shrink-0 items-center gap-3 whitespace-nowrap px-3 text-[15px] text-ink-muted hover:bg-active hover:text-ink hover:no-underline aria-[current=page]:bg-active aria-[current=page]:font-semibold aria-[current=page]:text-ink"
-                >
-                  <Icon size={18} aria-hidden className="group-aria-[current=page]:text-leaf" />
-                  {t(`tabs.${key}`)}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      {/* shadcn Tabs whose triggers are links (?tab=): each section has its own URL and is rendered on the server. */}
+      <Tabs value={tab} orientation="vertical" className="grid grid-cols-1 gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
+        <TabsList variant="line" aria-label={t("sections")} className="h-auto w-full justify-start gap-1 overflow-x-auto p-0 group-data-vertical/tabs:flex-row lg:sticky lg:top-24 lg:self-start lg:group-data-vertical/tabs:flex-col">
+          {TABS.map(({ key, Icon }) => (
+            <TabsTrigger
+              key={key}
+              value={key}
+              nativeButton={false}
+              render={<Link href={`${PAGE}?tab=${key}`} />}
+              className="h-11 flex-none gap-3 rounded-control px-3 text-[15px] font-normal text-ink-muted after:hidden hover:bg-active hover:text-ink hover:no-underline data-active:bg-active data-active:font-semibold data-active:text-ink group-data-vertical/tabs:w-auto lg:group-data-vertical/tabs:w-full [&_svg:not([class*='size-'])]:size-[18px] data-active:[&_svg]:text-leaf"
+            >
+              <Icon aria-hidden />
+              {t(`tabs.${key}`)}
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-        <div className="flex min-w-0 flex-col gap-12">
+        <TabsContent value={tab} className="flex min-w-0 flex-col gap-12 text-base">
           {tab === "profile" && (
             <>
               <Section title={t("profile.title")}>
@@ -178,7 +182,7 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
                     <form action={setNotifications}>
                       {hiddenBack}
                       <input type="hidden" name="enabled" value={String(!me.notificationsEnabled)} />
-                      <button role="switch" aria-checked={me.notificationsEnabled} aria-label={t("preferences.notifications")} className="relative h-7 w-[52px] cursor-pointer rounded-full border border-control bg-transparent p-0 after:absolute after:left-[3px] after:top-[3px] after:size-5 after:rounded-full after:bg-ink-muted after:transition-transform aria-checked:border-leaf aria-checked:bg-leaf aria-checked:after:translate-x-6 aria-checked:after:bg-on-leaf" />
+                      <SubmitSwitch checked={me.notificationsEnabled} label={t("preferences.notifications")} />
                     </form>
                   )}
                 </div>
@@ -190,14 +194,14 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
             <Section title={t("plan.title")}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {(["FREE", "PRO"] as const).map((plan) => (
-                  <div key={plan} className={`flex flex-col gap-3 p-6 ${me.plan === plan ? "border-[3px] border-leaf" : "border border-ink"}`}>
+                  <Card key={plan} className={`gap-3 rounded-card p-6 ${me.plan === plan ? "ring-2 ring-leaf" : "ring-rule"}`}>
                     <div className="flex items-baseline justify-between gap-4">
                       <span className="text-2xl font-extrabold tracking-[-0.03em]">{t(`plan.${plan}`)}</span>
                       <span className="font-mono text-lg">{t(`plan.price.${plan}`)}</span>
                     </div>
                     <p className="m-0 grow text-[15px] text-ink-muted">{t(`plan.text.${plan}`)}</p>
                     {me.plan === plan ? (
-                      <span className="font-mono text-xs tracking-[0.06em] text-leaf">{t("plan.currentTag")}</span>
+                      <Badge variant="secondary" className="h-6 self-start bg-ok-bg px-2.5 text-xs font-semibold text-leaf">{t("plan.currentTag")}</Badge>
                     ) : (
                       !me.readOnly && (
                         <form action={setPlan}>
@@ -207,7 +211,7 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
                         </form>
                       )
                     )}
-                  </div>
+                  </Card>
                 ))}
               </div>
               <p className="m-0 text-[13px] text-ink-muted">{t("plan.noPayments")}</p>
@@ -236,8 +240,8 @@ export async function SettingsScreen({ base, searchParams }: { base: string; sea
               </div>
             </Section>
           )}
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
     </>
   );
 }

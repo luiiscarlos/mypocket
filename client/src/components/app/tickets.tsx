@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations } from "next-intl/server";
+import { Badge } from "@/components/ui/badge";
 
 export type Ticket = {
   id: string; subject: string; category: string; message: string; status: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
@@ -22,7 +23,7 @@ export async function TicketCard({ ticket, children }: { ticket: Ticket; childre
   return (
     <li className="flex flex-col gap-3 border-b border-rule py-5">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <span className={`border px-2 py-0.5 font-mono text-[11px] tracking-[0.06em] ${STATUS_STYLE[ticket.status]}`}>{t(`statuses.${ticket.status}`)}</span>
+        <Badge variant="outline" className={`font-mono text-[11px] tracking-[0.06em] ${STATUS_STYLE[ticket.status]}`}>{t(`statuses.${ticket.status}`)}</Badge>
         <span className="text-base font-semibold">{ticket.subject}</span>
         <span className="font-mono text-xs text-ink-muted">#{ticket.id} · {t(`categories.${ticket.category}` as "categories.BUG")} · {when(ticket.createdAt)}</span>
       </div>

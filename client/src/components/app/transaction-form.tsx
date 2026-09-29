@@ -2,6 +2,8 @@ import { getTranslations } from "next-intl/server";
 import { createTransaction, updateTransaction } from "@/app/dashboard/actions";
 import { RecurringFields, type Category } from "@/components/app/finance";
 import { primaryBtn } from "@/components/app/ui";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
 import { Input, Label, NativeSelect, NativeSelectOption, inputClass, labelClass, selectClass } from "@/components/forms";
 
 export type Tx = {
@@ -11,7 +13,7 @@ export type Tx = {
 
 /**
  * New transaction (with the optional "periodic" schedule) or edit of an existing one (`tx`).
- * The periodic block is revealed by the switch with CSS only (group-has), no client JS.
+ * The periodic block is revealed by the shadcn Switch with CSS only (group-has on its data-checked).
  */
 export async function TransactionForm({
   back, currency, accounts, categories, tx,
@@ -22,15 +24,14 @@ export async function TransactionForm({
     <form action={tx ? updateTransaction : createTransaction} className="group/tx flex flex-col gap-5">
       <input type="hidden" name="back" value={back} />
       {tx && <input type="hidden" name="id" value={tx.id} />}
-      <fieldset className="m-0 grid max-w-sm grid-cols-2 gap-1 rounded-full bg-band p-1">
-        <legend className="sr-only">{t("type")}</legend>
+      <RadioGroup name="type" defaultValue={tx?.type ?? "EXPENSE"} aria-label={t("type")} className="max-w-sm grid-cols-2 gap-1 rounded-full bg-band p-1">
         {(["EXPENSE", "INCOME"] as const).map((type) => (
-          <label key={type} className="flex h-11 cursor-pointer items-center justify-center rounded-full text-[15px] font-semibold text-ink-muted has-[:checked]:bg-leaf has-[:checked]:text-on-leaf has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-focus">
-            <input type="radio" name="type" value={type} defaultChecked={(tx?.type ?? "EXPENSE") === type} className="sr-only" />
+          <label key={type} className="flex h-11 cursor-pointer items-center justify-center rounded-full text-[15px] font-semibold text-ink-muted has-data-checked:bg-leaf has-data-checked:text-on-leaf has-focus-visible:outline has-focus-visible:outline-3 has-focus-visible:outline-focus">
+            <RadioGroupItem value={type} className="sr-only" />
             {t(type)}
           </label>
         ))}
-      </fieldset>
+      </RadioGroup>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="grid grid-cols-[1fr_88px] gap-3">
           <Label className={labelClass}>
@@ -73,10 +74,9 @@ export async function TransactionForm({
               <span className="text-base font-semibold">{t("periodic")}</span>
               <span className="text-[13px] text-ink-muted">{t("periodicHint")}</span>
             </span>
-            <input type="checkbox" name="periodic" role="switch" className="peer sr-only" />
-            <span aria-hidden="true" className="relative h-7 w-[52px] shrink-0 rounded-full border border-control after:absolute after:left-[3px] after:top-[3px] after:size-5 after:rounded-full after:bg-ink-muted after:transition-transform peer-checked:border-leaf peer-checked:bg-leaf peer-checked:after:translate-x-6 peer-checked:after:bg-on-leaf peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-focus" />
+            <Switch name="periodic" />
           </label>
-          <div className="hidden bg-band p-4 group-has-[[name=periodic]:checked]/tx:block">
+          <div className="hidden bg-band p-4 group-has-[[data-slot=switch][data-checked]]/tx:block">
             <RecurringFields categories={categories} startName="occurredOn" withCategory={false} />
           </div>
         </div>

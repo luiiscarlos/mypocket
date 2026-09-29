@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
@@ -6,7 +7,7 @@ import {
   ACCOUNT_FIELDS, AccountForm, AccountList, EXPENSE_FIELDS, ExpenseForm, ExpenseList, INVESTMENT_FIELDS, InvestmentList,
   InvestmentSearch, searchInstruments, type Account, type Category, type Expense, type Investment,
 } from "@/components/app/finance";
-import { PageNotice, ProUpsell, Section, smallButton } from "@/components/app/ui";
+import { PageNotice, ProUpsell, Section, smallButton, textLink } from "@/components/app/ui";
 import { Input, Label, inputClass, labelClass, primaryButton } from "@/components/forms";
 import { Logo, eyebrow } from "@/components/site/chrome";
 import { gql } from "@/lib/api";
@@ -75,7 +76,7 @@ export default async function OnboardingPage({ searchParams }: PageProps<"/dashb
       <header className="flex items-center justify-between bg-brand px-5 py-5 text-cream lg:px-20">
         <Logo />
         <form action={logout}>
-          <button className="cursor-pointer border-0 bg-transparent p-0 font-sans text-sm text-mist underline">{t("logout")}</button>
+          <button className={cn(textLink, "text-sm font-normal text-mist")}>{t("logout")}</button>
         </form>
       </header>
 
